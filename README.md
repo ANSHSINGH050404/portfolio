@@ -1,10 +1,15 @@
-# portfolio
+# Portfolio — Ansh Kumar Singh
 
-Personal developer portfolio built with Next.js and TypeScript.
+Personal site for **Ansh Kumar Singh** — full-stack & agentic AI engineer.
 
-## Stack
+**Live:** [anshdev-tau.vercel.app](https://anshdev-tau.vercel.app)
 
-Next.js, TypeScript
+## Highlights
+
+- Featured projects (Browseflow, Type Racer, agents, and more)  
+- Role rotation: Full-Stack · Agentic AI · System Designer · Product Builder  
+- Resume download, socials (GitHub, LinkedIn, X)  
+- Next.js 15 + TypeScript + Tailwind  
 
 ## Getting started
 
@@ -12,14 +17,11 @@ Next.js, TypeScript
 git clone https://github.com/ANSHSINGH050404/portfolio.git
 cd portfolio
 npm install
-npm run dev   # or: npm start
+npm run dev
 ```
 
-## Repository
+## Contact
 
-- **GitHub:** https://github.com/ANSHSINGH050404/portfolio
-- **Author:** [ANSHSINGH050404](https://github.com/ANSHSINGH050404)
-
-## License
-
-See repository for license details (or add an MIT license if this is open source).
+- Email: anshsinghapa@gmail.com  
+- GitHub: [@ANSHSINGH050404](https://github.com/ANSHSINGH050404)  
+- LinkedIn: [ansh-kumar-singh-050404](https://www.linkedin.com/in/ansh-kumar-singh-050404)  
