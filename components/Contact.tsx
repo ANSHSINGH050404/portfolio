@@ -1,5 +1,6 @@
 "use client";
-import { GITHUB_USER } from "../constants";
+import { SITE } from "../constants";
+import { useToast } from "./Toast";
 
 interface ContactProps {
   visible: boolean;
@@ -7,27 +8,28 @@ interface ContactProps {
 }
 
 export function Contact({ visible, ctaRef }: ContactProps) {
+  const toast = useToast();
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(SITE.email);
+      toast("EMAIL COPIED TO CLIPBOARD ✓");
+    } catch {
+      toast(SITE.email);
+    }
+  };
+
   return (
     <section
       id="contact"
+      className="section-pad"
       style={{
-        padding: "80px clamp(24px,5vw,80px) 160px",
-        position: "relative",
-        zIndex: 10,
+        paddingBottom: 160,
         textAlign: "center",
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: "linear-gradient(90deg,transparent,#ffffff05,transparent)",
-        }}
-      />
+      <div className="section-line" />
       <div
         style={{
           position: "absolute",
@@ -36,7 +38,7 @@ export function Contact({ visible, ctaRef }: ContactProps) {
           transform: "translate(-50%,-50%)",
           width: 700,
           height: 700,
-          background: "radial-gradient(circle,#00ffe007 0%,transparent 70%)",
+          background: "radial-gradient(circle, #00ffe008 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -44,7 +46,7 @@ export function Contact({ visible, ctaRef }: ContactProps) {
         style={{
           position: "absolute",
           top: 60,
-          left: "clamp(24px,5vw,80px)",
+          left: "clamp(20px,5vw,80px)",
           width: 36,
           height: 36,
           borderTop: "1px solid #00ffe030",
@@ -55,53 +57,52 @@ export function Contact({ visible, ctaRef }: ContactProps) {
         style={{
           position: "absolute",
           bottom: 80,
-          right: "clamp(24px,5vw,80px)",
+          right: "clamp(20px,5vw,80px)",
           width: 36,
           height: 36,
           borderBottom: "1px solid #ff2d7830",
           borderRight: "1px solid #ff2d7830",
         }}
       />
+
       <div ref={ctaRef}>
         <div
           className={`fi ${visible ? "in" : ""}`}
           style={{
-            fontFamily: "'JetBrains Mono',monospace",
+            fontFamily: "var(--font-mono)",
             fontSize: 10,
-            color: "#00ffe0",
-            letterSpacing: ".18em",
+            color: "var(--cyan)",
+            letterSpacing: "0.18em",
             marginBottom: 24,
           }}
         >
           {"// 005 — LET'S BUILD SOMETHING"}
         </div>
+
         <h2
           className={`fi ${visible ? "in" : ""}`}
           style={{
-            transitionDelay: ".1s",
-            fontFamily: "'Bebas Neue',sans-serif",
-            fontSize: "clamp(60px,11vw,130px)",
+            transitionDelay: "0.1s",
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(60px, 11vw, 130px)",
             lineHeight: 0.92,
-            letterSpacing: "-.01em",
+            letterSpacing: "-0.01em",
             marginBottom: 36,
           }}
         >
           <span style={{ color: "#fff" }}>GOT AN</span>
           <br />
-          <span
-            style={{ WebkitTextStroke: "1px #ffffff20", color: "transparent" }}
-          >
-            IDEA?
-          </span>
+          <span className="outline">IDEA?</span>
         </h2>
+
         <p
           className={`fi ${visible ? "in" : ""}`}
           style={{
-            transitionDelay: ".2s",
-            fontSize: 15,
-            color: "#334155",
-            maxWidth: 400,
-            margin: "0 auto 52px",
+            transitionDelay: "0.2s",
+            fontSize: 16,
+            color: "var(--dim)",
+            maxWidth: 420,
+            margin: "0 auto 20px",
             lineHeight: 1.9,
             fontWeight: 300,
           }}
@@ -109,10 +110,41 @@ export function Contact({ visible, ctaRef }: ContactProps) {
           Open to freelance projects, full-time roles, and interesting AI
           collaborations. Let&apos;s make something exceptional.
         </p>
+
+        {/* Click-to-copy email */}
+        <button
+          className={`fi ${visible ? "in" : ""}`}
+          data-hover
+          onClick={copyEmail}
+          style={{
+            transitionDelay: "0.25s",
+            fontFamily: "var(--font-mono)",
+            fontSize: 13,
+            color: "var(--cyan)",
+            background: "transparent",
+            border: "1px dashed #00ffe030",
+            padding: "12px 24px",
+            letterSpacing: "0.08em",
+            cursor: "none",
+            marginBottom: 40,
+            transition: "border-color 0.2s, background 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "#00ffe070";
+            e.currentTarget.style.background = "#00ffe008";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "#00ffe030";
+            e.currentTarget.style.background = "transparent";
+          }}
+        >
+          {SITE.email} · CLICK TO COPY
+        </button>
+
         <div
           className={`fi ${visible ? "in" : ""}`}
           style={{
-            transitionDelay: ".3s",
+            transitionDelay: "0.3s",
             display: "flex",
             gap: 14,
             justifyContent: "center",
@@ -120,55 +152,38 @@ export function Contact({ visible, ctaRef }: ContactProps) {
           }}
         >
           <a
-            href="mailto:anshsinghapa@gmail.com"
-            style={{
-              fontFamily: "'JetBrains Mono',monospace",
-              fontSize: 12,
-              letterSpacing: ".07em",
-              color: "#050508",
-              background: "#00ffe0",
-              padding: "16px 40px",
-              textDecoration: "none",
-              fontWeight: 700,
-              transition: "box-shadow .25s,transform .15s",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 60px #00ffe065";
-              e.currentTarget.style.transform = "translateY(-3px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "none";
-              e.currentTarget.style.transform = "none";
-            }}
+            href={`mailto:${SITE.email}`}
+            className="btn-primary"
+            data-hover
           >
             SEND A MESSAGE
           </a>
           <a
-            href={`https://github.com/${GITHUB_USER}`}
+            href={SITE.socials.github}
             target="_blank"
             rel="noreferrer"
-            style={{
-              fontFamily: "'JetBrains Mono',monospace",
-              fontSize: 12,
-              letterSpacing: ".07em",
-              color: "#e2e8f0",
-              border: "1px solid #ffffff18",
-              padding: "16px 40px",
-              textDecoration: "none",
-              transition: "border-color .25s,color .25s",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#ff2d7870";
-              e.currentTarget.style.color = "#ff2d78";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#ffffff18";
-              e.currentTarget.style.color = "#e2e8f0";
-            }}
+            className="btn-ghost"
+            data-hover
           >
             GITHUB ↗
+          </a>
+          <a
+            href={SITE.socials.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-ghost"
+            data-hover
+            style={{ borderColor: "#a78bfa40", color: "var(--violet)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#a78bfa80";
+              e.currentTarget.style.color = "var(--violet)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "#a78bfa40";
+              e.currentTarget.style.color = "var(--violet)";
+            }}
+          >
+            LINKEDIN ↗
           </a>
         </div>
       </div>

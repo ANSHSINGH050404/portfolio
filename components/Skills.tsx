@@ -1,6 +1,6 @@
 "use client";
 import { SkillBar } from "./SkillBar";
-import { SKILLS, STACK_PILLS, GITHUB_USER } from "../constants";
+import { SKILLS, STACK_PILLS, SITE } from "../constants";
 
 interface SkillsProps {
   visible: boolean;
@@ -11,23 +11,10 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
   return (
     <section
       id="skills"
-      style={{
-        padding: "120px clamp(24px,5vw,80px)",
-        background: "#030306",
-        position: "relative",
-        zIndex: 10,
-      }}
+      className="section-pad"
+      style={{ background: "#020205" }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: "linear-gradient(90deg,transparent,#ffffff05,transparent)",
-        }}
-      />
+      <div className="section-line" />
       <div
         style={{
           position: "absolute",
@@ -36,53 +23,33 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
           transform: "translate(-50%,-50%)",
           width: 700,
           height: 400,
-          background: "radial-gradient(ellipse,#7c3aed06 0%,transparent 70%)",
+          background: "radial-gradient(ellipse, #a78bfa08 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
       <div ref={skillsRef} style={{ position: "relative" }}>
-        <div
-          className={`fi ${visible ? "in" : ""}`}
-          style={{ marginBottom: 64 }}
-        >
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono',monospace",
-              fontSize: 10,
-              color: "#ff2d78",
-              letterSpacing: ".18em",
-              marginBottom: 16,
-            }}
-          >
+        <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
+          <div className="section-label" style={{ color: "var(--magenta)" }}>
             {"// 002 — CAPABILITIES"}
           </div>
-          <h2
-            style={{
-              fontFamily: "'Bebas Neue',sans-serif",
-              fontSize: "clamp(48px,7vw,88px)",
-              lineHeight: 0.95,
-              color: "#fff",
-              letterSpacing: ".02em",
-            }}
-          >
-            SKILLS &<br />
-            <span
-              style={{
-                WebkitTextStroke: "1px #ffffff20",
-                color: "transparent",
-              }}
-            >
-              EXPERTISE
-            </span>
+          <h2 className="section-title">
+            SKILLS &
+            <br />
+            <span className="outline">EXPERTISE</span>
           </h2>
         </div>
+
         <div
           className="two-col"
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px 80px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "60px 80px",
+          }}
         >
           <div
             className={`fi ${visible ? "in" : ""}`}
-            style={{ transitionDelay: ".2s" }}
+            style={{ transitionDelay: "0.2s" }}
           >
             {SKILLS.map((s, i) => (
               <SkillBar
@@ -93,35 +60,50 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
               />
             ))}
           </div>
+
           <div
             className={`fi ${visible ? "in" : ""}`}
-            style={{ transitionDelay: ".4s" }}
+            style={{ transitionDelay: "0.4s" }}
           >
             <div
               style={{
-                fontFamily: "'JetBrains Mono',monospace",
+                fontFamily: "var(--font-mono)",
                 fontSize: 9,
-                color: "#334155",
-                letterSpacing: ".18em",
+                color: "var(--dim)",
+                letterSpacing: "0.18em",
                 marginBottom: 18,
               }}
             >
               ALSO WORK WITH
             </div>
             <div
-              style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 52 }}
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 8,
+                marginBottom: 48,
+              }}
             >
               {STACK_PILLS.map((t) => (
-                <span key={t} className="spill">
+                <span key={t} className="spill" data-hover>
                   {t}
                 </span>
               ))}
             </div>
-            <div style={{ borderLeft: "1px solid #00ffe025", paddingLeft: 24 }}>
+
+            <div
+              style={{
+                borderLeft: "1px solid #00ffe025",
+                paddingLeft: 24,
+                background: "linear-gradient(90deg, #00ffe005, transparent)",
+                paddingTop: 8,
+                paddingBottom: 8,
+              }}
+            >
               <p
                 style={{
-                  fontSize: 14,
-                  color: "#334155",
+                  fontSize: 15,
+                  color: "var(--dim)",
                   lineHeight: 1.95,
                   fontWeight: 300,
                   marginBottom: 28,
@@ -134,28 +116,31 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
                 <span style={{ color: "#94a3b8" }}>5,000+ daily users</span> and
                 reduced DB load by 60% with Redis caching.
               </p>
-              <div style={{ display: "flex", gap: 24 }}>
+              <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
                 {[
-                  ["GitHub", "#00ffe0", `https://github.com/${GITHUB_USER}`],
-                  ["Email", "#ff2d78", "mailto:anshsinghapa@gmail.com"],
-                  ["LinkedIn", "#7c3aed", "#"],
+                  ["GitHub", "#00ffe0", SITE.socials.github],
+                  ["Email", "#ff2d78", SITE.socials.email],
+                  ["LinkedIn", "#a78bfa", SITE.socials.linkedin],
                 ].map(([name, c, href]) => (
                   <a
                     key={name}
                     href={href}
                     target="_blank"
                     rel="noreferrer"
+                    data-hover
                     style={{
-                      fontFamily: "'JetBrains Mono',monospace",
+                      fontFamily: "var(--font-mono)",
                       fontSize: 10,
                       color: c,
                       textDecoration: "none",
-                      letterSpacing: ".08em",
+                      letterSpacing: "0.08em",
                       borderBottom: `1px solid ${c}35`,
                       paddingBottom: 3,
-                      transition: "border-color .2s",
+                      transition: "border-color 0.2s",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = c)}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.borderColor = c)
+                    }
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.borderColor = `${c}35`)
                     }

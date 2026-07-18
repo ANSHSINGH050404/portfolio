@@ -1,13 +1,16 @@
 "use client";
+import { STACK_PILLS } from "../constants";
+
+const LINE = [...STACK_PILLS, ...STACK_PILLS].join("  ·  ");
 
 export function Marquee() {
   return (
     <div
       style={{
-        borderTop: "1px solid #ffffff07",
-        borderBottom: "1px solid #ffffff07",
-        padding: "13px 0",
-        background: "#030306",
+        borderTop: "1px solid #ffffff08",
+        borderBottom: "1px solid #ffffff08",
+        padding: "14px 0",
+        background: "#020205",
         position: "relative",
         zIndex: 10,
         overflow: "hidden",
@@ -17,21 +20,14 @@ export function Marquee() {
         <div
           className="mq-inner"
           style={{
-            fontFamily: "'Bebas Neue',sans-serif",
-            fontSize: 12,
-            letterSpacing: ".22em",
+            fontFamily: "var(--font-display)",
+            fontSize: 13,
+            letterSpacing: "0.2em",
             color: "#ffffff12",
           }}
         >
-          {Array(8)
-            .fill(null)
-            .map((_, i) => (
-              <span key={i}>
-                &nbsp;&nbsp;&nbsp;NEXT.JS · TYPESCRIPT · LANGCHAIN · NODE.JS ·
-                REACT · POSTGRESQL · REDIS · DOCKER · AWS · GRAPHQL · FASTAPI
-                · PINECONE &nbsp;&nbsp;
-              </span>
-            ))}
+          <span style={{ paddingRight: 48 }}>{LINE}</span>
+          <span style={{ paddingRight: 48 }}>{LINE}</span>
         </div>
       </div>
     </div>

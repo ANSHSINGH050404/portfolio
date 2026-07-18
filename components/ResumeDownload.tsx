@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useReveal } from "../hooks/useReveal";
-import { GITHUB_USER } from "../constants";
+import { SITE } from "../constants";
+import { SpotlightCard } from "./SpotlightCard";
 
 export function ResumeDownload() {
   const [ref, visible] = useReveal<HTMLDivElement>(0.1);
@@ -10,8 +11,8 @@ export function ResumeDownload() {
   const handleDownload = () => {
     setDownloading(true);
     const link = document.createElement("a");
-    link.href = "/Resume-feb@11.pdf";
-    link.download = "Ansh-Kumar-Singh-Resume.pdf";
+    link.href = SITE.resumePath;
+    link.download = SITE.resumeFileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -22,16 +23,17 @@ export function ResumeDownload() {
     <div
       ref={ref}
       className={`fi ${visible ? "in" : ""}`}
-      style={{ transitionDelay: ".2s" }}
+      style={{ transitionDelay: "0.15s" }}
     >
-      <div
+      <SpotlightCard
+        accent="#f59e0b"
         data-hover
         style={{
-          background: "#06060c",
-          border: "1px solid #ffffff07",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: 12,
           padding: "36px 40px",
           position: "relative",
-          overflow: "hidden",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -46,65 +48,62 @@ export function ResumeDownload() {
             left: 0,
             right: 0,
             height: 2,
-            background: "linear-gradient(90deg,#f59e0b,transparent)",
+            background: "linear-gradient(90deg, #f59e0b, transparent)",
+            borderRadius: "12px 12px 0 0",
+            zIndex: 1,
           }}
         />
-        <div>
+        <div style={{ position: "relative", zIndex: 1 }}>
           <div
             style={{
-              fontFamily: "'JetBrains Mono',monospace",
+              fontFamily: "var(--font-mono)",
               fontSize: 9,
-              color: "#f59e0b",
-              letterSpacing: ".18em",
+              color: "var(--amber)",
+              letterSpacing: "0.18em",
               marginBottom: 12,
-              opacity: 0.8,
+              opacity: 0.85,
             }}
           >
-            {"// 004 — CURRICULUM VITAE"}
+            {"// CURRICULUM VITAE"}
           </div>
           <h3
             style={{
-              fontFamily: "'Bebas Neue',sans-serif",
+              fontFamily: "var(--font-display)",
               fontSize: 32,
               color: "#f1f5f9",
-              letterSpacing: ".04em",
+              letterSpacing: "0.04em",
               marginBottom: 6,
             }}
           >
-            ANSH KUMAR SINGH
+            {SITE.name.toUpperCase()}
           </h3>
           <p
             style={{
-              fontFamily: "'JetBrains Mono',monospace",
+              fontFamily: "var(--font-mono)",
               fontSize: 11,
-              color: "#475569",
-              letterSpacing: ".06em",
+              color: "var(--muted)",
+              letterSpacing: "0.06em",
             }}
           >
             Full-Stack Developer & Agentic AI Engineer
           </p>
         </div>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          {/* View online */}
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
           <a
-            href={`https://github.com/${GITHUB_USER}`}
+            href={SITE.socials.github}
             target="_blank"
             rel="noreferrer"
-            style={{
-              fontFamily: "'JetBrains Mono',monospace",
-              fontSize: 11,
-              color: "#e2e8f0",
-              border: "1px solid #ffffff18",
-              padding: "12px 24px",
-              textDecoration: "none",
-              letterSpacing: ".06em",
-              transition: "border-color .2s",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#ffffff40")}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#ffffff18")}
+            data-hover
+            className="btn-ghost"
+            style={{ padding: "12px 24px", fontSize: 11 }}
           >
             <svg
               width="14"
@@ -114,29 +113,29 @@ export function ResumeDownload() {
               stroke="currentColor"
               strokeWidth="2"
             >
-              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2 2V8a2 2 0 012-2h6" />
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
               <polyline points="15 3 21 3 21 9" />
               <line x1="10" y1="14" x2="21" y2="3" />
             </svg>
             VIEW GITHUB
           </a>
-          {/* Download */}
           <button
             onClick={handleDownload}
+            data-hover
             style={{
-              fontFamily: "'JetBrains Mono',monospace",
+              fontFamily: "var(--font-mono)",
               fontSize: 11,
               color: "#050508",
-              background: downloading ? "#f59e0b" : "#f59e0b",
+              background: "var(--amber)",
               border: "none",
               padding: "12px 28px",
-              letterSpacing: ".06em",
+              letterSpacing: "0.06em",
               cursor: "none",
               display: "inline-flex",
               alignItems: "center",
               gap: 10,
               fontWeight: 700,
-              transition: "box-shadow .25s,transform .15s",
+              transition: "box-shadow 0.25s, transform 0.15s",
               boxShadow: downloading ? "0 0 40px #f59e0b80" : "none",
             }}
             onMouseEnter={(e) => {
@@ -184,8 +183,7 @@ export function ResumeDownload() {
             )}
           </button>
         </div>
-      </div>
-      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+      </SpotlightCard>
     </div>
   );
 }

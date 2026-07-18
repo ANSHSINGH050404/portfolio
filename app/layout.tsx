@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -13,8 +13,48 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ansh Singh",
-  description: "This is my portfolio",
+  title: {
+    default: "Ansh Singh — Full-Stack & Agentic AI Engineer",
+    template: "%s · Ansh Singh",
+  },
+  description:
+    "Final-year CS student building production AI products. Full-stack developer specializing in agentic systems, Next.js, and scalable backends.",
+  keywords: [
+    "Ansh Singh",
+    "Full-Stack Developer",
+    "Agentic AI",
+    "Next.js",
+    "Portfolio",
+    "LangChain",
+    "TypeScript",
+  ],
+  authors: [{ name: "Ansh Kumar Singh" }],
+  creator: "Ansh Kumar Singh",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    title: "Ansh Singh — Full-Stack & Agentic AI Engineer",
+    description:
+      "I build scalable APIs, multi-step LLM workflows, and production-ready AI applications end-to-end.",
+    siteName: "Ansh Singh Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ansh Singh — Full-Stack & Agentic AI Engineer",
+    description:
+      "I build scalable APIs, multi-step LLM workflows, and production-ready AI applications end-to-end.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#030306",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

@@ -1,9 +1,9 @@
 "use client";
 import { useEffect } from "react";
-import { useClickSound } from "./useClickSound";
+import { useSound } from "./useSound";
 
 export function useGlobalClickSound() {
-  const playClick = useClickSound();
+  const { playClick } = useSound();
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {

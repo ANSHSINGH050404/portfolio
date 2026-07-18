@@ -1,15 +1,63 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Counter } from "./Counter";
+import { ROLES, SITE, STATS } from "../constants";
 
 interface HeroProps {
   loaded: boolean;
 }
 
 export function Hero({ loaded }: HeroProps) {
+  const [display, setDisplay] = useState(ROLES[0]);
+  const [scrambling, setScrambling] = useState(false);
+
+  useEffect(() => {
+    if (!loaded) return;
+    let idx = 0;
+    let scrambleTimer: ReturnType<typeof setInterval> | null = null;
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789░▒▓█/<#>";
+
+    const runScramble = () => {
+      const next = (idx + 1) % ROLES.length;
+      const target = ROLES[next];
+      setScrambling(true);
+      let frame = 0;
+      const maxFrames = 12;
+      if (scrambleTimer) clearInterval(scrambleTimer);
+      scrambleTimer = setInterval(() => {
+        frame++;
+        if (frame >= maxFrames) {
+          if (scrambleTimer) clearInterval(scrambleTimer);
+          scrambleTimer = null;
+          setDisplay(target);
+          idx = next;
+          setScrambling(false);
+          return;
+        }
+        setDisplay(
+          target
+            .split("")
+            .map((c, i) =>
+              i < (frame / maxFrames) * target.length
+                ? c
+                : chars[Math.floor(Math.random() * chars.length)],
+            )
+            .join(""),
+        );
+      }, 40);
+    };
+
+    const interval = setInterval(runScramble, 3200);
+    return () => {
+      clearInterval(interval);
+      if (scrambleTimer) clearInterval(scrambleTimer);
+    };
+  }, [loaded]);
+
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = "/Resume-feb@11.pdf";
-    link.download = "Ansh-Kumar-Singh-Resume.pdf";
+    link.href = SITE.resumePath;
+    link.download = SITE.resumeFileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -23,11 +71,43 @@ export function Hero({ loaded }: HeroProps) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "100px clamp(24px,5vw,80px) 60px",
+        padding: "110px clamp(20px,5vw,80px) 80px",
         position: "relative",
         zIndex: 10,
+        overflow: "hidden",
       }}
     >
+      {/* Ambient orbs */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "15%",
+          right: "8%",
+          width: 420,
+          height: 420,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, #00ffe012 0%, transparent 70%)",
+          animation: "orb-drift 18s ease-in-out infinite",
+          pointerEvents: "none",
+          filter: "blur(2px)",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          left: "5%",
+          width: 320,
+          height: 320,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, #ff2d780c 0%, transparent 70%)",
+          animation: "orb-drift 22s ease-in-out infinite reverse",
+          pointerEvents: "none",
+        }}
+      />
+
       <div
         className="hide-mob"
         style={{
@@ -35,19 +115,22 @@ export function Hero({ loaded }: HeroProps) {
           right: 36,
           top: "50%",
           transform: "translateY(-50%) rotate(90deg)",
-          fontFamily: "'JetBrains Mono',monospace",
+          fontFamily: "var(--font-mono)",
           fontSize: 10,
-          color: "#ffffff18",
-          letterSpacing: ".2em",
+          color: "#ffffff14",
+          letterSpacing: "0.22em",
+          whiteSpace: "nowrap",
         }}
       >
-        FULL · STACK · AGENTIC AI · 2024
+        FULL · STACK · AGENTIC AI · 2025
       </div>
+
+      {/* Corner marks */}
       <div
         style={{
           position: "absolute",
           top: 90,
-          left: "clamp(24px,5vw,80px)",
+          left: "clamp(20px,5vw,80px)",
           width: 40,
           height: 40,
           borderTop: "1px solid #00ffe040",
@@ -58,7 +141,7 @@ export function Hero({ loaded }: HeroProps) {
         style={{
           position: "absolute",
           bottom: 50,
-          right: "clamp(24px,5vw,80px)",
+          right: "clamp(20px,5vw,80px)",
           width: 40,
           height: 40,
           borderBottom: "1px solid #ff2d7840",
@@ -66,50 +149,64 @@ export function Hero({ loaded }: HeroProps) {
         }}
       />
 
+      {/* Status badge */}
       <div
         className={`fi ${loaded ? "in" : ""}`}
-        style={{ transitionDelay: ".1s", marginBottom: 36 }}
+        style={{ transitionDelay: "0.1s", marginBottom: 32 }}
       >
         <span
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 8,
-            fontFamily: "'JetBrains Mono',monospace",
+            gap: 10,
+            fontFamily: "var(--font-mono)",
             fontSize: 10,
-            color: "#00ffe0",
-            letterSpacing: ".12em",
+            color: "var(--cyan)",
+            letterSpacing: "0.12em",
             border: "1px solid #00ffe028",
-            padding: "7px 16px",
+            padding: "8px 18px",
+            background: "#00ffe006",
+            borderRadius: 2,
           }}
         >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#00ffe0",
-              animation: "pdot 2s infinite",
-            }}
-          />
-          OPEN TO WORK · BAREILLY, INDIA
+          <span style={{ position: "relative", width: 8, height: 8 }}>
+            <span
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                background: "var(--cyan)",
+                animation: "pulse-ring 2s infinite",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                background: "var(--cyan)",
+              }}
+            />
+          </span>
+          OPEN TO WORK · {SITE.location.toUpperCase()}
         </span>
       </div>
 
-      <div style={{ marginBottom: 32 }}>
-        {["ANSHs", "ANSH","SINGH"].map((word, wi) => (
+      {/* Name */}
+      <div style={{ marginBottom: 28 }}>
+        {["ANSH", "SINGH"].map((word, wi) => (
           <div key={word} className="hl">
             <span
               className={loaded ? "show" : ""}
               style={{
                 transitionDelay: `${wi * 0.14 + 0.2}s`,
-                fontFamily: "'Bebas Neue',sans-serif",
-                fontSize: "clamp(72px,12vw,156px)",
-                lineHeight: 0.9,
-                letterSpacing: "-.01em",
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(72px, 13vw, 160px)",
+                lineHeight: 0.88,
+                letterSpacing: "-0.01em",
                 display: "block",
                 color: wi === 1 ? "transparent" : "#fff",
-                WebkitTextStroke: wi === 1 ? "1px #ffffff22" : "none",
+                WebkitTextStroke: wi === 1 ? "1.5px #ffffff20" : "none",
               }}
             >
               {wi === 0 ? (
@@ -133,24 +230,58 @@ export function Hero({ loaded }: HeroProps) {
         ))}
       </div>
 
+      {/* Rotating role */}
+      <div
+        className={`fi ${loaded ? "in" : ""}`}
+        style={{
+          transitionDelay: "0.45s",
+          marginBottom: 28,
+          minHeight: 28,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "clamp(13px, 2vw, 16px)",
+            color: scrambling ? "var(--magenta)" : "var(--cyan)",
+            letterSpacing: "0.08em",
+            transition: "color 0.2s",
+          }}
+        >
+          <span style={{ color: "var(--dim)", marginRight: 10 }}>&gt;</span>
+          {display}
+          <span
+            style={{
+              display: "inline-block",
+              width: 8,
+              height: "1em",
+              background: "var(--cyan)",
+              marginLeft: 4,
+              verticalAlign: "text-bottom",
+              animation: "blink 1s step-end infinite",
+            }}
+          />
+        </span>
+      </div>
+
       <div
         style={{
           display: "flex",
-          gap: 60,
+          gap: 56,
           alignItems: "flex-start",
           flexWrap: "wrap",
         }}
       >
         <div
           className={`fi ${loaded ? "in" : ""}`}
-          style={{ transitionDelay: ".55s", maxWidth: 480 }}
+          style={{ transitionDelay: "0.55s", maxWidth: 500 }}
         >
           <p
             style={{
-              fontSize: 15,
+              fontSize: 16,
               lineHeight: 1.9,
-              color: "#475569",
-              marginBottom: 40,
+              color: "var(--dim)",
+              marginBottom: 36,
               fontWeight: 300,
             }}
           >
@@ -163,63 +294,29 @@ export function Hero({ loaded }: HeroProps) {
               Agentic AI systems
             </span>
             . I build scalable APIs, multi-step LLM workflows, and
-            production-ready AI applications end-to-end.
+            production-ready products end-to-end.
           </p>
           <div
             className="hero-btns"
             style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
           >
-            <a
-              href="#projects"
-              style={{
-                fontFamily: "'JetBrains Mono',monospace",
-                fontSize: 12,
-                letterSpacing: ".07em",
-                color: "#050508",
-                background: "#00ffe0",
-                padding: "14px 32px",
-                textDecoration: "none",
-                fontWeight: 700,
-                transition: "box-shadow .25s,transform .15s",
-                display: "inline-block",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px #00ffe060";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "none";
-              }}
-            >
+            <a href="#projects" className="btn-primary" data-hover>
               SEE MY WORK
+              <span aria-hidden>→</span>
             </a>
             <button
               onClick={handleDownload}
-              style={{
-                fontFamily: "'JetBrains Mono',monospace",
-                fontSize: 12,
-                letterSpacing: ".07em",
-                color: "#f59e0b",
-                border: "1px solid #f59e0b40",
-                padding: "14px 32px",
-                background: "transparent",
-                cursor: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                fontWeight: 600,
-                transition: "border-color .25s,box-shadow .25s,transform .15s",
-              }}
+              className="btn-ghost"
+              data-hover
+              style={{ color: "var(--amber)", borderColor: "#f59e0b40" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#f59e0b80";
                 e.currentTarget.style.boxShadow = "0 0 30px #f59e0b25";
-                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.color = "var(--amber)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "#f59e0b40";
                 e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "none";
               }}
             >
               <svg
@@ -242,55 +339,50 @@ export function Hero({ loaded }: HeroProps) {
         <div
           className={`fi ${loaded ? "in" : ""}`}
           style={{
-            transitionDelay: ".7s",
-            display: "flex",
-            gap: 44,
-            marginTop: 6,
+            transitionDelay: "0.7s",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "28px 40px",
+            marginTop: 4,
           }}
         >
-          {[
-            ["30", "+", "PROJECTS"],
-            ["50", "+", "OSS CONTRIBS"],
-            ["500", "+", "USERS ON SITE"],
-          ].map(([n, suf, label]) => (
-            <div key={label}>
+          {STATS.map((s) => (
+            <div key={s.label}>
               <div
                 style={{
-                  fontFamily: "'Bebas Neue',sans-serif",
-                  fontSize: 54,
+                  fontFamily: "var(--font-display)",
+                  fontSize: 48,
                   lineHeight: 1,
                   color: "#f1f5f9",
-                  letterSpacing: "-.01em",
+                  letterSpacing: "-0.01em",
                 }}
               >
-                {n === "5K" ? (
-                  "5K+"
-                ) : (
-                  <Counter target={parseInt(n)} suffix={suf} />
-                )}
+                <Counter target={s.value} suffix={s.suffix} />
               </div>
               <div
                 style={{
-                  fontFamily: "'JetBrains Mono',monospace",
+                  fontFamily: "var(--font-mono)",
                   fontSize: 9,
-                  color: "#334155",
-                  letterSpacing: ".14em",
+                  color: "var(--dim)",
+                  letterSpacing: "0.12em",
                   marginTop: 6,
+                  textTransform: "uppercase",
                 }}
               >
-                {label}
+                {s.label}
               </div>
             </div>
           ))}
         </div>
       </div>
 
+      {/* Scroll cue */}
       <div
         className={`fi ${loaded ? "in" : ""}`}
         style={{
-          transitionDelay: ".95s",
+          transitionDelay: "0.95s",
           position: "absolute",
-          bottom: 40,
+          bottom: 36,
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
@@ -301,10 +393,10 @@ export function Hero({ loaded }: HeroProps) {
       >
         <span
           style={{
-            fontFamily: "'JetBrains Mono',monospace",
+            fontFamily: "var(--font-mono)",
             fontSize: 9,
             color: "#ffffff18",
-            letterSpacing: ".18em",
+            letterSpacing: "0.18em",
           }}
         >
           SCROLL
@@ -312,8 +404,8 @@ export function Hero({ loaded }: HeroProps) {
         <div
           style={{
             width: 1,
-            height: 52,
-            background: "linear-gradient(#00ffe0,transparent)",
+            height: 48,
+            background: "linear-gradient(var(--cyan), transparent)",
             animation: "sline 1.6s ease-in-out infinite",
           }}
         />

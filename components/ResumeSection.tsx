@@ -9,7 +9,7 @@ export function ResumeSection() {
     <section
       id="resume"
       style={{
-        padding: "0 clamp(24px,5vw,80px) 80px",
+        padding: "0 clamp(20px,5vw,80px) 80px",
         position: "relative",
         zIndex: 10,
       }}
@@ -18,14 +18,14 @@ export function ResumeSection() {
         <div
           className={`fi ${resumeVisible ? "in" : ""}`}
           style={{
-            fontFamily: "'JetBrains Mono',monospace",
+            fontFamily: "var(--font-mono)",
             fontSize: 10,
-            color: "#f59e0b",
-            letterSpacing: ".18em",
+            color: "var(--amber)",
+            letterSpacing: "0.18em",
             marginBottom: 24,
           }}
         >
-          {"// 004 — CURRICULUM VITAE"}
+          {"// RESUME"}
         </div>
         <ResumeDownload />
       </div>

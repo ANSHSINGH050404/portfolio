@@ -33,32 +33,33 @@ export function SkillBar({ name, pct, color, delay, visible }: SkillBarProps) {
   }, [visible, pct, delay]);
 
   return (
-    <div style={{ marginBottom: 26 }}>
+    <div style={{ marginBottom: 28 }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: 8,
+          marginBottom: 10,
         }}
       >
         <span
           style={{
             fontSize: 11,
             fontWeight: 600,
-            letterSpacing: ".08em",
+            letterSpacing: "0.08em",
             color: "#94a3b8",
             textTransform: "uppercase",
-            fontFamily: "'JetBrains Mono',monospace",
+            fontFamily: "var(--font-mono)",
           }}
         >
           {name}
         </span>
         <span
           style={{
-            fontSize: 10,
+            fontSize: 11,
             color,
             fontWeight: 700,
-            fontFamily: "'JetBrains Mono',monospace",
+            fontFamily: "var(--font-mono)",
+            fontVariantNumeric: "tabular-nums",
           }}
         >
           {displayPct}%
@@ -66,34 +67,35 @@ export function SkillBar({ name, pct, color, delay, visible }: SkillBarProps) {
       </div>
       <div
         style={{
-          height: 1,
+          height: 2,
           background: "#ffffff08",
           borderRadius: 99,
           position: "relative",
+          overflow: "visible",
         }}
       >
         <div
           style={{
             height: "100%",
             width: `${w}%`,
-            background: `linear-gradient(90deg,${color},${color}80)`,
+            background: `linear-gradient(90deg, ${color}, ${color}90)`,
             borderRadius: 99,
-            transition: "width 1.3s cubic-bezier(.4,0,.2,1)",
-            boxShadow: `0 0 12px ${color}80`,
+            transition: "width 1.3s cubic-bezier(0.22, 1, 0.36, 1)",
+            boxShadow: `0 0 16px ${color}70`,
             position: "relative",
           }}
         >
           <div
             style={{
               position: "absolute",
-              right: -3,
+              right: -4,
               top: "50%",
               transform: "translateY(-50%)",
-              width: 7,
-              height: 7,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
               background: color,
-              boxShadow: `0 0 14px ${color}`,
+              boxShadow: `0 0 16px ${color}`,
             }}
           />
         </div>
