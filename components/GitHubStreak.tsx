@@ -48,7 +48,7 @@ const LANG_COLORS: Record<string, string> = {
   SCSS: "#c6538c",
 };
 
-const FALLBACK_COLORS = ["#00ffe0", "#ff2d78", "#a78bfa", "#f59e0b", "#38bdf8", "#4ade80"];
+const FALLBACK_COLORS = ["#2997ff", "#86868b", "#6e6e73", "#424245", "#1d1d1f", "#f5f5f7"];
 
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url, {
@@ -147,16 +147,14 @@ export function GitHubStreak() {
           transform: "translate(-50%,-50%)",
           width: 800,
           height: 400,
-          background: "radial-gradient(ellipse, #00ffe006 0%, transparent 70%)",
+          background: "none",
           pointerEvents: "none",
         }}
       />
 
       <div ref={ref} style={{ position: "relative" }}>
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 52 }}>
-          <div className="section-label" style={{ color: "var(--cyan)" }}>
-            {"// 004 — OPEN SOURCE"}
-          </div>
+          <div className="section-label">Open source</div>
           <div
             style={{
               display: "flex",
@@ -167,37 +165,18 @@ export function GitHubStreak() {
             }}
           >
             <h2 className="section-title">
-              GITHUB
+              GitHub
               <br />
-              <span className="outline">ACTIVITY</span>
+              <span className="outline">activity</span>
             </h2>
             <a
               href={`https://github.com/${GITHUB_USER}`}
               target="_blank"
               rel="noreferrer"
-              data-hover
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 10,
-                color: "var(--cyan)",
-                border: "1px solid #00ffe030",
-                padding: "8px 18px",
-                textDecoration: "none",
-                letterSpacing: "0.08em",
-                transition: "background 0.2s, box-shadow 0.2s",
-                display: "inline-block",
-                borderRadius: 2,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#00ffe012";
-                e.currentTarget.style.boxShadow = "0 0 20px #00ffe025";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.boxShadow = "none";
-              }}
+              className="btn-ghost"
+              style={{ padding: "8px 16px", fontSize: 13 }}
             >
-              @{GITHUB_USER} ↗
+              @{GITHUB_USER}
             </a>
           </div>
         </div>
@@ -208,7 +187,7 @@ export function GitHubStreak() {
         >
           {/* Profile + key metrics */}
           <SpotlightCard
-            accent="#00ffe0"
+            accent="var(--accent)"
             data-hover
             style={{
               background: "var(--bg-card)",
@@ -226,7 +205,7 @@ export function GitHubStreak() {
                 left: 0,
                 right: 0,
                 height: 2,
-                background: "linear-gradient(90deg, #00ffe0, transparent)",
+                background: "var(--hairline)",
                 borderRadius: "12px 12px 0 0",
                 zIndex: 1,
               }}
@@ -243,7 +222,7 @@ export function GitHubStreak() {
                   textAlign: "center",
                 }}
               >
-                LOADING GITHUB DATA…
+                Loading GitHub…
               </div>
             )}
 
@@ -252,7 +231,7 @@ export function GitHubStreak() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 12,
-                  color: "var(--magenta)",
+                  color: "var(--muted)",
                   letterSpacing: "0.08em",
                   padding: "24px 0",
                   textAlign: "center",
@@ -289,21 +268,21 @@ export function GitHubStreak() {
                     height={56}
                     style={{
                       borderRadius: "50%",
-                      border: "2px solid #00ffe040",
-                      boxShadow: "0 0 20px #00ffe025",
+                      border: "1px solid var(--hairline)",
+                      boxShadow: "none",
                     }}
                   />
                   <div>
                     <div
                       style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: 28,
-                        letterSpacing: "0.04em",
-                        color: "#f1f5f9",
+                        fontSize: 24,
+                        fontWeight: 600,
+                        letterSpacing: "-0.03em",
+                        color: "var(--fg)",
                         lineHeight: 1,
                       }}
                     >
-                      {(user.name ?? GITHUB_USER).toUpperCase()}
+                      {(user.name ?? GITHUB_USER)}
                     </div>
                     <div
                       style={{
@@ -314,7 +293,7 @@ export function GitHubStreak() {
                         marginTop: 6,
                       }}
                     >
-                      @{GITHUB_USER} · CODING SINCE{" "}
+                      @{GITHUB_USER} · since{" "}
                       {new Date(user.created_at).getFullYear()}
                     </div>
                   </div>
@@ -329,34 +308,34 @@ export function GitHubStreak() {
                 >
                   {[
                     {
-                      label: "PUBLIC REPOS",
+                      label: "Repos",
                       value: formatNum(user.public_repos),
-                      color: "#00ffe0",
+                      color: "var(--fg)",
                     },
                     {
-                      label: "OWNED REPOS",
+                      label: "Owned",
                       value: formatNum(stats.ownCount),
-                      color: "#a78bfa",
+                      color: "var(--fg)",
                     },
                     {
-                      label: "STARS EARNED",
+                      label: "Stars",
                       value: formatNum(stats.stars),
-                      color: "#f59e0b",
+                      color: "var(--fg)",
                     },
                     {
-                      label: "FORKS",
+                      label: "Forks",
                       value: formatNum(stats.forks),
-                      color: "#ff2d78",
+                      color: "var(--fg)",
                     },
                     {
-                      label: "FOLLOWERS",
+                      label: "Followers",
                       value: formatNum(user.followers),
-                      color: "#00ffe0",
+                      color: "var(--fg)",
                     },
                     {
-                      label: "YEARS",
+                      label: "Years",
                       value: `${stats.years}+`,
-                      color: "#a78bfa",
+                      color: "var(--fg)",
                     },
                   ].map((m) => (
                     <div
@@ -407,7 +386,7 @@ export function GitHubStreak() {
             }}
           >
             <SpotlightCard
-              accent="#a78bfa"
+              accent="var(--accent)"
               style={{
                 background: "var(--bg-card)",
                 border: "1px solid var(--border)",
@@ -424,7 +403,7 @@ export function GitHubStreak() {
                   left: 0,
                   right: 0,
                   height: 2,
-                  background: "linear-gradient(90deg, #a78bfa, transparent)",
+                background: "var(--hairline)",
                   borderRadius: "12px 12px 0 0",
                   zIndex: 1,
                 }}
@@ -433,7 +412,7 @@ export function GitHubStreak() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 9,
-                  color: "var(--violet)",
+                  color: "var(--muted)",
                   letterSpacing: "0.18em",
                   marginBottom: 22,
                   opacity: 0.85,
@@ -441,7 +420,7 @@ export function GitHubStreak() {
                   zIndex: 1,
                 }}
               >
-                💻 TOP LANGUAGES
+                Languages
               </div>
               <div style={{ position: "relative", zIndex: 1 }}>
                 {stats.languages.length === 0 && !loading && (
@@ -521,7 +500,7 @@ export function GitHubStreak() {
             </SpotlightCard>
 
             <SpotlightCard
-              accent="#ff2d78"
+              accent="var(--accent)"
               style={{
                 background: "var(--bg-card)",
                 border: "1px solid var(--border)",
@@ -538,7 +517,7 @@ export function GitHubStreak() {
                   left: 0,
                   right: 0,
                   height: 2,
-                  background: "linear-gradient(90deg, #ff2d78, transparent)",
+                background: "var(--hairline)",
                   borderRadius: "12px 12px 0 0",
                   zIndex: 1,
                 }}
@@ -547,7 +526,7 @@ export function GitHubStreak() {
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 9,
-                  color: "var(--magenta)",
+                  color: "var(--muted)",
                   letterSpacing: "0.18em",
                   marginBottom: 22,
                   opacity: 0.85,
@@ -555,7 +534,7 @@ export function GitHubStreak() {
                   zIndex: 1,
                 }}
               >
-                ⭐ RECENT / TOP REPOS
+                Repositories
               </div>
               <div style={{ position: "relative", zIndex: 1 }}>
                 {stats.topRepos.map((repo) => (
@@ -635,7 +614,7 @@ export function GitHubStreak() {
 
           {/* Contribution graph — ghchart is a simple image CDN, still works */}
           <SpotlightCard
-            accent="#00ffe0"
+            accent="var(--accent)"
             style={{
               background: "var(--bg-card)",
               border: "1px solid var(--border)",
@@ -652,7 +631,7 @@ export function GitHubStreak() {
                 left: 0,
                 right: 0,
                 height: 2,
-                background: "linear-gradient(90deg, #00ffe0, transparent)",
+                background: "var(--hairline)",
                 borderRadius: "12px 12px 0 0",
                 zIndex: 1,
               }}
@@ -669,11 +648,11 @@ export function GitHubStreak() {
                 zIndex: 1,
               }}
             >
-              🗓️ CONTRIBUTION GRAPH
+              Contributions
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`https://ghchart.rshah.org/00ffe0/${GITHUB_USER}`}
+              src={`https://ghchart.rshah.org/2997ff/${GITHUB_USER}`}
               alt={`${GITHUB_USER} contribution graph`}
               loading="lazy"
               style={{

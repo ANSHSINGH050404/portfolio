@@ -1,9 +1,6 @@
 "use client";
 
-/**
- * Lightweight atmosphere only.
- * Full-viewport SVG feTurbulence was a major scroll jank source — removed.
- */
+/** Quiet vignette. No color orbs. */
 export function BackgroundEffect() {
   return (
     <div
@@ -13,13 +10,8 @@ export function BackgroundEffect() {
         inset: 0,
         zIndex: 1,
         pointerEvents: "none",
-        // soft top vignette + faint grain via CSS (no SVG filter)
-        background: `
-          radial-gradient(ellipse 80% 50% at 50% 0%, transparent 30%, #030306 100%),
-          radial-gradient(circle at 20% 80%, #00ffe005 0%, transparent 40%),
-          radial-gradient(circle at 80% 20%, #ff2d7805 0%, transparent 35%)
-        `,
-        opacity: 0.9,
+        background:
+          "radial-gradient(ellipse 90% 55% at 50% -10%, rgba(41,151,255,0.07) 0%, transparent 55%)",
         contain: "strict",
       }}
     />

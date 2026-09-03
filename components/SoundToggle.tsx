@@ -26,7 +26,7 @@ export function SoundToggle() {
         </svg>
       )}
       <span className="hide-mob" style={{ fontSize: 10, letterSpacing: "0.08em" }}>
-        {muted ? "MUTED" : "SOUND"}
+        {muted ? "Off" : "Sound"}
       </span>
     </button>
   );

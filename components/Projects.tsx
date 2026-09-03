@@ -85,7 +85,7 @@ function CaseStudyCard({
         transitionDelay: delay,
         background: "var(--bg-card)",
         border: "1px solid var(--border)",
-        borderRadius: 12,
+        borderRadius: "var(--radius)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -96,9 +96,8 @@ function CaseStudyCard({
           top: 0,
           left: 0,
           right: 0,
-          height: 2,
-          background: `linear-gradient(90deg, ${project.accent}, transparent)`,
-          borderRadius: "12px 12px 0 0",
+          height: 1,
+          background: "var(--hairline)",
           zIndex: 2,
         }}
       />
@@ -119,7 +118,7 @@ function CaseStudyCard({
                   background: `${project.accent}10`,
                 }}
               >
-                FEATURED
+                Featured
               </span>
             )}
             <span className="case-year">
@@ -127,7 +126,7 @@ function CaseStudyCard({
             </span>
           </div>
 
-          <h3 className="case-title" style={{ fontSize: featured ? "clamp(36px, 5vw, 56px)" : 32 }}>
+          <h3 className="case-title" style={{ fontSize: featured ? "clamp(28px, 4vw, 44px)" : 26 }}>
             {project.title}
           </h3>
           <div className="case-sub">{project.subtitle}</div>
@@ -150,13 +149,13 @@ function CaseStudyCard({
               <span
                 key={s}
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 9,
-                  color: project.accent,
-                  background: `${project.accent}10`,
-                  border: `1px solid ${project.accent}28`,
-                  padding: "3px 10px",
-                  letterSpacing: "0.06em",
+                  fontSize: 12,
+                  color: "var(--muted)",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid var(--hairline)",
+                  padding: "4px 10px",
+                  letterSpacing: "-0.01em",
+                  borderRadius: 999,
                 }}
               >
                 {s}
@@ -173,26 +172,26 @@ function CaseStudyCard({
             aria-expanded={expanded}
             style={{ color: project.accent, borderColor: `${project.accent}35` }}
           >
-            {expanded ? "HIDE CASE STUDY −" : "VIEW CASE STUDY +"}
+            {expanded ? "Hide case study" : "View case study"}
           </button>
 
           {expanded && (
             <div className="case-study-body">
               <div className="case-block">
                 <div className="case-block-label" style={{ color: project.accent }}>
-                  01 · PROBLEM
+                  Problem
                 </div>
                 <p>{project.problem}</p>
               </div>
               <div className="case-block">
                 <div className="case-block-label" style={{ color: project.accent }}>
-                  02 · APPROACH
+                  Approach
                 </div>
                 <p>{project.approach}</p>
               </div>
               <div className="case-block">
                 <div className="case-block-label" style={{ color: project.accent }}>
-                  03 · RESULT
+                  Result
                 </div>
                 <p>{project.result}</p>
               </div>
@@ -212,11 +211,11 @@ function CaseStudyCard({
                 width: 28,
                 height: 1,
                 background: project.accent,
-                boxShadow: `0 0 8px ${project.accent}`,
+                boxShadow: "none",
                 display: "inline-block",
               }}
             />
-            VIEW LIVE PROJECT ↗
+            View live
           </a>
         </div>
       </div>
@@ -246,26 +245,24 @@ export function Projects({ visible, projRef }: ProjectsProps) {
           }}
         >
           <div>
-            <div className="section-label" style={{ color: "var(--cyan)" }}>
-              {"// 001 — SELECTED WORK"}
-            </div>
+            <div className="section-label">Selected work</div>
             <h2 className="section-title">
-              FEATURED
+              Featured
               <br />
-              <span className="outline">PROJECTS</span>
+              <span className="outline">projects</span>
             </h2>
           </div>
           <p
             style={{
               maxWidth: 320,
-              color: "var(--dim)",
-              fontSize: 14,
-              lineHeight: 1.85,
-              fontWeight: 300,
+              color: "var(--muted)",
+              fontSize: 17,
+              lineHeight: 1.47,
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
             }}
           >
-            Case studies from zero → production. Problem, approach, result —
-            and a live link for each.
+        Case studies from zero to production. Problem, approach, result — and a live link.
           </p>
         </div>
       </div>

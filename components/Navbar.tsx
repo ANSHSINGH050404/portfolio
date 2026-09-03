@@ -4,7 +4,6 @@ import { SITE } from "../constants";
 import { SoundToggle } from "./SoundToggle";
 
 const LINKS = [
-  { label: "About", href: "#about" },
   { label: "Work", href: "#projects" },
   { label: "Skills", href: "#skills" },
   { label: "Path", href: "#experience" },
@@ -26,7 +25,6 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
     const nav = navRef.current;
     if (!nav) return;
 
-    // Class toggle only — no React re-render on scroll
     let scrolled = false;
     const onScroll = () => {
       const next = window.scrollY > 40;
@@ -40,7 +38,7 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
   }, []);
 
   useEffect(() => {
-    const ids = LINKS.map((l) => l.href.slice(1));
+    const ids = ["about", ...LINKS.map((l) => l.href.slice(1))];
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -66,15 +64,6 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
     };
   }, [menuOpen]);
 
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = SITE.resumePath;
-    link.download = SITE.resumeFileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <>
       <nav ref={navRef} className="site-nav">
@@ -82,14 +71,14 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
           href="#about"
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: 20,
-            letterSpacing: "0.14em",
-            color: "#fff",
+            fontSize: 17,
+            fontWeight: 600,
+            letterSpacing: "-0.03em",
+            color: "var(--fg)",
             textDecoration: "none",
           }}
-          data-hover
         >
-          ANSH<span style={{ color: "var(--cyan)" }}>.</span>DEV
+          Ansh
         </a>
 
         <div style={{ display: "flex", gap: 28 }} className="hide-mob">
@@ -104,83 +93,23 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
           ))}
         </div>
 
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <SoundToggle />
           <button
             type="button"
             onClick={onOpenCommand}
             className="hide-mob cmd-trigger"
-            data-hover
             aria-label="Open command palette"
             title="Command palette (Ctrl/⌘ K)"
           >
-            <span>⌘K</span>
-          </button>
-          <button
-            onClick={handleDownload}
-            className="hide-mob"
-            data-hover
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 10,
-              color: "var(--amber)",
-              border: "1px solid #f59e0b35",
-              padding: "7px 14px",
-              background: "transparent",
-              letterSpacing: "0.06em",
-              cursor: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              transition: "background 0.2s, box-shadow 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#f59e0b12";
-              e.currentTarget.style.boxShadow = "0 0 20px #f59e0b25";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          >
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            RESUME
+            ⌘K
           </button>
           <a
             href={`mailto:${SITE.email}`}
-            className="hide-mob"
-            data-hover
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--cyan)",
-              border: "1px solid #00ffe035",
-              padding: "8px 18px",
-              textDecoration: "none",
-              letterSpacing: "0.06em",
-              transition: "background 0.2s, box-shadow 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#00ffe012";
-              e.currentTarget.style.boxShadow = "0 0 24px #00ffe025";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.boxShadow = "none";
-            }}
+            className="hide-mob btn-primary"
+            style={{ padding: "7px 16px", fontSize: 13 }}
           >
-            HIRE ME →
+            Get in touch
           </a>
 
           <button
@@ -204,10 +133,10 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
             <span
               style={{
                 display: "block",
-                width: 22,
+                width: 18,
                 height: 1.5,
-                background: menuOpen ? "var(--magenta)" : "var(--cyan)",
-                transition: "transform 0.3s, background 0.3s",
+                background: "var(--fg)",
+                transition: "transform 0.3s var(--ease)",
                 transform: menuOpen
                   ? "translateY(7.5px) rotate(45deg)"
                   : "none",
@@ -216,9 +145,9 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
             <span
               style={{
                 display: "block",
-                width: 22,
+                width: 18,
                 height: 1.5,
-                background: "var(--cyan)",
+                background: "var(--fg)",
                 transition: "opacity 0.3s",
                 opacity: menuOpen ? 0 : 1,
               }}
@@ -226,10 +155,10 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
             <span
               style={{
                 display: "block",
-                width: 22,
+                width: 18,
                 height: 1.5,
-                background: menuOpen ? "var(--magenta)" : "var(--cyan)",
-                transition: "transform 0.3s, background 0.3s",
+                background: "var(--fg)",
+                transition: "transform 0.3s var(--ease)",
                 transform: menuOpen
                   ? "translateY(-7.5px) rotate(-45deg)"
                   : "none",
@@ -247,13 +176,14 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
             onClick={() => setMenuOpen(false)}
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: 42,
-              letterSpacing: "0.08em",
-              color: active === l.href.slice(1) ? "var(--cyan)" : "#fff",
+              fontSize: 36,
+              fontWeight: 600,
+              letterSpacing: "-0.03em",
+              color: active === l.href.slice(1) ? "var(--accent)" : "var(--fg)",
               textDecoration: "none",
               opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? "translateY(0)" : "translateY(20px)",
-              transition: `opacity 0.4s ${0.05 * i}s, transform 0.4s ${0.05 * i}s, color 0.2s`,
+              transform: menuOpen ? "translateY(0)" : "translateY(12px)",
+              transition: `opacity 0.4s ${0.04 * i}s, transform 0.4s ${0.04 * i}s, color 0.2s`,
             }}
           >
             {l.label}
@@ -263,9 +193,9 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
           href={`mailto:${SITE.email}`}
           onClick={() => setMenuOpen(false)}
           className="btn-primary"
-          style={{ marginTop: 20, cursor: "pointer" }}
+          style={{ marginTop: 20 }}
         >
-          HIRE ME →
+          Get in touch
         </a>
       </div>
     </>

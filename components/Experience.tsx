@@ -10,13 +10,11 @@ export function Experience() {
       <div className="section-line" />
       <div ref={ref}>
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
-          <div className="section-label" style={{ color: "var(--violet)" }}>
-            {"// 003 — JOURNEY"}
-          </div>
+          <div className="section-label">Journey</div>
           <h2 className="section-title">
-            EXPERIENCE
+            Experience
             <br />
-            <span className="outline">& PATH</span>
+            <span className="outline">and path</span>
           </h2>
         </div>
 
@@ -32,16 +30,12 @@ export function Experience() {
                 transitionDelay: `${0.2 + i * 0.1}s`,
               }}
             >
-              <div className="timeline-dot" style={{
-                background: i === 0 ? "var(--cyan)" : i === 1 ? "var(--magenta)" : "var(--violet)",
-                boxShadow: `0 0 12px ${i === 0 ? "var(--cyan)" : i === 1 ? "var(--magenta)" : "var(--violet)"}`,
-              }} />
+              <div className="timeline-dot" />
               <div
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  color: "var(--muted)",
-                  letterSpacing: "0.14em",
+                  fontSize: 13,
+                  color: "var(--dim)",
+                  letterSpacing: "-0.01em",
                   marginBottom: 8,
                 }}
               >
@@ -50,9 +44,10 @@ export function Experience() {
               <h3
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: 28,
-                  letterSpacing: "0.04em",
-                  color: "#f1f5f9",
+                  fontSize: 22,
+                  fontWeight: 600,
+                  letterSpacing: "-0.03em",
+                  color: "var(--fg)",
                   lineHeight: 1.1,
                   marginBottom: 4,
                 }}
@@ -61,10 +56,9 @@ export function Experience() {
               </h3>
               <div
                 style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 12,
-                  color: "var(--cyan)",
-                  letterSpacing: "0.06em",
+                  fontSize: 14,
+                  color: "var(--muted)",
+                  letterSpacing: "-0.01em",
                   marginBottom: 14,
                   opacity: 0.85,
                 }}
@@ -73,10 +67,10 @@ export function Experience() {
               </div>
               <p
                 style={{
-                  fontSize: 15,
-                  color: "var(--dim)",
-                  lineHeight: 1.85,
-                  fontWeight: 300,
+                  fontSize: 16,
+                  color: "var(--muted)",
+                  lineHeight: 1.47,
+                  fontWeight: 400,
                   marginBottom: 16,
                   maxWidth: 560,
                 }}

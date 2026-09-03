@@ -14,19 +14,7 @@ export function ResumeSection() {
         zIndex: 10,
       }}
     >
-      <div ref={resumeRef}>
-        <div
-          className={`fi ${resumeVisible ? "in" : ""}`}
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 10,
-            color: "var(--amber)",
-            letterSpacing: "0.18em",
-            marginBottom: 24,
-          }}
-        >
-          {"// RESUME"}
-        </div>
+      <div ref={resumeRef} className={`fi ${resumeVisible ? "in" : ""}`}>
         <ResumeDownload />
       </div>
     </section>

@@ -16,7 +16,6 @@ import { Footer } from "../components/Footer";
 import { Loader } from "../components/Loader";
 import { ScrollProgress } from "../components/ScrollProgress";
 import { ToastProvider } from "../components/Toast";
-import { MagneticCursor } from "../components/MagneticCursor";
 import {
   CommandPalette,
   useCommandPaletteHotkey,
@@ -24,11 +23,6 @@ import {
 import { Terminal, useTerminalHotkey } from "../components/Terminal";
 import { SoundProvider } from "../hooks/useSound";
 
-const ParticleCanvas = dynamic(
-  () =>
-    import("../components/ParticleCanvas").then((mod) => mod.ParticleCanvas),
-  { ssr: false },
-);
 const BackgroundEffect = dynamic(
   () =>
     import("../components/BackgroundEffect").then(
@@ -64,10 +58,8 @@ function PortfolioInner() {
     <>
       {!booted && <Loader onDone={onLoaderDone} />}
 
-      <div className="custom-cursor-root" style={{ cursor: "none" }}>
+      <div>
         <ScrollProgress />
-        <ParticleCanvas />
-        <MagneticCursor />
         <BackgroundEffect />
 
         <Navbar onOpenCommand={() => setCmdOpen(true)} />

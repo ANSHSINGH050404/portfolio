@@ -23,17 +23,15 @@ export function ResumeDownload() {
     <div
       ref={ref}
       className={`fi ${visible ? "in" : ""}`}
-      style={{ transitionDelay: "0.15s" }}
+      style={{ transitionDelay: "0.1s" }}
     >
       <SpotlightCard
-        accent="#f59e0b"
-        data-hover
+        accent="var(--accent)"
         style={{
           background: "var(--bg-card)",
           border: "1px solid var(--border)",
-          borderRadius: 12,
+          borderRadius: "var(--radius)",
           padding: "36px 40px",
-          position: "relative",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -41,146 +39,47 @@ export function ResumeDownload() {
           gap: 24,
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 2,
-            background: "linear-gradient(90deg, #f59e0b, transparent)",
-            borderRadius: "12px 12px 0 0",
-            zIndex: 1,
-          }}
-        />
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 9,
-              color: "var(--amber)",
-              letterSpacing: "0.18em",
-              marginBottom: 12,
-              opacity: 0.85,
-            }}
-          >
-            {"// CURRICULUM VITAE"}
+        <div>
+          <div className="section-label" style={{ marginBottom: 10 }}>
+            Resume
           </div>
           <h3
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 32,
-              color: "#f1f5f9",
-              letterSpacing: "0.04em",
+              fontSize: 28,
+              fontWeight: 600,
+              color: "var(--fg)",
+              letterSpacing: "-0.03em",
               marginBottom: 6,
             }}
           >
-            {SITE.name.toUpperCase()}
+            {SITE.name}
           </h3>
           <p
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
+              fontSize: 15,
               color: "var(--muted)",
-              letterSpacing: "0.06em",
+              letterSpacing: "-0.01em",
             }}
           >
-            Full-Stack Developer & Agentic AI Engineer
+            Full-stack & agentic AI
           </p>
         </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            flexWrap: "wrap",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           <a
             href={SITE.socials.github}
             target="_blank"
             rel="noreferrer"
-            data-hover
             className="btn-ghost"
-            style={{ padding: "12px 24px", fontSize: 11 }}
+            style={{ padding: "11px 20px", fontSize: 14 }}
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" y1="14" x2="21" y2="3" />
-            </svg>
-            VIEW GITHUB
+            GitHub
           </a>
           <button
+            type="button"
             onClick={handleDownload}
-            data-hover
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "#050508",
-              background: "var(--amber)",
-              border: "none",
-              padding: "12px 28px",
-              letterSpacing: "0.06em",
-              cursor: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              fontWeight: 700,
-              transition: "box-shadow 0.25s, transform 0.15s",
-              boxShadow: downloading ? "0 0 40px #f59e0b80" : "none",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 40px #f59e0b60";
-              e.currentTarget.style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              if (!downloading) {
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "none";
-              }
-            }}
+            className="btn-primary"
           >
-            {downloading ? (
-              <>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  style={{ animation: "spin 1s linear infinite" }}
-                >
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                </svg>
-                DOWNLOADING...
-              </>
-            ) : (
-              <>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                DOWNLOAD CV
-              </>
-            )}
+            {downloading ? "Downloading…" : "Download CV"}
           </button>
         </div>
       </SpotlightCard>

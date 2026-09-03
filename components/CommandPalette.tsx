@@ -44,13 +44,13 @@ export function CommandPalette({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    toast("RESUME DOWNLOAD STARTED");
+      toast("Resume download started");
   }, [toast]);
 
   const copyEmail = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(SITE.email);
-      toast("EMAIL COPIED ✓");
+      toast("Email copied");
     } catch {
       toast(SITE.email);
     }

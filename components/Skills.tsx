@@ -12,7 +12,7 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
     <section
       id="skills"
       className="section-pad"
-      style={{ background: "#020205" }}
+      style={{ background: "var(--bg)" }}
     >
       <div className="section-line" />
       <div
@@ -23,19 +23,17 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
           transform: "translate(-50%,-50%)",
           width: 700,
           height: 400,
-          background: "radial-gradient(ellipse, #a78bfa08 0%, transparent 70%)",
+          background: "none",
           pointerEvents: "none",
         }}
       />
       <div ref={skillsRef} style={{ position: "relative" }}>
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
-          <div className="section-label" style={{ color: "var(--magenta)" }}>
-            {"// 002 — CAPABILITIES"}
-          </div>
+          <div className="section-label">Capabilities</div>
           <h2 className="section-title">
-            SKILLS &
+            Skills
             <br />
-            <span className="outline">EXPERTISE</span>
+            <span className="outline">and tools</span>
           </h2>
         </div>
 
@@ -67,14 +65,13 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
           >
             <div
               style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 9,
+                fontSize: 13,
                 color: "var(--dim)",
-                letterSpacing: "0.18em",
+                letterSpacing: "-0.01em",
                 marginBottom: 18,
               }}
             >
-              ALSO WORK WITH
+              Also work with
             </div>
             <div
               style={{
@@ -93,19 +90,18 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
 
             <div
               style={{
-                borderLeft: "1px solid #00ffe025",
+                borderLeft: "1px solid var(--hairline)",
                 paddingLeft: 24,
-                background: "linear-gradient(90deg, #00ffe005, transparent)",
                 paddingTop: 8,
                 paddingBottom: 8,
               }}
             >
               <p
                 style={{
-                  fontSize: 15,
-                  color: "var(--dim)",
-                  lineHeight: 1.95,
-                  fontWeight: 300,
+                  fontSize: 16,
+                  color: "var(--muted)",
+                  lineHeight: 1.5,
+                  fontWeight: 400,
                   marginBottom: 28,
                 }}
               >
@@ -118,9 +114,9 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
               </p>
               <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
                 {[
-                  ["GitHub", "#00ffe0", SITE.socials.github],
-                  ["Email", "#ff2d78", SITE.socials.email],
-                  ["LinkedIn", "#a78bfa", SITE.socials.linkedin],
+                  ["GitHub", "var(--accent)", SITE.socials.github],
+                  ["Email", "var(--accent)", SITE.socials.email],
+                  ["LinkedIn", "var(--accent)", SITE.socials.linkedin],
                 ].map(([name, c, href]) => (
                   <a
                     key={name}

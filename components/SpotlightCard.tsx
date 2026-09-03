@@ -25,7 +25,7 @@ export function SpotlightCard({
   children,
   className = "",
   style,
-  accent = "#00ffe0",
+  accent = "var(--accent)",
   as = "div",
   href,
   target,

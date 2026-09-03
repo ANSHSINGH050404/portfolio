@@ -50,7 +50,7 @@ export const PROJECTS: Project[] = [
     subtitle: "AI Browser Workflow Builder",
     desc: "Visual builder for AI browser automations — open pages, act, extract, and agent through multi-step flows with live runs and session replay. Describe the browser. Ship the workflow.",
     stack: ["Next.js", "TypeScript", "AI Agents", "Browserbase"],
-    accent: "#00ffe0",
+    accent: "#2997ff",
     year: "2026",
     link: "https://browseflow-wine.vercel.app/",
     featured: true,
@@ -69,7 +69,7 @@ export const PROJECTS: Project[] = [
     ],
     preview: {
       label: "Flow · Browser · Agents",
-      gradient: "linear-gradient(135deg, #002a28 0%, #061018 40%, #0a1420 100%)",
+      gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
     },
   },
   {
@@ -78,7 +78,7 @@ export const PROJECTS: Project[] = [
     subtitle: "AI-Powered Career Platform",
     desc: "Career guidance platform with Google Gemini AI for automated Career Path Builder and Resume Analyzer. Serverless backend with Drizzle ORM and Neon PostgreSQL.",
     stack: ["Next.js 15", "TypeScript", "Gemini AI", "PostgreSQL"],
-    accent: "#f59e0b",
+    accent: "#2997ff",
     year: "2024",
     link: "https://pathforge-rho.vercel.app/",
     featured: false,
@@ -97,7 +97,7 @@ export const PROJECTS: Project[] = [
     ],
     preview: {
       label: "Career Path · Resume AI",
-      gradient: "linear-gradient(135deg, #3d2a00 0%, #0c0a06 50%, #1a1408 100%)",
+      gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
     },
   },
   {
@@ -106,7 +106,7 @@ export const PROJECTS: Project[] = [
     subtitle: "Agentic Interview System",
     desc: "Agentic interviewer with adaptive questioning, multi-turn reasoning, WebRTC audio/video, and analytics dashboard for candidate performance trends.",
     stack: ["Node.js", "TypeScript", "WebSockets", "Supabase"],
-    accent: "#ff2d78",
+    accent: "#2997ff",
     year: "2024",
     link: "https://voicevue-ai.vercel.app",
     featured: false,
@@ -125,7 +125,7 @@ export const PROJECTS: Project[] = [
     ],
     preview: {
       label: "Voice · Video · Agents",
-      gradient: "linear-gradient(135deg, #3d0a1c 0%, #0c0610 50%, #1a0820 100%)",
+      gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
     },
   },
   {
@@ -134,7 +134,7 @@ export const PROJECTS: Project[] = [
     subtitle: "LLM Documentation Search",
     desc: "Intelligent documentation search using RAG architecture. Indexed 10,000+ pages with hybrid vector + BM25 search, improving retrieval accuracy by 35%.",
     stack: ["Python", "FastAPI", "LangChain", "Pinecone"],
-    accent: "#a78bfa",
+    accent: "#2997ff",
     year: "2023",
     link: "https://omni-search-mcp-frontend.vercel.app/",
     featured: false,
@@ -153,18 +153,18 @@ export const PROJECTS: Project[] = [
     ],
     preview: {
       label: "Vector · BM25 · RAG",
-      gradient: "linear-gradient(135deg, #1a0f3d 0%, #08060f 50%, #120a28 100%)",
+      gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
     },
   },
 ];
 
 export const SKILLS = [
-  { name: "React / Next.js", pct: 94, color: "#00ffe0", icon: "⚛️" },
-  { name: "Node.js / Express", pct: 90, color: "#ff2d78", icon: "🟢" },
-  { name: "TypeScript / Python", pct: 88, color: "#a78bfa", icon: "◆" },
-  { name: "Agentic AI / LLMs", pct: 92, color: "#f59e0b", icon: "✦" },
-  { name: "PostgreSQL / Redis", pct: 83, color: "#00ffe0", icon: "⬡" },
-  { name: "Docker / AWS", pct: 76, color: "#ff2d78", icon: "☁" },
+  { name: "React / Next.js", pct: 94, color: "#2997ff", icon: "" },
+  { name: "Node.js / Express", pct: 90, color: "#2997ff", icon: "" },
+  { name: "TypeScript / Python", pct: 88, color: "#2997ff", icon: "" },
+  { name: "Agentic AI / LLMs", pct: 92, color: "#2997ff", icon: "" },
+  { name: "PostgreSQL / Redis", pct: 83, color: "#2997ff", icon: "" },
+  { name: "Docker / AWS", pct: 76, color: "#2997ff", icon: "" },
 ];
 
 export const STACK_PILLS = [
@@ -223,34 +223,34 @@ export const BENTO = [
     title: "Agentic AI",
     desc: "Multi-step LLM agents, tool calling, memory, and eval loops that ship.",
     span: "lg",
-    accent: "#00ffe0",
+    accent: "#2997ff",
   },
   {
     id: "fullstack",
     title: "Full-Stack",
     desc: "Next.js · Node · Postgres · Redis from pixel to prod.",
     span: "md",
-    accent: "#ff2d78",
+    accent: "#2997ff",
   },
   {
     id: "speed",
     title: "Ship Fast",
     desc: "From idea → MVP → users in weeks, not quarters.",
     span: "sm",
-    accent: "#f59e0b",
+    accent: "#2997ff",
   },
   {
     id: "systems",
     title: "Systems Thinking",
     desc: "Auth microservices, caching layers, and APIs that scale.",
     span: "md",
-    accent: "#a78bfa",
+    accent: "#2997ff",
   },
   {
     id: "realtime",
     title: "Real-time",
     desc: "WebSockets, WebRTC, live dashboards.",
     span: "sm",
-    accent: "#00ffe0",
+    accent: "#2997ff",
   },
 ];

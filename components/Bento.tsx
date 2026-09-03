@@ -17,14 +17,9 @@ export function Bento() {
           className={`fi ${visible ? "in" : ""}`}
           style={{ marginBottom: 40 }}
         >
-          <div className="section-label" style={{ color: "var(--cyan)" }}>
-            {"// WHAT I DO"}
-          </div>
-          <h2
-            className="section-title"
-            style={{ fontSize: "clamp(36px, 5vw, 56px)" }}
-          >
-            BUILT FOR <span className="outline">IMPACT</span>
+          <div className="section-label">What I do</div>
+          <h2 className="section-title">
+            Built for <span className="outline">impact</span>
           </h2>
         </div>
 
@@ -32,14 +27,14 @@ export function Bento() {
           {BENTO.map((card, i) => (
             <SpotlightCard
               key={card.id}
-              accent={card.accent}
+              accent="var(--accent)"
               data-hover
               className={`bento-${card.span} fi ${visible ? "in" : ""}`}
               style={{
                 transitionDelay: `${0.1 + i * 0.08}s`,
                 background: "var(--bg-card)",
                 border: "1px solid var(--border)",
-                borderRadius: 12,
+                borderRadius: "var(--radius)",
                 padding: card.span === "lg" ? "36px 32px" : "28px 24px",
                 minHeight: card.span === "lg" ? 220 : 140,
                 display: "flex",
@@ -56,17 +51,18 @@ export function Bento() {
                   width: 8,
                   height: 8,
                   borderRadius: "50%",
-                  background: card.accent,
-                  boxShadow: `0 0 14px ${card.accent}`,
-                  opacity: 0.7,
+                  background: "var(--accent)",
+                  boxShadow: "none",
+                  opacity: 0.85,
                 }}
               />
               <div
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: card.span === "lg" ? 36 : 24,
-                  letterSpacing: "0.04em",
-                  color: "#f1f5f9",
+                  fontWeight: 600,
+                  letterSpacing: "-0.03em",
+                  color: "var(--fg)",
                   marginBottom: 10,
                   position: "relative",
                   zIndex: 1,
@@ -77,9 +73,9 @@ export function Bento() {
               <p
                 style={{
                   fontSize: 14,
-                  color: "var(--dim)",
-                  lineHeight: 1.7,
-                  fontWeight: 300,
+                  color: "var(--muted)",
+                  lineHeight: 1.47,
+                  fontWeight: 400,
                   maxWidth: card.span === "lg" ? 360 : "none",
                   position: "relative",
                   zIndex: 1,
