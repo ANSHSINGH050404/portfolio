@@ -7,7 +7,7 @@ export const SITE = {
   description:
     "Final-year CS student building production AI products. Full-stack developer specializing in agentic systems, Next.js, and scalable backends.",
   email: "anshsinghapa@gmail.com",
-  location: "Bareilly, India",
+  location: "Noida, India",
   resumePath: "/Resume-feb@11.pdf",
   resumeFileName: "Ansh-Kumar-Singh-Resume.pdf",
   socials: {
@@ -108,7 +108,7 @@ export const PROJECTS: Project[] = [
     stack: ["Node.js", "TypeScript", "WebSockets", "Supabase"],
     accent: "#2997ff",
     year: "2024",
-    link: "https://voicevue-ai.vercel.app",
+    link: "https://voicevue-ai-git-feat-p0-sc-559b33-ansh-singhs-projects-a351dcb4.vercel.app",
     featured: false,
     metric: "Real-time · WebRTC",
     problem:
