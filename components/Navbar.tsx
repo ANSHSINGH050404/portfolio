@@ -86,7 +86,7 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
 
         <div className="nav-actions">
           <div className="nav-utilities hide-mob">
-            <TimeOnEarth />
+            <TimeOnEarth audible />
             <span className="nav-divider" aria-hidden="true" />
             <SoundToggle />
             <button

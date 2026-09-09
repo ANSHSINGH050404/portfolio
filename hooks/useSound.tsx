@@ -9,13 +9,18 @@ import {
   type ReactNode,
 } from "react";
 
+import { play, setEnabled } from "cuelume";
+
 const STORAGE_KEY = "ansh-portfolio-sound";
+const CLICK_VOLUME = 0.35;
+const TICK_VOLUME = 0.35;
 
 type SoundCtx = {
   muted: boolean;
   toggle: () => void;
   setMuted: (v: boolean) => void;
   playClick: () => void;
+  playTick: () => void;
 };
 
 const SoundContext = createContext<SoundCtx | null>(null);
@@ -56,6 +61,11 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  useEffect(() => {
+    if (!hydrated) return;
+    setEnabled(!muted);
+  }, [muted, hydrated]);
+
   const playClick = useCallback(() => {
     if (!hydrated) return;
     let isMuted = muted;
@@ -65,14 +75,24 @@ export function SoundProvider({ children }: { children: ReactNode }) {
       /* use state */
     }
     if (isMuted) return;
-    const audio = new Audio("/click1.wav");
-    audio.volume = 0.35;
-    audio.play().catch(() => {});
+    play("droplet", { volume: CLICK_VOLUME });
+  }, [muted, hydrated]);
+
+  const playTick = useCallback(() => {
+    if (!hydrated) return;
+    let isMuted = muted;
+    try {
+      isMuted = localStorage.getItem(STORAGE_KEY) === "1";
+    } catch {
+      /* use state */
+    }
+    if (isMuted) return;
+    play("tick", { volume: TICK_VOLUME });
   }, [muted, hydrated]);
 
   const value = useMemo(
-    () => ({ muted, toggle, setMuted, playClick }),
-    [muted, toggle, setMuted, playClick],
+    () => ({ muted, toggle, setMuted, playClick, playTick }),
+    [muted, toggle, setMuted, playClick, playTick],
   );
 
   return (
@@ -88,6 +108,7 @@ export function useSound() {
       toggle: () => {},
       setMuted: () => {},
       playClick: () => {},
+      playTick: () => {},
     };
   }
   return ctx;

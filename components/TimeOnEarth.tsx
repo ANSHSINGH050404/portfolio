@@ -7,6 +7,9 @@ import {
   getTimeOnEarth,
   type TimeOnEarthParts,
 } from "../lib/timeOnEarth";
+import { useSound } from "../hooks/useSound";
+
+let lastTickAt = 0;
 
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -22,12 +25,21 @@ function useReducedMotion() {
   return reduced;
 }
 
-export function TimeOnEarth() {
+export function TimeOnEarth({ audible = false }: { audible?: boolean }) {
   const reducedMotion = useReducedMotion();
   const [parts, setParts] = useState<TimeOnEarthParts | null>(null);
+  const { playTick } = useSound();
 
   useEffect(() => {
-    const update = () => setParts(getTimeOnEarth());
+    const update = () => {
+      setParts(getTimeOnEarth());
+      if (!audible || reducedMotion) return;
+      if (typeof document !== "undefined" && document.hidden) return;
+      const now = Date.now();
+      if (now - lastTickAt < 900) return;
+      lastTickAt = now;
+      playTick();
+    };
 
     update();
     const interval = window.setInterval(
@@ -36,7 +48,7 @@ export function TimeOnEarth() {
     );
 
     return () => window.clearInterval(interval);
-  }, [reducedMotion]);
+  }, [reducedMotion, audible, playTick]);
 
   if (!parts) return null;
 
