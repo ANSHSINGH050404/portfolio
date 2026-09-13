@@ -10,6 +10,7 @@ import { Projects } from "../components/Projects";
 import { Skills } from "../components/Skills";
 import { Experience } from "../components/Experience";
 import { GitHubStreak } from "../components/GitHubStreak";
+import { PRWall } from "../components/PRWall";
 import { ResumeSection } from "../components/ResumeSection";
 import { Contact } from "../components/Contact";
 import { Footer } from "../components/Footer";
@@ -70,6 +71,7 @@ function PortfolioInner() {
         <Skills visible={skillsVisible} skillsRef={skillsRef} />
         <Experience />
         <GitHubStreak />
+        <PRWall />
         <ResumeSection />
         <Contact visible={ctaVisible} ctaRef={ctaRef} />
         <Footer />
