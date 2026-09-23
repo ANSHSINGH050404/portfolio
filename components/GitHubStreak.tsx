@@ -58,6 +58,19 @@ async function fetchJson<T>(url: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+/** Fetch every public repo (GitHub caps `per_page` at 100). */
+async function fetchAllRepos(user: string): Promise<GhRepo[]> {
+  const out: GhRepo[] = [];
+  for (let page = 1; page <= 10; page++) {
+    const batch = await fetchJson<GhRepo[]>(
+      `https://api.github.com/users/${user}/repos?per_page=100&page=${page}&sort=updated`,
+    );
+    out.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return out;
+}
+
 function formatNum(n: number): string {
   if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
   return String(n);
@@ -77,9 +90,7 @@ export function GitHubStreak() {
       try {
         const [u, r] = await Promise.all([
           fetchJson<GhUser>(`https://api.github.com/users/${GITHUB_USER}`),
-          fetchJson<GhRepo[]>(
-            `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
-          ),
+          fetchAllRepos(GITHUB_USER),
         ]);
         if (cancelled) return;
         setUser(u);
