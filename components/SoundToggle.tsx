@@ -9,8 +9,8 @@ export function SoundToggle() {
       type="button"
       onClick={toggle}
       data-hover
-      aria-label={muted ? "Unmute click sounds" : "Mute click sounds"}
-      title={muted ? "Sound off" : "Sound on"}
+      aria-label={muted ? "Enable sound effects" : "Disable sound effects"}
+      title={muted ? "Sound effects off" : "Sound effects on"}
       className="sound-toggle"
     >
       {muted ? (

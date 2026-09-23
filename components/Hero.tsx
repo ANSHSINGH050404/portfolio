@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Counter } from "./Counter";
+import { SlotTitle } from "./SlotTitle";
+import { HeadlineSmoke } from "./HeadlineSmoke";
 import { ROLES, SITE, STATS } from "../constants";
 
 interface HeroProps {
@@ -42,6 +44,10 @@ export function Hero({ loaded }: HeroProps) {
         zIndex: 10,
       }}
     >
+      <div className="pulse-layer" aria-hidden="true">
+        <span className="pulse-ring-el" />
+        <span className="pulse-ring-el pulse-ring-el-2" />
+      </div>
       <div
         className={`fi ${loaded ? "in" : ""}`}
         style={{ transitionDelay: "0.08s", marginBottom: 28 }}
@@ -68,26 +74,9 @@ export function Hero({ loaded }: HeroProps) {
         </span>
       </div>
 
-      <div style={{ marginBottom: 20 }}>
-        {["Ansh", "Singh"].map((word, wi) => (
-          <div key={word} className="hl">
-            <span
-              className={loaded ? "show" : ""}
-              style={{
-                transitionDelay: `${wi * 0.1 + 0.12}s`,
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-display)",
-                fontWeight: 600,
-                lineHeight: 1.02,
-                letterSpacing: "-0.045em",
-                display: "block",
-                color: wi === 1 ? "var(--muted)" : "var(--fg)",
-              }}
-            >
-              {word}
-            </span>
-          </div>
-        ))}
+      <div className="hero-title-wrap" style={{ position: "relative", marginBottom: 20 }}>
+        <SlotTitle loaded={loaded} />
+        <HeadlineSmoke enabled={loaded} />
       </div>
 
       <div

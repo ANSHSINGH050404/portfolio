@@ -12,7 +12,10 @@ export function Bento() {
       className="section-pad"
       style={{ paddingTop: 40, paddingBottom: 40 }}
     >
-      <div ref={ref}>
+      <div ref={ref} style={{ position: "relative" }}>
+        <div className="pulse-layer pulse-layer-bento" aria-hidden="true">
+          <span className="pulse-ring-el" />
+        </div>
         <div
           className={`fi ${visible ? "in" : ""}`}
           style={{ marginBottom: 40 }}

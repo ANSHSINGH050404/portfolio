@@ -1,6 +1,7 @@
 "use client";
 import { EXPERIENCE } from "../constants";
 import { useReveal } from "../hooks/useReveal";
+import { VhsBurst } from "./VhsBurst";
 
 export function Experience() {
   const [ref, visible] = useReveal<HTMLDivElement>(0.08);
@@ -8,7 +9,8 @@ export function Experience() {
   return (
     <section id="experience" className="section-pad">
       <div className="section-line" />
-      <div ref={ref}>
+      <div ref={ref} style={{ position: "relative" }}>
+        <VhsBurst trigger={visible} />
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
           <div className="section-label">Journey</div>
           <h2 className="section-title">

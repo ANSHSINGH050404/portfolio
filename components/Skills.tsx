@@ -1,5 +1,6 @@
 "use client";
 import { SkillBar } from "./SkillBar";
+import { VhsBurst } from "./VhsBurst";
 import { SKILLS, STACK_PILLS, SITE } from "../constants";
 
 interface SkillsProps {
@@ -28,6 +29,7 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
         }}
       />
       <div ref={skillsRef} style={{ position: "relative" }}>
+        <VhsBurst trigger={visible} />
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
           <div className="section-label">Capabilities</div>
           <h2 className="section-title">

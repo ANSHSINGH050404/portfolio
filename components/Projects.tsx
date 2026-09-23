@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { PROJECTS, type Project } from "../constants";
 import { SpotlightCard } from "./SpotlightCard";
+import { VhsBurst } from "./VhsBurst";
+import { FlashlightPhrase } from "./FlashlightPhrase";
 
 interface ProjectsProps {
   visible: boolean;
@@ -232,7 +234,8 @@ export function Projects({ visible, projRef }: ProjectsProps) {
   return (
     <section id="projects" className="section-pad">
       <div className="section-line" />
-      <div ref={projRef}>
+      <div ref={projRef} style={{ position: "relative" }}>
+        <VhsBurst trigger={visible} />
         <div
           className={`fi ${visible ? "in" : ""}`}
           style={{
@@ -262,7 +265,14 @@ export function Projects({ visible, projRef }: ProjectsProps) {
               letterSpacing: "-0.02em",
             }}
           >
-        Case studies from zero to production. Problem, approach, result — and a live link.
+            Case studies from zero to production. Problem, approach, result
+            <FlashlightPhrase
+              title="How these case studies read"
+              note="Every project below follows the same arc: the problem worth solving, the approach taken, and the measured result — always with a live link so you can try the real thing."
+            >
+              {" — "}
+            </FlashlightPhrase>{" "}
+            and a live link.
           </p>
         </div>
       </div>

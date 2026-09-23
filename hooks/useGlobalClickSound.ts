@@ -8,6 +8,8 @@ export function useGlobalClickSound() {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      // Elements with their own dedicated cue skip the generic droplet
+      if (target.closest("[data-sfx-cue]")) return;
       if (target.closest("a, button, [data-hover]")) {
         playClick();
       }
