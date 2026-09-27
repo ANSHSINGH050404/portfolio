@@ -52,7 +52,7 @@ export function Hero({ loaded }: HeroProps) {
       </div>
       <div
         className={`fi ${loaded ? "in" : ""}`}
-        style={{ transitionDelay: "0.08s", marginBottom: 28 }}
+        style={{ transitionDelay: "0.06s", marginBottom: 28 }}
       >
         <span
           style={{
@@ -84,7 +84,7 @@ export function Hero({ loaded }: HeroProps) {
       <div
         className={`fi ${loaded ? "in" : ""}`}
         style={{
-          transitionDelay: "0.38s",
+          transitionDelay: "0.24s",
           marginBottom: 28,
           minHeight: 28,
         }}
@@ -111,7 +111,7 @@ export function Hero({ loaded }: HeroProps) {
       >
         <div
           className={`fi ${loaded ? "in" : ""}`}
-          style={{ transitionDelay: "0.48s", maxWidth: 480 }}
+          style={{ transitionDelay: "0.3s", maxWidth: 480 }}
         >
           <p
             style={{
@@ -143,7 +143,7 @@ export function Hero({ loaded }: HeroProps) {
           role="list"
           className={`fi ${loaded ? "in" : ""} plain-list`}
           style={{
-            transitionDelay: "0.58s",
+            transitionDelay: "0.4s",
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gap: "28px 48px",

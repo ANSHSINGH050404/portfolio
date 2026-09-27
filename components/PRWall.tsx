@@ -3,17 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { GITHUB_USER } from "../constants";
 import { useReveal } from "../hooks/useReveal";
 
-type GhPRItem = {
-  id: number;
-  number: number;
-  title: string;
-  state: "open" | "closed";
-  html_url: string;
-  repository_url: string;
-  updated_at: string;
-  body?: string | null;
-};
-
 export type PRCard = {
   id: string;
   repo: string;
@@ -99,18 +88,6 @@ const FALLBACK_PRS: PRCard[] = [
     updatedAt: "2026-07-08T00:00:00Z",
   },
 ];
-
-function toCard(item: GhPRItem): PRCard {
-  return {
-    id: `${item.repository_url}#${item.number}`,
-    repo: item.repository_url.replace("https://api.github.com/repos/", ""),
-    number: item.number,
-    title: item.title,
-    state: item.state,
-    url: item.html_url,
-    updatedAt: item.updated_at,
-  };
-}
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
@@ -217,16 +194,21 @@ export function PRWall() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(
-          `https://api.github.com/search/issues?q=author:${GITHUB_USER}+type:pr&per_page=30&sort=updated&order=desc`,
-          { headers: { Accept: "application/vnd.github+json" } },
-        );
-        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-        const data = await res.json();
+        // Same cached aggregation GitHubStreak uses — no direct api.github.com
+        // call from the browser, so one visitor can't exhaust the rate limit.
+        const res = await fetch("/api/github");
+        if (!res.ok) throw new Error(`api ${res.status}`);
+        const data = (await res.json()) as {
+          ok?: boolean;
+          prs?: PRCard[];
+          prTotal?: number;
+        };
         if (cancelled) return;
-        const items = (data.items ?? []) as GhPRItem[];
-        if (items.length > 0) setPrs(items.map(toCard));
-        if (typeof data.total_count === "number") setTotal(data.total_count);
+        if (data.ok === false || !Array.isArray(data.prs)) {
+          throw new Error("unavailable");
+        }
+        if (data.prs.length > 0) setPrs(data.prs);
+        if (typeof data.prTotal === "number") setTotal(data.prTotal);
       } catch {
         // Keep fallback PRs — section still renders offline / rate-limited.
       } finally {

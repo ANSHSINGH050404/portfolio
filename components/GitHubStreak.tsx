@@ -14,62 +14,23 @@ type GhUser = {
   html_url: string;
 };
 
+/** Only the fields /api/github still returns after it aggregates server-side. */
 type GhRepo = {
   name: string;
   html_url: string;
-  stargazers_count: number;
-  forks_count: number;
-  language: string | null;
-  fork: boolean;
   description: string | null;
+  stargazers_count: number;
   updated_at: string;
 };
 
 type LangStat = { name: string; count: number; pct: number; color: string };
 
-const LANG_COLORS: Record<string, string> = {
-  TypeScript: "#3178c6",
-  JavaScript: "#f1e05a",
-  Python: "#3572A5",
-  Rust: "#dea584",
-  Go: "#00ADD8",
-  Java: "#b07219",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  Shell: "#89e051",
-  C: "#555555",
-  "C++": "#f34b7d",
-  PHP: "#4F5D95",
-  Ruby: "#701516",
-  Dart: "#00B4AB",
-  Kotlin: "#A97BFF",
-  Swift: "#F05138",
-  Vue: "#41b883",
-  SCSS: "#c6538c",
+type GithubData = {
+  user: GhUser;
+  totals: { stars: number; forks: number; ownCount: number; years: number };
+  languages: LangStat[];
+  topRepos: GhRepo[];
 };
-
-const FALLBACK_COLORS = ["#2997ff", "#86868b", "#6e6e73", "#424245", "#1d1d1f", "#f5f5f7"];
-
-async function fetchJson<T>(url: string): Promise<T> {
-  const res = await fetch(url, {
-    headers: { Accept: "application/vnd.github+json" },
-  });
-  if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-  return res.json() as Promise<T>;
-}
-
-/** Fetch every public repo (GitHub caps `per_page` at 100). */
-async function fetchAllRepos(user: string): Promise<GhRepo[]> {
-  const out: GhRepo[] = [];
-  for (let page = 1; page <= 10; page++) {
-    const batch = await fetchJson<GhRepo[]>(
-      `https://api.github.com/users/${user}/repos?per_page=100&page=${page}&sort=updated`,
-    );
-    out.push(...batch);
-    if (batch.length < 100) break;
-  }
-  return out;
-}
 
 function formatNum(n: number): string {
   if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
@@ -78,8 +39,7 @@ function formatNum(n: number): string {
 
 export function GitHubStreak() {
   const [ref, visible] = useReveal<HTMLDivElement>(0.1);
-  const [user, setUser] = useState<GhUser | null>(null);
-  const [repos, setRepos] = useState<GhRepo[]>([]);
+  const [data, setData] = useState<GithubData | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -88,13 +48,14 @@ export function GitHubStreak() {
 
     (async () => {
       try {
-        const [u, r] = await Promise.all([
-          fetchJson<GhUser>(`https://api.github.com/users/${GITHUB_USER}`),
-          fetchAllRepos(GITHUB_USER),
-        ]);
+        // Pre-aggregated and cached for an hour — the old client path pulled
+        // every repo page (1.6 MB) straight from api.github.com.
+        const res = await fetch("/api/github");
+        if (!res.ok) throw new Error(`api ${res.status}`);
+        const json = (await res.json()) as GithubData & { ok?: boolean };
         if (cancelled) return;
-        setUser(u);
-        setRepos(r);
+        if (json.ok === false) throw new Error("unavailable");
+        setData(json);
       } catch {
         if (!cancelled) setError(true);
       } finally {
@@ -107,45 +68,19 @@ export function GitHubStreak() {
     };
   }, []);
 
-  const stats = useMemo(() => {
-    const own = repos.filter((r) => !r.fork);
-    const stars = own.reduce((s, r) => s + r.stargazers_count, 0);
-    const forks = own.reduce((s, r) => s + r.forks_count, 0);
+  const user = data?.user ?? null;
 
-    const langMap = new Map<string, number>();
-    for (const r of own) {
-      if (!r.language) continue;
-      langMap.set(r.language, (langMap.get(r.language) ?? 0) + 1);
-    }
-    const totalLang = [...langMap.values()].reduce((a, b) => a + b, 0) || 1;
-    const languages: LangStat[] = [...langMap.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([name, count], i) => ({
-        name,
-        count,
-        pct: Math.round((count / totalLang) * 100),
-        color: LANG_COLORS[name] ?? FALLBACK_COLORS[i % FALLBACK_COLORS.length],
-      }));
-
-    const topRepos = [...own]
-      .sort((a, b) => b.stargazers_count - a.stargazers_count || +new Date(b.updated_at) - +new Date(a.updated_at))
-      .slice(0, 4);
-
-    const years =
-      user?.created_at
-        ? Math.max(1, new Date().getFullYear() - new Date(user.created_at).getFullYear())
-        : 0;
-
-    return {
-      stars,
-      forks,
-      ownCount: own.length,
-      languages,
-      topRepos,
-      years,
-    };
-  }, [repos, user]);
+  const stats = useMemo(
+    () => ({
+      stars: data?.totals.stars ?? 0,
+      forks: data?.totals.forks ?? 0,
+      ownCount: data?.totals.ownCount ?? 0,
+      languages: data?.languages ?? [],
+      topRepos: data?.topRepos ?? [],
+      years: data?.totals.years ?? 0,
+    }),
+    [data],
+  );
 
   return (
     <section id="github" className="section-pad">

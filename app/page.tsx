@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 
 import { Navbar } from "../components/Navbar";
@@ -35,6 +35,21 @@ const BackgroundEffect = dynamic(
 import { useReveal } from "../hooks/useReveal";
 import { useGlobalClickSound } from "../hooks/useGlobalClickSound";
 
+const INTRO_KEY = "ansh-intro-seen";
+
+// Read outside render so the server snapshot (always false) matches the
+// prerendered HTML, while a returning visitor skips the intro right after
+// hydration — no flash of a second-and-a-half loader.
+const subscribeIntro = () => () => {};
+const readIntro = () => {
+  try {
+    return sessionStorage.getItem(INTRO_KEY) === "1";
+  } catch {
+    return false;
+  }
+};
+const serverIntro = () => false;
+
 function PortfolioInner() {
   useGlobalClickSound();
   const [booted, setBooted] = useState(false);
@@ -48,16 +63,27 @@ function PortfolioInner() {
   useCommandPaletteHotkey(cmdOpen, setCmdOpen);
   useTerminalHotkey(termOpen, setTermOpen);
 
+  // Returning visitors have already sat through the intro once — skip it.
+  const introSeen = useSyncExternalStore(subscribeIntro, readIntro, serverIntro);
+
   const onLoaderDone = useCallback(() => {
     setBooted(true);
+    try {
+      sessionStorage.setItem(INTRO_KEY, "1");
+    } catch {
+      // Non-fatal — the intro will simply play again next time.
+    }
     requestAnimationFrame(() => {
       setTimeout(() => setLoaded(true), 80);
     });
   }, []);
 
+  const showLoader = !introSeen && !booted;
+  const reveal = introSeen || loaded;
+
   return (
     <>
-      {!booted && <Loader onDone={onLoaderDone} />}
+      {showLoader && <Loader onDone={onLoaderDone} />}
 
       <a href="#main" className="skip-link">
         Skip to content
@@ -72,7 +98,7 @@ function PortfolioInner() {
         </header>
 
         <main id="main">
-          <Hero loaded={loaded} />
+          <Hero loaded={reveal} />
           <Marquee />
           <Bento />
           <Projects visible={projVisible} projRef={projRef} />

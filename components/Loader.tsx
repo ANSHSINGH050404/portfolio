@@ -11,7 +11,9 @@ export function Loader({ onDone }: LoaderProps) {
 
   useEffect(() => {
     const start = performance.now();
-    const duration = 1100;
+    // Kept short deliberately: the loader gates `.loaded`, which in turn
+    // gates the hero reveal — every ms here is a ms added to LCP.
+    const duration = 600;
     let raf: number;
 
     const tick = (now: number) => {
@@ -24,8 +26,8 @@ export function Loader({ onDone }: LoaderProps) {
       } else {
         setTimeout(() => {
           setDone(true);
-          setTimeout(onDone, 500);
-        }, 120);
+          setTimeout(onDone, 300);
+        }, 80);
       }
     };
 
