@@ -60,7 +60,9 @@ export function TimeOnEarth({ audible = false }: { audible?: boolean }) {
     <div
       className="time-on-earth"
       role="timer"
-      aria-live={reducedMotion ? "off" : "polite"}
+      // role="timer" inherits aria-live="polite" from status, which would
+      // re-announce a second-precision label every single second.
+      aria-live="off"
       aria-label={ariaLabel}
       title={ariaLabel}
     >

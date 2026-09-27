@@ -6,6 +6,7 @@ const LINE = [...STACK_PILLS, ...STACK_PILLS].join("  ·  ");
 export function Marquee() {
   return (
     <div
+      aria-hidden="true"
       style={{
         borderTop: "1px solid var(--hairline)",
         borderBottom: "1px solid var(--hairline)",

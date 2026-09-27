@@ -34,7 +34,12 @@ export function Loader({ onDone }: LoaderProps) {
   }, [onDone]);
 
   return (
-    <div className={`loader-screen ${done ? "done" : ""}`} aria-hidden={done}>
+    <div
+      className={`loader-screen ${done ? "done" : ""}`}
+      role="status"
+      aria-label="Loading portfolio"
+      aria-hidden={done}
+    >
       <div
         style={{
           fontFamily: "var(--font-display)",

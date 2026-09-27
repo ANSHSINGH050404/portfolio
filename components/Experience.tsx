@@ -20,12 +20,13 @@ export function Experience() {
           </h2>
         </div>
 
-        <div
-          className={`fi ${visible ? "in" : ""}`}
+        <ul
+          role="list"
+          className={`fi ${visible ? "in" : ""} plain-list`}
           style={{ transitionDelay: "0.15s", maxWidth: 720 }}
         >
           {EXPERIENCE.map((item, i) => (
-            <div
+            <li
               key={item.role + item.org}
               className="timeline-item"
               style={{
@@ -62,7 +63,6 @@ export function Experience() {
                   color: "var(--muted)",
                   letterSpacing: "-0.01em",
                   marginBottom: 14,
-                  opacity: 0.85,
                 }}
               >
                 {item.org}
@@ -86,9 +86,9 @@ export function Experience() {
                   </span>
                 ))}
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

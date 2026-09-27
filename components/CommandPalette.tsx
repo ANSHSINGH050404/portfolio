@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { PROJECTS, SITE } from "../constants";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useToast } from "./Toast";
 import { useSound } from "../hooks/useSound";
 
@@ -34,8 +35,11 @@ export function CommandPalette({
   const [index, setIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const toast = useToast();
   const { muted, toggle: toggleSound } = useSound();
+
+  useFocusTrap(overlayRef, open);
 
   const downloadResume = useCallback(() => {
     const link = document.createElement("a");
@@ -259,10 +263,18 @@ export function CommandPalette({
 
   if (!open) return null;
 
-  let lastGroup = "";
+  // Preserve filter order while nesting each run of same-group actions in a
+  // labelled group, so screen readers announce "Navigate, group, 8 items".
+  const groups: { name: string; items: Action[] }[] = [];
+  for (const action of filtered) {
+    const last = groups[groups.length - 1];
+    if (last && last.name === action.group) last.items.push(action);
+    else groups.push({ name: action.group, items: [action] });
+  }
 
   return (
     <div
+      ref={overlayRef}
       className="cmd-overlay"
       role="dialog"
       aria-modal="true"
@@ -287,32 +299,52 @@ export function CommandPalette({
             placeholder="Search commands, projects, actions…"
             autoComplete="off"
             spellCheck={false}
+            role="combobox"
+            aria-expanded
+            aria-controls="cmd-list"
+            aria-autocomplete="list"
+            aria-activedescendant={
+              filtered[index] ? `cmd-opt-${filtered[index].id}` : undefined
+            }
+            aria-label="Search commands"
           />
           <kbd className="cmd-esc">ESC</kbd>
         </div>
-        <div className="cmd-list" ref={listRef}>
+        <div
+          className="cmd-list"
+          ref={listRef}
+          id="cmd-list"
+          role="listbox"
+          aria-label="Commands"
+        >
           {filtered.length === 0 && (
             <div className="cmd-empty">No matches for “{query}”</div>
           )}
-          {filtered.map((a, i) => {
-            const showGroup = a.group !== lastGroup;
-            lastGroup = a.group;
-            return (
-              <div key={a.id}>
-                {showGroup && <div className="cmd-group">{a.group}</div>}
-                <button
-                  type="button"
-                  data-cmd-idx={i}
-                  className={`cmd-item ${i === index ? "active" : ""}`}
-                  onMouseEnter={() => setIndex(i)}
-                  onClick={() => a.run()}
-                >
-                  <span>{a.label}</span>
-                  {a.hint && <span className="cmd-hint">{a.hint}</span>}
-                </button>
+          {groups.map((group) => (
+            <div key={group.name} role="group" aria-label={group.name}>
+              <div className="cmd-group" aria-hidden="true">
+                {group.name}
               </div>
-            );
-          })}
+              {group.items.map((a) => {
+                const i = filtered.indexOf(a);
+                return (
+                  <div
+                    id={`cmd-opt-${a.id}`}
+                    key={a.id}
+                    role="option"
+                    aria-selected={i === index}
+                    data-cmd-idx={i}
+                    className={`cmd-item ${i === index ? "active" : ""}`}
+                    onMouseEnter={() => setIndex(i)}
+                    onClick={() => a.run()}
+                  >
+                    <span>{a.label}</span>
+                    {a.hint && <span className="cmd-hint">{a.hint}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
         <div className="cmd-footer">
           <span>↑↓ navigate</span>

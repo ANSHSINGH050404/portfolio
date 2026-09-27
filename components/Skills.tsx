@@ -51,14 +51,17 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
             className={`fi ${visible ? "in" : ""}`}
             style={{ transitionDelay: "0.2s" }}
           >
-            {SKILLS.map((s, i) => (
-              <SkillBar
-                key={s.name}
-                {...s}
-                delay={i * 90 + 250}
-                visible={visible}
-              />
-            ))}
+            <ul className="plain-list" role="list">
+              {SKILLS.map((s, i) => (
+                <li key={s.name}>
+                  <SkillBar
+                    {...s}
+                    delay={i * 90 + 250}
+                    visible={visible}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div
@@ -75,7 +78,9 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
             >
               Also work with
             </div>
-            <div
+            <ul
+              role="list"
+              className="plain-list"
               style={{
                 display: "flex",
                 flexWrap: "wrap",
@@ -84,11 +89,11 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
               }}
             >
               {STACK_PILLS.map((t) => (
-                <span key={t} className="spill" data-hover>
+                <li key={t} className="spill" data-hover>
                   {t}
-                </span>
+                </li>
               ))}
-            </div>
+            </ul>
 
             <div
               style={{

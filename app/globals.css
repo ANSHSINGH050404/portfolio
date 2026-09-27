@@ -7,7 +7,7 @@
   --bg-card: #161617;
   --fg: #f5f5f7;
   --muted: #86868b;
-  --dim: #6e6e73;
+  --dim: #85858a;
   --hairline: rgba(255, 255, 255, 0.08);
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.18);
@@ -15,7 +15,9 @@
   /* One accent: Apple product blue */
   --accent: #2997ff;
   --accent-soft: rgba(41, 151, 255, 0.12);
-  --on-accent: #ffffff;
+  /* Black on #2997ff measures 6.97:1 — white only manages 3.01:1 and
+     fails AA on every primary CTA. */
+  --on-accent: #000000;
 
   /* Legacy aliases so existing inline styles don't go magenta */
   --cyan: var(--accent);
@@ -63,11 +65,17 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
+/* `*` above already zeroes the UA margins/padding; this kills the disc too.
+   role="list" on the element restores semantics Safari strips once
+   list-style is none. */
+.plain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* Prefer compositor-friendly scrolling */
+/* Smooth scrolling only for users who haven't asked for reduced motion —
+   an unconditional rule would override the media query below by source order. */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -96,6 +104,29 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+/* Off-screen until focused, but never display:none — it has to stay in the
+   tab order as the first thing a keyboard user reaches. */
+.skip-link {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 100001;
+  padding: 11px 18px;
+  background: var(--accent);
+  color: #000000;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transform: translateY(calc(-100% - 24px));
+  transition: transform var(--duration) var(--ease);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-color: var(--fg);
 }
 
 button,
@@ -959,6 +990,12 @@ a,
   transform: translateY(0);
 }
 
+.mobile-menu-utils {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
 .mobile-menu-footer .time-on-earth {
   font-size: 12px;
 }
@@ -1205,28 +1242,30 @@ a,
 .cmd-kicker {
   font-family: var(--font-mono);
   font-size: 10px;
+  /* Full opacity: at 0.7 the alpha blend lands at 3.37:1 on the panel. */
   color: var(--cyan);
   letter-spacing: 0.08em;
-  opacity: 0.7;
   flex-shrink: 0;
 }
 .cmd-input {
   flex: 1;
   background: transparent;
   border: none;
-  outline: none;
   color: #f1f5f9;
   font-family: var(--font-body);
   font-size: 15px;
   caret-color: var(--accent);
 }
+.cmd-input:focus-visible {
+  outline-offset: 6px;
+}
 .cmd-input::placeholder {
-  color: #334155;
+  color: #94a3b8;
 }
 .cmd-esc {
   font-family: var(--font-mono);
   font-size: 9px;
-  color: #475569;
+  color: #94a3b8;
   border: 1px solid #ffffff12;
   padding: 3px 7px;
   border-radius: 4px;
@@ -1240,7 +1279,7 @@ a,
 .cmd-group {
   font-family: var(--font-mono);
   font-size: 9px;
-  color: #475569;
+  color: #94a3b8;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 10px 12px 6px;
@@ -1273,7 +1312,7 @@ a,
 .cmd-hint {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: #475569;
+  color: #94a3b8;
   letter-spacing: 0.04em;
   flex-shrink: 0;
   max-width: 45%;
@@ -1286,7 +1325,7 @@ a,
   text-align: center;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: #475569;
+  color: #94a3b8;
   letter-spacing: 0.06em;
 }
 .cmd-footer {
@@ -1296,7 +1335,7 @@ a,
   border-top: 1px solid #ffffff0c;
   font-family: var(--font-mono);
   font-size: 9px;
-  color: #334155;
+  color: #94a3b8;
   letter-spacing: 0.08em;
 }
 
@@ -1361,13 +1400,13 @@ a,
   text-align: center;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: #475569;
+  color: #94a3b8;
   letter-spacing: 0.06em;
 }
 .term-close-btn {
   font-family: var(--font-mono);
   font-size: 9px;
-  color: #475569;
+  color: #94a3b8;
   background: transparent;
   border: 1px solid #ffffff12;
   padding: 3px 8px;
@@ -1416,7 +1455,6 @@ a,
   flex: 1;
   background: transparent;
   border: none;
-  outline: none;
   color: #f1f5f9;
   font-family: var(--font-mono);
   font-size: 12.5px;
@@ -1567,7 +1605,7 @@ a,
 }
 .case-block p {
   font-size: 13px;
-  color: #64748b;
+  color: #94a3b8;
   line-height: 1.75;
   font-weight: 300;
 }

@@ -19,6 +19,8 @@ interface NavbarProps {
 
 export function Navbar({ onOpenCommand }: NavbarProps) {
   const navRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState("about");
   const [menuOpen, setMenuOpen] = useState(false);
   const activeRef = useRef(active);
@@ -66,9 +68,29 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
     };
   }, [menuOpen]);
 
+  // Move focus into the menu when it opens so keyboard users land on a link.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const first = menuRef.current?.querySelector<HTMLElement>("a, button");
+    first?.focus();
+  }, [menuOpen]);
+
+  // Escape closes the menu and returns focus to the button that opened it.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      setMenuOpen(false);
+      menuBtnRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
   return (
     <>
-      <nav ref={navRef} className="site-nav">
+      <nav ref={navRef} className="site-nav" aria-label="Primary">
         <a href="#about" className="nav-brand">
           Ansh
         </a>
@@ -106,10 +128,12 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
           </a>
 
           <button
+            ref={menuBtnRef}
             type="button"
             className="nav-menu-btn show-mob"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
             onClick={() => setMenuOpen((v) => !v)}
           >
             <span className={menuOpen ? "open" : ""} />
@@ -120,10 +144,15 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
       </nav>
 
       <div
+        ref={menuRef}
+        id="mobile-menu"
         className={`mobile-menu ${menuOpen ? "open" : ""}`}
         aria-hidden={!menuOpen}
+        // Keeps every link out of the tab order while the menu is closed —
+        // aria-hidden alone still leaves them focusable.
+        inert={!menuOpen}
       >
-        <nav className="mobile-menu-nav" aria-label="Mobile">
+        <nav className="mobile-menu-nav" aria-label="Mobile navigation">
           {LINKS.map((l, i) => (
             <a
               key={l.href}
@@ -138,7 +167,10 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
         </nav>
 
         <div className="mobile-menu-footer">
-          <TimeOnEarth />
+          <div className="mobile-menu-utils">
+            <TimeOnEarth />
+            <SoundToggle />
+          </div>
           <a
             href={`mailto:${SITE.email}`}
             onClick={() => setMenuOpen(false)}

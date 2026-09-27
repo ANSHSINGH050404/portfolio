@@ -26,10 +26,11 @@ export function Bento() {
           </h2>
         </div>
 
-        <div className="bento-grid">
+        <ul role="list" className="bento-grid plain-list">
           {BENTO.map((card, i) => (
             <SpotlightCard
               key={card.id}
+              as="li"
               accent="var(--accent)"
               data-hover
               className={`bento-${card.span} fi ${visible ? "in" : ""}`}
@@ -88,7 +89,7 @@ export function Bento() {
               </p>
             </SpotlightCard>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

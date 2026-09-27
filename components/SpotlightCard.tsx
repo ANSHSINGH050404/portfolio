@@ -12,7 +12,7 @@ interface SpotlightCardProps {
   className?: string;
   style?: CSSProperties;
   accent?: string;
-  as?: "div" | "a" | "article";
+  as?: "div" | "a" | "article" | "li";
   href?: string;
   target?: string;
   rel?: string;
@@ -34,7 +34,7 @@ export function SpotlightCard({
   onMouseLeave,
   ...rest
 }: SpotlightCardProps) {
-  const ref = useRef<HTMLDivElement | HTMLAnchorElement>(null);
+  const ref = useRef<HTMLDivElement | HTMLAnchorElement | HTMLLIElement>(null);
 
   const onMove = (e: MouseEvent) => {
     const el = ref.current;
@@ -63,6 +63,10 @@ export function SpotlightCard({
         {children}
       </a>
     );
+  }
+
+  if (as === "li") {
+    return <li {...common}>{children}</li>;
   }
 
   return <div {...common}>{children}</div>;

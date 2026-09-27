@@ -194,6 +194,9 @@ function MarqueeRow({
             key={`${pr.id}-${i}`}
             role="listitem"
             aria-hidden={i >= prs.length}
+            // The doubled copy is visual-only for the seamless loop; without
+            // this its links stay in the tab order behind an aria-hidden node.
+            inert={i >= prs.length}
             style={{ flexShrink: 0 }}
           >
             <PRMarqueeCard pr={pr} />

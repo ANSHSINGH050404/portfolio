@@ -15,7 +15,9 @@ export function ScrollProgress() {
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? scrollTop / docHeight : 0;
-      bar.style.transform = `scaleX(${Math.min(1, Math.max(0, pct))})`;
+      const clamped = Math.min(1, Math.max(0, pct));
+      bar.style.transform = `scaleX(${clamped})`;
+      bar.setAttribute("aria-valuenow", String(Math.round(clamped * 100)));
       ticking = false;
     };
 

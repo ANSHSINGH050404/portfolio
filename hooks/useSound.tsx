@@ -38,9 +38,11 @@ function subscribe(onStoreChange: () => void) {
 
 function readMuted(): boolean {
   try {
-    return localStorage.getItem(STORAGE_KEY) === "1";
+    const stored = localStorage.getItem(STORAGE_KEY);
+    // Absent means "never chosen" — default to muted so sound is opt-in.
+    return stored !== "0";
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -48,8 +50,9 @@ function getSnapshot(): boolean {
   return readMuted();
 }
 
+/** Matches the first-visit default so hydration doesn't flip the flag. */
 function getServerSnapshot(): boolean {
-  return false;
+  return true;
 }
 
 function persistMuted(value: boolean) {

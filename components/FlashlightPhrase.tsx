@@ -8,6 +8,7 @@ import {
   type CSSProperties,
 } from "react";
 import { createPortal } from "react-dom";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useSound } from "../hooks/useSound";
 
 /**
@@ -36,6 +37,8 @@ export function FlashlightPhrase({
   const titleId = useId();
   const noteId = useId();
   const { playCue } = useSound();
+
+  useFocusTrap(dialogRef, open);
 
   const openAt = useCallback(
     (clientX?: number, clientY?: number) => {

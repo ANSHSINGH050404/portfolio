@@ -59,21 +59,31 @@ function PortfolioInner() {
     <>
       {!booted && <Loader onDone={onLoaderDone} />}
 
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+
       <div>
         <ScrollProgress />
         <BackgroundEffect />
 
-        <Navbar onOpenCommand={() => setCmdOpen(true)} />
-        <Hero loaded={loaded} />
-        <Marquee />
-        <Bento />
-        <Projects visible={projVisible} projRef={projRef} />
-        <Skills visible={skillsVisible} skillsRef={skillsRef} />
-        <Experience />
-        <GitHubStreak />
-        <PRWall />
-        <ResumeSection />
-        <Contact visible={ctaVisible} ctaRef={ctaRef} />
+        <header>
+          <Navbar onOpenCommand={() => setCmdOpen(true)} />
+        </header>
+
+        <main id="main">
+          <Hero loaded={loaded} />
+          <Marquee />
+          <Bento />
+          <Projects visible={projVisible} projRef={projRef} />
+          <Skills visible={skillsVisible} skillsRef={skillsRef} />
+          <Experience />
+          <GitHubStreak />
+          <PRWall />
+          <ResumeSection />
+          <Contact visible={ctaVisible} ctaRef={ctaRef} />
+        </main>
+
         <Footer />
 
         {/* Desktop hint chip */}

@@ -8,6 +8,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { PROJECTS, SITE, STACK_PILLS } from "../constants";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useSound } from "../hooks/useSound";
 
 type Line = { type: "in" | "out" | "err" | "sys"; text: string };
@@ -38,7 +39,10 @@ export function Terminal({ open, onClose }: TerminalProps) {
   const [histIdx, setHistIdx] = useState(-1);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const { muted, toggle: toggleSound } = useSound();
+
+  useFocusTrap(overlayRef, open);
 
   useEffect(() => {
     if (open) {
@@ -238,6 +242,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
 
   return (
     <div
+      ref={overlayRef}
       className="term-overlay"
       role="dialog"
       aria-modal="true"
@@ -266,6 +271,10 @@ export function Terminal({ open, onClose }: TerminalProps) {
         <div
           className="term-body"
           onClick={() => inputRef.current?.focus()}
+          // Command output is generated after focus lands in the input, so it
+          // needs a live region for screen readers to hear the reply.
+          aria-live="polite"
+          aria-relevant="additions text"
         >
           {lines.map((l, i) => (
             <div key={i} className={`term-line term-${l.type}`}>

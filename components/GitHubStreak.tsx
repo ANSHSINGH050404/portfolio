@@ -426,7 +426,6 @@ export function GitHubStreak() {
                   color: "var(--muted)",
                   letterSpacing: "0.18em",
                   marginBottom: 22,
-                  opacity: 0.85,
                   position: "relative",
                   zIndex: 1,
                 }}
@@ -540,7 +539,6 @@ export function GitHubStreak() {
                   color: "var(--muted)",
                   letterSpacing: "0.18em",
                   marginBottom: 22,
-                  opacity: 0.85,
                   position: "relative",
                   zIndex: 1,
                 }}
@@ -654,7 +652,6 @@ export function GitHubStreak() {
                 color: "var(--cyan)",
                 letterSpacing: "0.18em",
                 marginBottom: 20,
-                opacity: 0.85,
                 position: "relative",
                 zIndex: 1,
               }}

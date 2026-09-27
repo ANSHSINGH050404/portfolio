@@ -139,8 +139,9 @@ export function Hero({ loaded }: HeroProps) {
           </div>
         </div>
 
-        <div
-          className={`fi ${loaded ? "in" : ""}`}
+        <ul
+          role="list"
+          className={`fi ${loaded ? "in" : ""} plain-list`}
           style={{
             transitionDelay: "0.58s",
             display: "grid",
@@ -150,7 +151,7 @@ export function Hero({ loaded }: HeroProps) {
           }}
         >
           {STAT_LABELS.map(({ key, label }) => (
-            <div key={key}>
+            <li key={key}>
               <div
                 style={{
                   fontFamily: "var(--font-display)",
@@ -173,9 +174,9 @@ export function Hero({ loaded }: HeroProps) {
               >
                 {label}
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

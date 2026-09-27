@@ -94,6 +94,10 @@ function CaseStudyCard({
   featured?: boolean;
 }) {
   const [expanded, setExpanded] = useState(featured ?? false);
+  const caseId = `case-${project.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}`;
 
   return (
     <SpotlightCard
@@ -152,16 +156,16 @@ function CaseStudyCard({
           <p className="case-desc">{project.desc}</p>
 
           {/* Metric chips */}
-          <div className="case-metrics">
+          <ul className="case-metrics plain-list" role="list">
             {project.metrics.map((m) => (
-              <div key={m.label} className="case-metric">
+              <li key={m.label} className="case-metric">
                 <div className="case-metric-val" style={{ color: project.accent }}>
                   {m.value}
                 </div>
                 <div className="case-metric-label">{m.label}</div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <div className="case-stack">
             {project.stack.map((s) => (
@@ -189,33 +193,34 @@ function CaseStudyCard({
             data-hover
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
+            aria-controls={caseId}
             style={{ color: project.accent, borderColor: `${project.accent}35` }}
           >
             {expanded ? "Hide case study" : "View case study"}
           </button>
 
-          {expanded && (
-            <div className="case-study-body">
-              <div className="case-block">
-                <div className="case-block-label" style={{ color: project.accent }}>
-                  Problem
-                </div>
-                <p>{project.problem}</p>
+          {/* Kept in the DOM while collapsed so aria-controls always resolves;
+              `hidden` collapses it without display overrides. */}
+          <div className="case-study-body" id={caseId} hidden={!expanded}>
+            <div className="case-block">
+              <div className="case-block-label" style={{ color: project.accent }}>
+                Problem
               </div>
-              <div className="case-block">
-                <div className="case-block-label" style={{ color: project.accent }}>
-                  Approach
-                </div>
-                <p>{project.approach}</p>
-              </div>
-              <div className="case-block">
-                <div className="case-block-label" style={{ color: project.accent }}>
-                  Result
-                </div>
-                <p>{project.result}</p>
-              </div>
+              <p>{project.problem}</p>
             </div>
-          )}
+            <div className="case-block">
+              <div className="case-block-label" style={{ color: project.accent }}>
+                Approach
+              </div>
+              <p>{project.approach}</p>
+            </div>
+            <div className="case-block">
+              <div className="case-block-label" style={{ color: project.accent }}>
+                Result
+              </div>
+              <p>{project.result}</p>
+            </div>
+          </div>
 
           <a
             href={project.link}

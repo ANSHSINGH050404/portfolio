@@ -12,7 +12,9 @@ export function Footer() {
         alignItems: "center",
         flexWrap: "wrap",
         gap: 16,
-        zIndex: 10,
+        // Sits above the fixed .hotkey-hint (z-index 400) so the keyboard
+        // hint doesn't render on top of these links at the page bottom.
+        zIndex: 401,
         position: "relative",
         background: "var(--bg)",
       }}

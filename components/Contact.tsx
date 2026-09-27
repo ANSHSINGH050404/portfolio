@@ -73,6 +73,7 @@ export function Contact({ visible, ctaRef }: ContactProps) {
           className={`fi ${visible ? "in" : ""}`}
           type="button"
           onClick={copyEmail}
+          aria-label={`Copy ${SITE.email} to clipboard`}
           style={{
             transitionDelay: "0.2s",
             fontSize: 15,
