@@ -214,15 +214,17 @@ export function CommandPalette({
     });
   }, [actions, query]);
 
-  useEffect(() => {
+  // Reset transient state on open/close. Adjusting state during render when a
+  // prop changes is the React-sanctioned alternative to a setState effect.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     setIndex(0);
-  }, [query, open]);
+    if (!open) setQuery("");
+  }
 
   useEffect(() => {
-    if (!open) {
-      setQuery("");
-      return;
-    }
+    if (!open) return;
     const t = requestAnimationFrame(() => inputRef.current?.focus());
     return () => cancelAnimationFrame(t);
   }, [open]);
@@ -278,7 +280,10 @@ export function CommandPalette({
             ref={inputRef}
             className="cmd-input"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setIndex(0);
+            }}
             placeholder="Search commands, projects, actions…"
             autoComplete="off"
             spellCheck={false}

@@ -5,7 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -21,6 +21,45 @@ const STORAGE_KEY = "ansh-portfolio-sound";
 const CLICK_VOLUME = 0.35;
 const TICK_VOLUME = 0.35;
 
+const listeners = new Set<() => void>();
+
+function emit() {
+  for (const listener of listeners) listener();
+}
+
+function subscribe(onStoreChange: () => void) {
+  listeners.add(onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    listeners.delete(onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function readMuted(): boolean {
+  try {
+    return localStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function getSnapshot(): boolean {
+  return readMuted();
+}
+
+function getServerSnapshot(): boolean {
+  return false;
+}
+
+function persistMuted(value: boolean) {
+  try {
+    localStorage.setItem(STORAGE_KEY, value ? "1" : "0");
+  } catch {
+    /* ignore */
+  }
+}
+
 type SoundCtx = {
   muted: boolean;
   toggle: () => void;
@@ -35,82 +74,51 @@ type SoundCtx = {
 
 const SoundContext = createContext<SoundCtx | null>(null);
 
-function readMuted(): boolean {
-  try {
-    return localStorage.getItem(STORAGE_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
 export function SoundProvider({ children }: { children: ReactNode }) {
-  const [muted, setMutedState] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+  const muted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === "1") setMutedState(true);
-      else if (stored === "0") setMutedState(false);
-    } catch {
-      /* ignore */
-    }
-    setHydrated(true);
     attachUnlockListeners();
   }, []);
 
-  const setMuted = useCallback((v: boolean) => {
-    setMutedState(v);
-    try {
-      localStorage.setItem(STORAGE_KEY, v ? "1" : "0");
-    } catch {
-      /* ignore */
-    }
+  useEffect(() => {
+    setEnabled(!muted);
+  }, [muted]);
+
+  const setMuted = useCallback((value: boolean) => {
+    persistMuted(value);
+    emit();
   }, []);
 
   const toggle = useCallback(() => {
-    setMutedState((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
+    persistMuted(!readMuted());
+    emit();
   }, []);
 
-  useEffect(() => {
-    if (!hydrated) return;
-    setEnabled(!muted);
-  }, [muted, hydrated]);
-
   const playClick = useCallback(() => {
-    if (!hydrated) return;
-    if (readMuted()) return;
+    if (muted) return;
     play("droplet", { volume: CLICK_VOLUME });
-  }, [hydrated]);
+  }, [muted]);
 
   const playTick = useCallback(() => {
-    if (!hydrated) return;
-    if (readMuted()) return;
+    if (muted) return;
     play("tick", { volume: TICK_VOLUME });
-  }, [hydrated]);
+  }, [muted]);
 
   const playSfx = useCallback(
     (name: SoundName, opts?: { volume?: number }) => {
-      if (!hydrated || readMuted()) return;
+      if (muted) return;
       playSound(name, opts);
     },
-    [hydrated],
+    [muted],
   );
 
   const playCue = useCallback(
     (cue: string, opts?: { volume?: number }) => {
-      if (!hydrated || readMuted()) return;
+      if (muted) return;
       rawPlayCue(cue, opts);
     },
-    [hydrated],
+    [muted],
   );
 
   const value = useMemo(
