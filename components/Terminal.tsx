@@ -97,7 +97,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
           push(
             {
               type: "out",
-              text: "Final-year CS student building production AI products.",
+              text: "Full-stack and agentic AI engineer building production AI products.",
             },
             {
               type: "out",

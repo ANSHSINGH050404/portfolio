@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { Counter } from "./Counter";
 import { SlotTitle } from "./SlotTitle";
 import { HeadlineSmoke } from "./HeadlineSmoke";
-import { ROLES, SITE, STATS } from "../constants";
+import { ROLES, SITE, STAT_LABELS } from "../constants";
+import { useStats } from "../hooks/useStats";
 
 interface HeroProps {
   loaded: boolean;
@@ -11,6 +12,7 @@ interface HeroProps {
 
 export function Hero({ loaded }: HeroProps) {
   const [display, setDisplay] = useState(ROLES[0]);
+  const stats = useStats();
 
   useEffect(() => {
     if (!loaded) return;
@@ -147,8 +149,8 @@ export function Hero({ loaded }: HeroProps) {
             marginTop: 4,
           }}
         >
-          {STATS.map((s) => (
-            <div key={s.label}>
+          {STAT_LABELS.map(({ key, label }) => (
+            <div key={key}>
               <div
                 style={{
                   fontFamily: "var(--font-display)",
@@ -159,7 +161,7 @@ export function Hero({ loaded }: HeroProps) {
                   letterSpacing: "-0.04em",
                 }}
               >
-                <Counter target={s.value} suffix={s.suffix} />
+                <Counter target={stats[key]} />
               </div>
               <div
                 style={{
@@ -169,7 +171,7 @@ export function Hero({ loaded }: HeroProps) {
                   marginTop: 8,
                 }}
               >
-                {s.label}
+                {label}
               </div>
             </div>
           ))}

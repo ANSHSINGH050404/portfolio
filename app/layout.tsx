@@ -13,12 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://anshdev-tau.vercel.app"),
   title: {
     default: "Ansh Singh — Full-Stack & Agentic AI Engineer",
     template: "%s · Ansh Singh",
   },
   description:
-    "Final-year CS student building production AI products. Full-stack developer specializing in agentic systems, Next.js, and scalable backends.",
+    "Full-stack and agentic AI engineer building production AI products — agentic systems, Next.js, and scalable backends.",
   keywords: [
     "Ansh Singh",
     "Full-Stack Developer",

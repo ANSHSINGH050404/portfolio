@@ -5,7 +5,7 @@ export const SITE = {
   shortName: "Ansh",
   title: "Ansh Singh — Full-Stack & Agentic AI Engineer",
   description:
-    "Final-year CS student building production AI products. Full-stack developer specializing in agentic systems, Next.js, and scalable backends.",
+    "Full-stack and agentic AI engineer building production AI products — agentic systems, Next.js, and scalable backends.",
   email: "anshsinghapa@gmail.com",
   location: "Noida, India",
   resumePath: "/Resume-feb@11.pdf",
@@ -40,7 +40,7 @@ export type Project = {
   approach: string;
   result: string;
   metrics: { label: string; value: string }[];
-  preview: { label: string; gradient: string };
+  preview: { label: string; gradient: string; image?: string };
 };
 
 export const PROJECTS: Project[] = [
@@ -70,6 +70,7 @@ export const PROJECTS: Project[] = [
     preview: {
       label: "Flow · Browser · Agents",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
+      image: "/projects/01.webp",
     },
   },
   {
@@ -98,62 +99,65 @@ export const PROJECTS: Project[] = [
     preview: {
       label: "Career Path · Resume AI",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
+      image: "/projects/02.webp",
     },
   },
   {
     id: "03",
-    title: "AI Interviewer",
-    subtitle: "Agentic Interview System",
-    desc: "Agentic interviewer with adaptive questioning, multi-turn reasoning, WebRTC audio/video, and analytics dashboard for candidate performance trends.",
-    stack: ["Node.js", "TypeScript", "WebSockets", "Supabase"],
+    title: "TypeRace",
+    subtitle: "Real-Time Multiplayer Typing Racer",
+    desc: "Live typing races over WebSockets — create a room, share the code, and race in real time while a custom typing engine scores WPM and accuracy per keystroke against a persistent global leaderboard.",
+    stack: ["Next.js", "TypeScript", "Socket.IO", "Express", "MongoDB"],
     accent: "#2997ff",
-    year: "2024",
-    link: "https://voicevue-ai-git-feat-p0-sc-559b33-ansh-singhs-projects-a351dcb4.vercel.app",
+    year: "2026",
+    link: "https://type-race-two.vercel.app/",
     featured: false,
-    metric: "Real-time · WebRTC",
+    metric: "Realtime · Rooms · Leaderboard",
     problem:
-      "Hiring loops are slow and inconsistent — candidates rarely get adaptive, high-signal practice interviews.",
+      "Typing tests are single-player — there is no fair way to race someone live, because keystroke timing has to stay in sync across every client in the room.",
     approach:
-      "Agentic multi-turn interviewer with WebRTC A/V, WebSocket session state, and a performance analytics dashboard.",
+      "Express 5 + Socket.IO rooms broadcast per-keystroke progress so every racer sees live positions; a custom engine computes WPM/accuracy on the client and Mongoose persists each result into a global leaderboard.",
     result:
-      "Real-time mock interviews that adapt mid-session and surface trendable skill signals.",
+      "Room-code races with live opponent progress, a ready-up/rematch flow, and a persistent leaderboard — Next.js client on Vercel, socket server on Render, MongoDB behind it.",
     metrics: [
-      { label: "Mode", value: "Realtime" },
-      { label: "Media", value: "WebRTC" },
-      { label: "Agent", value: "Multi-turn" },
+      { label: "Transport", value: "Socket.IO" },
+      { label: "Rooms", value: "Code-based" },
+      { label: "Scoring", value: "WPM · Acc" },
       { label: "Status", value: "Live" },
     ],
     preview: {
-      label: "Voice · Video · Agents",
+      label: "Race · Live · Leaderboard",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
+      image: "/projects/03.webp",
     },
   },
   {
     id: "04",
-    title: "RAG Doc Assistant",
-    subtitle: "LLM Documentation Search",
-    desc: "Intelligent documentation search using RAG architecture. Indexed 10,000+ pages with hybrid vector + BM25 search, improving retrieval accuracy by 35%.",
-    stack: ["Python", "FastAPI", "LangChain", "Pinecone"],
+    title: "Omni Search MCP",
+    subtitle: "Deep-Web Research MCP Server",
+    desc: "A Model Context Protocol server plus web client for agentic research — search the web, read URLs, run deep-research passes, then return structured mind maps and summaries instead of raw text.",
+    stack: ["Python", "FastAPI", "MCP", "Next.js"],
     accent: "#2997ff",
-    year: "2023",
+    year: "2026",
     link: "https://omni-search-mcp-frontend.vercel.app/",
     featured: false,
-    metric: "10K+ pages indexed",
+    metric: "MCP · Deep research · Mind maps",
     problem:
-      "Teams waste hours grepping docs — pure keyword search misses intent; pure vectors miss exact terms.",
+      "Agents and chat UIs can search, but results come back as unstructured text — you can see what was found, never how the sources relate to each other.",
     approach:
-      "Hybrid RAG: chunk + embed into Pinecone, fuse vector + BM25 ranking, serve via FastAPI + LangChain.",
+      "A Python MCP server exposes search, fetch, research and summarise tools over a FastAPI layer; the Next.js client turns the returned research graph into an interactive mind map.",
     result:
-      "Indexed 10,000+ pages with ~35% better retrieval accuracy vs. baseline keyword search.",
+      "A Dockerised MCP server wired to a web client that returns a navigable mind map instead of a wall of text — live in production.",
     metrics: [
-      { label: "Pages", value: "10K+" },
-      { label: "Accuracy", value: "+35%" },
-      { label: "Search", value: "Hybrid" },
-      { label: "Stack", value: "RAG" },
+      { label: "Protocol", value: "MCP" },
+      { label: "Tools", value: "Search · Fetch" },
+      { label: "Output", value: "Mind map" },
+      { label: "Status", value: "Live" },
     ],
     preview: {
-      label: "Vector · BM25 · RAG",
+      label: "Search · Research · Maps",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
+      image: "/projects/04.webp",
     },
   },
 ];
@@ -205,17 +209,32 @@ export const EXPERIENCE = [
     role: "CS Undergraduate",
     org: "SRMS CETR, Bareilly",
     period: "2021 — 2025",
-    desc: "Final-year Computer Science. Focus on distributed systems, ML pipelines, and product engineering.",
+    desc: "Computer Science at SRMS CETR, Bareilly (2021 — 2025). Focus on distributed systems, ML pipelines, and product engineering.",
     tags: ["CS", "Systems", "ML"],
   },
 ];
 
-export const STATS = [
-  { value: 30, suffix: "+", label: "Projects shipped" },
-  { value: 50, suffix: "+", label: "OSS contribs" },
-  { value: 500, suffix: "+", label: "Users on product" },
-  { value: 5, suffix: "K+", label: "Daily API users" },
+export type Stats = {
+  originalRepos: number;
+  upstreamPrs: number;
+  languages: number;
+  years: number;
+};
+
+export const STAT_LABELS: { key: keyof Stats; label: string }[] = [
+  { key: "originalRepos", label: "original repos" },
+  { key: "upstreamPrs", label: "upstream PRs" },
+  { key: "languages", label: "languages used" },
+  { key: "years", label: "years shipping" },
 ];
+
+/** Last verified against the GitHub API on 2026-09-27. */
+export const STATS_FALLBACK: Stats = {
+  originalRepos: 183,
+  upstreamPrs: 104,
+  languages: 11,
+  years: 4,
+};
 
 export const BENTO = [
   {
@@ -249,7 +268,7 @@ export const BENTO = [
   {
     id: "realtime",
     title: "Real-time",
-    desc: "WebSockets, WebRTC, live dashboards.",
+    desc: "WebSockets, live race sync, dashboards.",
     span: "sm",
     accent: "#2997ff",
   },

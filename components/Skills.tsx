@@ -107,12 +107,11 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
                   marginBottom: 28,
                 }}
               >
-                Final-year CS student at{" "}
-                <span style={{ color: "#94a3b8" }}>SRMS CETR, Bareilly</span>{" "}
-                specializing in Agentic AI and backend systems. Built auth
-                microservices serving{" "}
-                <span style={{ color: "#94a3b8" }}>5,000+ daily users</span> and
-                reduced DB load by 60% with Redis caching.
+                Computer Science at{" "}
+                <span style={{ color: "#94a3b8" }}>SRMS CETR, Bareilly</span>,
+                focused on agentic AI and backend systems. I ship the whole
+                loop — schema, API, agent, UI — and keep it running in
+                production.
               </p>
               <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
                 {[

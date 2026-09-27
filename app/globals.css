@@ -1601,6 +1601,10 @@ a,
   border-right: 1px solid #ffffff08;
   min-height: 320px;
 }
+.case-preview-img {
+  object-fit: cover;
+  object-position: top center;
+}
 .case-preview-chrome {
   display: flex;
   align-items: center;

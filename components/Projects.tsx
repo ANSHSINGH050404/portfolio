@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
+
 import { PROJECTS, type Project } from "../constants";
 import { SpotlightCard } from "./SpotlightCard";
 import { VhsBurst } from "./VhsBurst";
@@ -11,17 +13,32 @@ interface ProjectsProps {
 }
 
 function PreviewMock({ project }: { project: Project }) {
+  const { image, label, gradient } = project.preview;
+
+  if (image) {
+    return (
+      <div className="case-preview" style={{ background: gradient }}>
+        <Image
+          src={image}
+          alt={`${project.title} — ${project.subtitle}`}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="case-preview-img"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className="case-preview"
-      style={{ background: project.preview.gradient }}
+      style={{ background: gradient }}
       aria-hidden
     >
       <div className="case-preview-chrome">
         <span />
         <span />
         <span />
-        <div className="case-preview-url">{project.title.toLowerCase()}.app</div>
       </div>
       <div className="case-preview-body">
         <div
@@ -36,7 +53,7 @@ function PreviewMock({ project }: { project: Project }) {
               background: `${project.accent}12`,
             }}
           >
-            {project.preview.label}
+            {label}
           </div>
           <div className="case-preview-lines">
             <div style={{ width: "72%", background: `${project.accent}55` }} />
