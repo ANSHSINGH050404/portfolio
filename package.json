@@ -12,6 +12,7 @@
     "axe": "bun scripts/axe-check.ts"
   },
   "dependencies": {
+    "@databuddy/sdk": "^3.2.1",
     "cuelume": "^0.2.2",
     "next": "16.1.6",
     "react": "19.2.3",

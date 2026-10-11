@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { track } from "@databuddy/sdk";
 import { useReveal } from "../hooks/useReveal";
 import { SITE } from "../constants";
 import { SpotlightCard } from "./SpotlightCard";
@@ -9,6 +10,7 @@ export function ResumeDownload() {
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = () => {
+    track("resume_downloaded", { location: "resume_section" });
     setDownloading(true);
     const link = document.createElement("a");
     link.href = SITE.resumePath;

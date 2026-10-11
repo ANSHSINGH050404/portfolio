@@ -1,4 +1,5 @@
 "use client";
+import { track } from "@databuddy/sdk";
 import { SITE } from "../constants";
 import { useToast } from "./Toast";
 
@@ -11,6 +12,7 @@ export function Contact({ visible, ctaRef }: ContactProps) {
   const toast = useToast();
 
   const copyEmail = async () => {
+    track("email_copied", { location: "contact" });
     try {
       await navigator.clipboard.writeText(SITE.email);
       toast("Email copied");
@@ -100,7 +102,11 @@ export function Contact({ visible, ctaRef }: ContactProps) {
             flexWrap: "wrap",
           }}
         >
-          <a href={`mailto:${SITE.email}`} className="btn-primary">
+          <a
+            href={`mailto:${SITE.email}`}
+            className="btn-primary"
+            onClick={() => track("contact_initiated", { method: "email" })}
+          >
             Send a message
           </a>
           <a
@@ -108,6 +114,7 @@ export function Contact({ visible, ctaRef }: ContactProps) {
             target="_blank"
             rel="noreferrer"
             className="btn-ghost"
+            onClick={() => track("contact_initiated", { method: "github" })}
           >
             GitHub
           </a>
@@ -116,6 +123,7 @@ export function Contact({ visible, ctaRef }: ContactProps) {
             target="_blank"
             rel="noreferrer"
             className="btn-ghost"
+            onClick={() => track("contact_initiated", { method: "linkedin" })}
           >
             LinkedIn
           </a>
