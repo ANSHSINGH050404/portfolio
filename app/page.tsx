@@ -83,6 +83,17 @@ function PortfolioInner() {
 
   return (
     <>
+      {/* Without JavaScript the loader never dismisses and every `.fi` reveal
+          stays at opacity 0, so the page renders as a black screen. These
+          rules undo both, so the content is readable and crawlable. */}
+      <noscript>
+        <style>{`
+          .loader-screen { display: none !important; }
+          .fi { opacity: 1 !important; transform: none !important; }
+          .slot-title { opacity: 1 !important; }
+        `}</style>
+      </noscript>
+
       {showLoader && <Loader onDone={onLoaderDone} />}
 
       <a href="#main" className="skip-link">
