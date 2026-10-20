@@ -31,16 +31,20 @@ type GhRepo = { name: string; full_name: string; fork: boolean; language: string
 type GhSearchPage = { total_count: number; items: unknown[] };
 
 async function fetchStats(): Promise<Stats> {
+  // `type=public` and `is:public` are not optional. A request authenticated
+  // with a token belonging to the author can see their private repositories
+  // and the pull requests opened against them. Pinning every query to public
+  // data means adding a token to the deployment cannot publish private work.
   const [user, page1, page2, page3, prSearch, mergedSearch] = await Promise.all([
     gh<GhUser>(`${API}/users/${GITHUB_USER}`),
-    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=1`),
-    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=2`),
-    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=3`),
+    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=1&type=public`),
+    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=2&type=public`),
+    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=3&type=public`),
     gh<GhSearchPage>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+-user:${GITHUB_USER}&per_page=1`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+-user:${GITHUB_USER}+is:public&per_page=1`,
     ),
     gh<GhSearchPage>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged+-user:${GITHUB_USER}&per_page=1`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged+-user:${GITHUB_USER}+is:public&per_page=1`,
     ),
   ]);
 
