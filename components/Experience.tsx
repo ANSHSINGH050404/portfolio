@@ -15,8 +15,8 @@ export function Experience() {
           <div className="section-label">Journey</div>
           <h2 className="section-title">
             Experience
-            <br />
-            <span className="outline">and path</span>
+            <br />{" "}
+            <span className="section-title-outline">and path</span>
           </h2>
         </div>
 

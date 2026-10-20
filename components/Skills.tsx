@@ -34,8 +34,8 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
           <div className="section-label">Capabilities</div>
           <h2 className="section-title">
             Skills
-            <br />
-            <span className="outline">and tools</span>
+            <br />{" "}
+            <span className="section-title-outline">and tools</span>
           </h2>
         </div>
 

@@ -10,6 +10,7 @@ const LINKS = [
   { label: "Path", href: "#experience" },
   { label: "GitHub", href: "#github" },
   { label: "PRs", href: "#prs" },
+  { label: "Writing", href: "/blog" },
   { label: "Contact", href: "#contact" },
 ];
 

@@ -22,7 +22,7 @@ export function Bento() {
         >
           <div className="section-label">What I do</div>
           <h2 className="section-title">
-            Built for <span className="outline">impact</span>
+            Built for <span className="section-title-outline">impact</span>
           </h2>
         </div>
 

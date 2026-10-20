@@ -1,4 +1,5 @@
 import { SITE, PROJECTS, STACK_PILLS } from "../../constants";
+import { POSTS } from "../../constants/posts";
 
 /**
  * llms.txt — a plain-text summary for AI crawlers and answer engines.
@@ -39,6 +40,10 @@ ${projects}
 ## Stack
 
 ${STACK_PILLS.join(", ")}
+
+## Writing
+
+${POSTS.map((post) => `- ${post.title} — ${post.summary}\n  ${SITE.url}/blog/${post.slug}`).join("\n")}
 
 ## Notes
 

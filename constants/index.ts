@@ -112,20 +112,20 @@ export const PROJECTS: Project[] = [
     title: "TypeRace",
     subtitle: "Real-Time Multiplayer Typing Racer",
     desc: "Live typing races over WebSockets — create a room, share the code, and race in real time while a custom typing engine scores WPM and accuracy per keystroke against a persistent global leaderboard.",
-    stack: ["Next.js", "TypeScript", "Socket.IO", "Express", "MongoDB"],
+    stack: ["Next.js", "TypeScript", "Cloudflare Workers", "Durable Objects", "PartySocket"],
     accent: "#2997ff",
     year: "2026",
     link: "https://type-race-two.vercel.app/",
     featured: false,
-    metric: "Realtime · Rooms · Leaderboard",
+    metric: "Realtime · Durable Objects · 1v1",
     problem:
       "Typing tests are single-player — there is no fair way to race someone live, because keystroke timing has to stay in sync across every client in the room.",
     approach:
-      "Express 5 + Socket.IO rooms broadcast per-keystroke progress so every racer sees live positions; a custom engine computes WPM/accuracy on the client and Mongoose persists each result into a global leaderboard.",
+      "A Cloudflare Durable Object owns each room and keeps its state authoritative; PartySocket carries progress over a WebSocket, and a shared scoring module computes WPM and accuracy from the same formula on both sides.",
     result:
-      "Room-code races with live opponent progress, a ready-up/rematch flow, and a persistent leaderboard — Next.js client on Vercel, socket server on Render, MongoDB behind it.",
+      "Room-link 1v1 races with live opponent progress, a ready-up countdown and a rematch in the same room — Next.js client on Vercel, room worker on Cloudflare, no database at all.",
     preview: {
-      label: "Race · Live · Leaderboard",
+      label: "Race · Live · Durable Objects",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
       image: "/projects/03.webp",
     },
@@ -136,7 +136,7 @@ export const PROJECTS: Project[] = [
     title: "Omni Search MCP",
     subtitle: "Deep-Web Research MCP Server",
     desc: "A Model Context Protocol server plus web client for agentic research — search the web, read URLs, run deep-research passes, then return structured mind maps and summaries instead of raw text.",
-    stack: ["Python", "FastAPI", "MCP", "Next.js"],
+    stack: ["Python", "FastMCP", "MCP", "Next.js"],
     accent: "#2997ff",
     year: "2026",
     link: "https://omni-search-mcp-frontend.vercel.app/",
@@ -145,7 +145,7 @@ export const PROJECTS: Project[] = [
     problem:
       "Agents and chat UIs can search, but results come back as unstructured text — you can see what was found, never how the sources relate to each other.",
     approach:
-      "A Python MCP server exposes search, fetch, research and summarise tools over a FastAPI layer; the Next.js client turns the returned research graph into an interactive mind map.",
+      "A FastMCP server exposes four tools over the Model Context Protocol — search, read, deep research and summarise — backed by Serper for search, Jina Reader for clean page text and Gemini for synthesis.",
     result:
       "A Dockerised MCP server wired to a web client that returns a navigable mind map instead of a wall of text — live in production.",
     preview: {
