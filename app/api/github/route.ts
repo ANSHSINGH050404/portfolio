@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { GITHUB_USER } from "../../../constants";
+import { GITHUB_USER, PROJECTS } from "../../../constants";
 
 /**
  * One cached fan-out over the GitHub API for everything below the fold
@@ -108,6 +108,81 @@ export type GhTopRepo = {
   updated_at: string;
 };
 
+/**
+ * Facts about the repository behind a project, so the card can show what is
+ * verifiable rather than what sounds good.
+ */
+export type GhProjectRepo = {
+  /** Project id in `constants`. */
+  id: string;
+  /** Repository name, or null when the project has no public source. */
+  repo: string | null;
+  html_url: string | null;
+  language: string | null;
+  stars: number;
+  /** ISO date of the last push, or null when there is no repository. */
+  pushedAt: string | null;
+  /** Whether the project's live deployment answered. */
+  live: boolean;
+  /** Status code the live deployment returned. */
+  liveStatus: number | null;
+};
+
+/**
+ * Whether a project's live deployment is actually serving. Checked from the
+ * server so the card can say "live" only when it is true.
+ */
+async function checkLive(url: string): Promise<{ live: boolean; status: number | null }> {
+  try {
+    const res = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+      signal: AbortSignal.timeout(8000),
+      headers: { "User-Agent": `${GITHUB_USER}-portfolio` },
+    });
+    return { live: res.ok, status: res.status };
+  } catch {
+    return { live: false, status: null };
+  }
+}
+
+async function buildProjectRepos(): Promise<GhProjectRepo[]> {
+  const projects = PROJECTS;
+  if (projects.length === 0) return [];
+
+  const results = await Promise.all(
+    projects.map(async (project) => {
+      // The repository is optional: a project with no public source still has
+      // a deployment whose status can be checked.
+      const repoName = project.repo;
+      const [repo, live] = await Promise.all([
+        repoName
+          ? gh<{
+              html_url: string;
+              language: string | null;
+              stargazers_count: number;
+              pushed_at: string;
+            }>(`${API}/repos/${GITHUB_USER}/${repoName}`).catch(() => null)
+          : Promise.resolve(null),
+        checkLive(project.link),
+      ]);
+
+      return {
+        id: project.id,
+        repo: repoName ?? null,
+        html_url: repo?.html_url ?? null,
+        language: repo?.language ?? null,
+        stars: repo?.stargazers_count ?? 0,
+        pushedAt: repo?.pushed_at ?? null,
+        live: live.live,
+        liveStatus: live.status,
+      } satisfies GhProjectRepo;
+    }),
+  );
+
+  return results;
+}
+
 export type GhPrCard = {
   id: string;
   repo: string;
@@ -129,6 +204,7 @@ export type GithubPayload = {
   prTotal: number;
   /** Authored PRs that were actually merged into someone else's repository. */
   prMergedTotal: number;
+  projectRepos: GhProjectRepo[];
 };
 
 async function build(): Promise<GithubPayload> {
@@ -214,6 +290,8 @@ async function build(): Promise<GithubPayload> {
     new Date().getFullYear() - new Date(user.created_at).getFullYear(),
   );
 
+  const projectRepos = await buildProjectRepos();
+
   return {
     ok: true,
     // Projected — GitHub's user object is ~4 KB of fields nothing renders.
@@ -232,6 +310,7 @@ async function build(): Promise<GithubPayload> {
     prs,
     prTotal: prSearch.total_count,
     prMergedTotal: mergedSearch.total_count,
+    projectRepos,
   };
 }
 
