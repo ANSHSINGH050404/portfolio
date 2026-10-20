@@ -28,14 +28,7 @@ async function gh<T>(url: string): Promise<T> {
 
 type GhUser = { created_at: string };
 type GhRepo = { name: string; full_name: string; fork: boolean; language: string | null };
-type GhSearchItem = { repository_url: string };
-type GhSearchPage = { total_count: number; items: GhSearchItem[] };
-
-/** Owner segment of a `repository_url`, lowercased for comparison. */
-function ownerOf(repositoryUrl: string): string {
-  const match = /\/repos\/([^/]+)\//i.exec(repositoryUrl);
-  return match ? match[1].toLowerCase() : "";
-}
+type GhSearchPage = { total_count: number; items: unknown[] };
 
 async function fetchStats(): Promise<Stats> {
   const [user, page1, page2, page3, prSearch, mergedSearch] = await Promise.all([
@@ -44,40 +37,16 @@ async function fetchStats(): Promise<Stats> {
     gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=2`),
     gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=3`),
     gh<GhSearchPage>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr&per_page=100&page=1`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+-user:${GITHUB_USER}&per_page=1`,
     ),
     gh<GhSearchPage>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged&per_page=1`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged+-user:${GITHUB_USER}&per_page=1`,
     ),
   ]);
 
   const repos = [...page1, ...page2, ...page3];
   const own = repos.filter((r) => !r.fork);
   const languages = new Set(own.map((r) => r.language).filter(Boolean));
-
-  // The search API caps at 1,000 results but paginates; pull every page the
-  // total implies so the count cannot silently under-report.
-  const pages = Math.min(
-    10,
-    Math.ceil(Math.max(prSearch.total_count, prSearch.items.length) / 100),
-  );
-  const rest =
-    pages > 1
-      ? await Promise.all(
-          Array.from({ length: pages - 1 }, (_, i) =>
-            gh<GhSearchPage>(
-              `${API}/search/issues?q=author:${GITHUB_USER}+type:pr&per_page=100&page=${i + 2}`,
-            ),
-          ),
-        )
-      : [];
-  const prItems = [...prSearch.items, ...rest.flatMap((p) => p.items)];
-
-  // Compare the owner case-insensitively. GitHub returns the owner segment
-  // lowercased in some search responses, so a case-sensitive prefix match
-  // against the display-cased username let own-repo PRs through as "upstream".
-  const self = GITHUB_USER.toLowerCase();
-  const upstream = prItems.filter((item) => ownerOf(item.repository_url) !== self);
 
   const years = Math.max(
     1,
@@ -86,7 +55,9 @@ async function fetchStats(): Promise<Stats> {
 
   return {
     originalRepos: own.length,
-    upstreamPrs: upstream.length,
+    // The `-user:` qualifier restricts the search to repositories the author
+    // does not own, so these counts describe upstream work only.
+    upstreamPrs: prSearch.total_count,
     mergedPrs: mergedSearch.total_count,
     languages: languages.size,
     years,
