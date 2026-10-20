@@ -243,7 +243,7 @@ export const STAT_LABELS: {
  */
 export const STATS_FALLBACK: Stats = {
   originalRepos: 186,
-  upstreamPrs: 122,
+  upstreamPrs: 125,
   mergedPrs: 25,
   languages: 11,
   years: 4,
