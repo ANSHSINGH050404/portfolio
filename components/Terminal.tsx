@@ -14,7 +14,7 @@ import { useSound } from "../hooks/useSound";
 type Line = { type: "in" | "out" | "err" | "sys"; text: string };
 
 const WELCOME: Line[] = [
-  { type: "sys", text: "ansh.dev terminal v1.0 — type `help` to begin" },
+  { type: "sys", text: `${SITE.host} terminal v1.0 — type \`help\` to begin` },
   { type: "sys", text: "hint: open anytime with backtick `  or  ⌘K → Open terminal" },
 ];
 
@@ -64,7 +64,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
       if (!cmd) return;
       setHistory((h) => [cmd, ...h].slice(0, 40));
       setHistIdx(-1);
-      push({ type: "in", text: `guest@ansh.dev:~$ ${cmd}` });
+      push({ type: "in", text: `guest@${SITE.host}:~$ ${cmd}` });
 
       const [base, ...args] = cmd.split(/\s+/);
       const name = base.toLowerCase();
@@ -263,7 +263,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
             <span className="term-dot yellow" />
             <span className="term-dot green" />
           </div>
-          <span className="term-title">guest@ansh.dev — zsh</span>
+          <span className="term-title">guest@{SITE.host} - zsh</span>
           <button type="button" className="term-close-btn" onClick={onClose}>
             ESC
           </button>
@@ -282,7 +282,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
             </div>
           ))}
           <form onSubmit={onSubmit} className="term-prompt">
-            <span className="term-ps1">guest@ansh.dev:~$</span>
+            <span className="term-ps1">guest@{SITE.host}:~$</span>
             <input
               ref={inputRef}
               value={input}
