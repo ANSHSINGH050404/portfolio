@@ -50,8 +50,13 @@ export type Project = {
   problem: string;
   approach: string;
   result: string;
-  metrics: { label: string; value: string }[];
   preview: { label: string; gradient: string; image?: string };
+  /**
+   * The public repository behind the project, when one exists. The metrics
+   * shown on the card are derived from it — language, last commit, stars —
+   * so they stay true instead of being claims that drift.
+   */
+  repo?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -72,12 +77,7 @@ export const PROJECTS: Project[] = [
       "Node-based visual canvas (Open, Extract, Observe, Agent, HTTP, Condition) driven by natural language, with live run status and Browserbase session replay for teams.",
     result:
       "Shipped a full SaaS loop: org workspaces, free plan (3 workflows / 50 runs), multiplayer canvas, Pro agent + billing — live in production.",
-    metrics: [
-      { label: "Builder", value: "Visual" },
-      { label: "Runs", value: "Live + Replay" },
-      { label: "Nodes", value: "Agent · Extract" },
-      { label: "Status", value: "Live" },
-    ],
+    repo: "Browseflow-AI-browser-workflows",
     preview: {
       label: "Flow · Browser · Agents",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
@@ -101,12 +101,6 @@ export const PROJECTS: Project[] = [
       "Gemini-powered path builder + resume analyzer on a serverless Next.js stack (Drizzle + Neon) with structured outputs and actionable plans.",
     result:
       "Shipped a full product loop: upload resume → analysis → personalized path — live in production.",
-    metrics: [
-      { label: "Stack", value: "Full AI SaaS" },
-      { label: "AI", value: "Gemini" },
-      { label: "DB", value: "Neon PG" },
-      { label: "Status", value: "Live" },
-    ],
     preview: {
       label: "Career Path · Resume AI",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
@@ -130,17 +124,12 @@ export const PROJECTS: Project[] = [
       "Express 5 + Socket.IO rooms broadcast per-keystroke progress so every racer sees live positions; a custom engine computes WPM/accuracy on the client and Mongoose persists each result into a global leaderboard.",
     result:
       "Room-code races with live opponent progress, a ready-up/rematch flow, and a persistent leaderboard — Next.js client on Vercel, socket server on Render, MongoDB behind it.",
-    metrics: [
-      { label: "Transport", value: "Socket.IO" },
-      { label: "Rooms", value: "Code-based" },
-      { label: "Scoring", value: "WPM · Acc" },
-      { label: "Status", value: "Live" },
-    ],
     preview: {
       label: "Race · Live · Leaderboard",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
       image: "/projects/03.webp",
     },
+    repo: "Type-Racer",
   },
   {
     id: "04",
@@ -159,17 +148,12 @@ export const PROJECTS: Project[] = [
       "A Python MCP server exposes search, fetch, research and summarise tools over a FastAPI layer; the Next.js client turns the returned research graph into an interactive mind map.",
     result:
       "A Dockerised MCP server wired to a web client that returns a navigable mind map instead of a wall of text — live in production.",
-    metrics: [
-      { label: "Protocol", value: "MCP" },
-      { label: "Tools", value: "Search · Fetch" },
-      { label: "Output", value: "Mind map" },
-      { label: "Status", value: "Live" },
-    ],
     preview: {
       label: "Search · Research · Maps",
       gradient: "linear-gradient(180deg, #1c1c1e 0%, #0d0d0f 100%)",
       image: "/projects/04.webp",
     },
+    repo: "omni-search-mcp-frontend",
   },
 ];
 

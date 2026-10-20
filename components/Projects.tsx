@@ -2,10 +2,11 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import { PROJECTS, type Project } from "../constants";
+import { GITHUB_USER, PROJECTS, type Project } from "../constants";
 import { SpotlightCard } from "./SpotlightCard";
 import { VhsBurst } from "./VhsBurst";
 import { FlashlightPhrase } from "./FlashlightPhrase";
+import { ProjectFactsList } from "./ProjectFacts";
 
 interface ProjectsProps {
   visible: boolean;
@@ -155,17 +156,9 @@ function CaseStudyCard({
           <div className="case-sub">{project.subtitle}</div>
           <p className="case-desc">{project.desc}</p>
 
-          {/* Metric chips */}
-          <ul className="case-metrics plain-list" role="list">
-            {project.metrics.map((m) => (
-              <li key={m.label} className="case-metric">
-                <div className="case-metric-val" style={{ color: project.accent }}>
-                  {m.value}
-                </div>
-                <div className="case-metric-label">{m.label}</div>
-              </li>
-            ))}
-          </ul>
+          {/* Verified facts: the deployment status and the repository behind
+              the project, checked at request time rather than asserted. */}
+          <ProjectFactsList projectId={project.id} accent={project.accent} />
 
           <div className="case-stack">
             {project.stack.map((s) => (
@@ -241,6 +234,28 @@ function CaseStudyCard({
             />
             View live
           </a>
+
+          {project.repo && (
+            <a
+              href={`https://github.com/${GITHUB_USER}/${project.repo}`}
+              target="_blank"
+              rel="noreferrer"
+              className="case-link"
+              data-hover
+              style={{ color: "var(--muted)", marginLeft: 20 }}
+            >
+              <span
+                style={{
+                  width: 28,
+                  height: 1,
+                  background: "currentColor",
+                  boxShadow: "none",
+                  display: "inline-block",
+                }}
+              />
+              Source
+            </a>
+          )}
         </div>
       </div>
 
