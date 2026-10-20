@@ -7,7 +7,8 @@ import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { PROJECTS, SITE, STACK_PILLS } from "../constants";
+import { GITHUB_USER, PROJECTS, SITE, STACK_PILLS, type Stats } from "../constants";
+import { POSTS } from "../constants/posts";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useSound } from "../hooks/useSound";
 
@@ -76,13 +77,17 @@ export function Terminal({ open, onClose }: TerminalProps) {
             { type: "out", text: "Available commands:" },
             { type: "out", text: "  help          Show this list" },
             { type: "out", text: "  whoami        Who I am" },
+            { type: "out", text: "  whoami --json Machine-readable profile" },
             { type: "out", text: "  about         Short bio" },
             { type: "out", text: "  skills        Tech stack" },
+            { type: "out", text: "  stats         Live numbers from GitHub" },
             { type: "out", text: "  projects      List projects" },
-            { type: "out", text: "  open <id>     Open project (01, 02, 03)" },
+            { type: "out", text: "  open <id>     Open project (01, 02, 03, 04)" },
+            { type: "out", text: "  blog          List writing" },
             { type: "out", text: "  contact       Email + socials" },
             { type: "out", text: "  hire          Get hire-ready links" },
             { type: "out", text: "  resume        Download CV" },
+            { type: "out", text: "  resume --json Machine-readable resume link" },
             { type: "out", text: "  email         Copy email to clipboard" },
             { type: "out", text: "  github        Open GitHub" },
             { type: "out", text: "  sound         Toggle click sounds" },
@@ -92,10 +97,33 @@ export function Terminal({ open, onClose }: TerminalProps) {
           );
           break;
         case "whoami":
-          push({
-            type: "out",
-            text: `${SITE.name} — Full-Stack & Agentic AI Engineer · ${SITE.location}`,
-          });
+          if (args.includes("--json")) {
+            push({
+              type: "out",
+              text: JSON.stringify(
+                {
+                  name: SITE.name,
+                  title: "Full-Stack & Agentic AI Engineer",
+                  location: SITE.location,
+                  email: SITE.email,
+                  url: SITE.url,
+                  links: {
+                    github: SITE.socials.github,
+                    linkedin: SITE.socials.linkedin,
+                    twitter: SITE.socials.twitter,
+                  },
+                  stack: STACK_PILLS,
+                },
+                null,
+                2,
+              ),
+            });
+          } else {
+            push({
+              type: "out",
+              text: `${SITE.name} — Full-Stack & Agentic AI Engineer · ${SITE.location}`,
+            });
+          }
           break;
         case "about":
           push(
@@ -113,6 +141,54 @@ export function Terminal({ open, onClose }: TerminalProps) {
         case "stack":
           push({ type: "out", text: STACK_PILLS.join(" · ") });
           break;
+        case "stats":
+          push({ type: "sys", text: "Fetching live numbers…" });
+          fetch("/api/stats")
+            .then((res) => (res.ok ? res.json() : null))
+            .then((stats: Stats | null) => {
+              if (!stats) {
+                push({
+                  type: "err",
+                  text: "Could not reach the stats endpoint. Try again in a moment.",
+                });
+                return;
+              }
+              push(
+                {
+                  type: "out",
+                  text: `  original repos    ${stats.originalRepos}`,
+                },
+                {
+                  type: "out",
+                  text: `  upstream PRs      ${stats.upstreamPrs} (${stats.mergedPrs} merged)`,
+                },
+                {
+                  type: "out",
+                  text: `  languages         ${stats.languages}`,
+                },
+                {
+                  type: "out",
+                  text: `  years shipping    ${stats.years}`,
+                },
+              );
+            })
+            .catch(() => {
+              push({ type: "err", text: "Could not reach the stats endpoint." });
+            });
+          break;
+        case "blog":
+        case "writing":
+          POSTS.forEach((post) => {
+            push({
+              type: "out",
+              text: `  ${post.slug}  ${post.title}  (${post.readingMinutes} min)`,
+            });
+          });
+          push({
+            type: "sys",
+            text: `Read them at ${SITE.url}/blog`,
+          });
+          break;
         case "projects":
         case "ls":
           PROJECTS.forEach((p) => {
@@ -120,6 +196,12 @@ export function Terminal({ open, onClose }: TerminalProps) {
               type: "out",
               text: `  [${p.id}] ${p.title} — ${p.subtitle}  (${p.year})`,
             });
+            if (p.repo) {
+              push({
+                type: "out",
+                text: `       source  github.com/${GITHUB_USER}/${p.repo}`,
+              });
+            }
           });
           push({ type: "sys", text: "Tip: open 01   or   open pathforge" });
           break;
@@ -149,13 +231,51 @@ export function Terminal({ open, onClose }: TerminalProps) {
             { type: "out", text: `github   ${SITE.socials.github}` },
             { type: "out", text: `linkedin ${SITE.socials.linkedin}` },
             { type: "out", text: `location ${SITE.location}` },
+            { type: "out", text: `site     ${SITE.url}` },
+            { type: "out", text: `writing  ${SITE.url}/blog` },
             { type: "sys", text: "Status: OPEN TO WORK" },
           );
           break;
         case "resume":
         case "cv":
-          downloadResume();
-          push({ type: "out", text: "Resume download started." });
+          if (args.includes("--json")) {
+            push({
+              type: "out",
+              text: JSON.stringify(
+                {
+                  name: SITE.name,
+                  title: "Full-Stack & Agentic AI Engineer",
+                  location: SITE.location,
+                  email: SITE.email,
+                  resumeUrl: `${SITE.url}${SITE.resumePath}`,
+                  links: {
+                    github: SITE.socials.github,
+                    linkedin: SITE.socials.linkedin,
+                    twitter: SITE.socials.twitter,
+                  },
+                  projects: PROJECTS.map((p) => ({
+                    title: p.title,
+                    subtitle: p.subtitle,
+                    year: p.year,
+                    stack: p.stack,
+                    live: p.link,
+                    source: p.repo
+                      ? `https://github.com/${GITHUB_USER}/${p.repo}`
+                      : null,
+                  })),
+                  writing: POSTS.map((post) => ({
+                    title: post.title,
+                    url: `${SITE.url}/blog/${post.slug}`,
+                  })),
+                },
+                null,
+                2,
+              ),
+            });
+          } else {
+            downloadResume();
+            push({ type: "out", text: "Resume download started." });
+          }
           break;
         case "email":
         case "copy":
