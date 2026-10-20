@@ -129,7 +129,7 @@ body {
   outline-color: var(--fg);
 }
 
-/* Visible to screen readers and text extractors, invisible on screen.
+/* Visually visible to screen readers and text extractors, invisible on screen.
    Used for the real heading text behind decorative animations. */
 .sr-only {
   position: absolute;
@@ -142,6 +142,13 @@ body {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+/* The counting digits are rendered from a data attribute rather than a text
+   node, so the animation's intermediate values never reach text extraction.
+   The real number is rendered alongside in `.sr-only`. */
+.counter-digits::before {
+  content: attr(data-count);
 }
 
 button,

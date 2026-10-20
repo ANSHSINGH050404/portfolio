@@ -213,7 +213,7 @@ export const EXPERIENCE = [
     role: "Open Source Contributor",
     org: "GitHub Community",
     period: "2022 — Present",
-    desc: "Upstream pull requests across TypeScript and Python ecosystems — 122 authored, 59 merged. Building tools others actually use.",
+    desc: "Upstream pull requests across TypeScript and Python ecosystems — 122 opened against other people's repositories, 25 merged. Building tools others actually use.",
     tags: ["OSS", "TypeScript", "Python"],
   },
   {
@@ -253,11 +253,14 @@ export const STAT_LABELS: {
  * Last verified against the GitHub API on 2026-10-20. These are only used
  * when the API is rate-limited or offline — the live numbers come from
  * `/api/stats`.
+ *
+ * `upstreamPrs` and `mergedPrs` count only repositories the author does not
+ * own, matching the `-user:` filter the route applies.
  */
 export const STATS_FALLBACK: Stats = {
-  originalRepos: 185,
+  originalRepos: 186,
   upstreamPrs: 122,
-  mergedPrs: 59,
+  mergedPrs: 25,
   languages: 11,
   years: 4,
 };
