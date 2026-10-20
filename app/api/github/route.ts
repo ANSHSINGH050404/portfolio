@@ -80,6 +80,8 @@ type GhPRItem = {
   html_url: string;
   repository_url: string;
   updated_at: string;
+  /** The search API exposes the merge timestamp on the pull_request sub-object. */
+  pull_request?: { merged_at?: string | null } | null;
 };
 
 export type GhLangStat = {
@@ -102,7 +104,8 @@ export type GhPrCard = {
   repo: string;
   number: number;
   title: string;
-  state: "open" | "closed";
+  /** `merged` and `closed` are distinct outcomes; `open` means still in review. */
+  state: "open" | "merged" | "closed";
   url: string;
   updatedAt: string;
 };
@@ -115,16 +118,25 @@ export type GithubPayload = {
   topRepos: GhTopRepo[];
   prs: GhPrCard[];
   prTotal: number;
+  /** Authored PRs that were actually merged into someone else's repository. */
+  prMergedTotal: number;
 };
 
 async function build(): Promise<GithubPayload> {
-  const [user, page1, page2, page3, prSearch] = await Promise.all([
+  // `-user:` restricts results to repositories the author does not own, which
+  // is what this wall claims to showcase. Filtering the returned items by
+  // owner client-side cannot produce an accurate total, because the search
+  // API's total_count counts own-repo PRs too.
+  const [user, page1, page2, page3, prSearch, mergedSearch] = await Promise.all([
     gh<GhUser>(`${API}/users/${GITHUB_USER}`),
     gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=1&sort=updated`),
     gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=2&sort=updated`),
     gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=3&sort=updated`),
     gh<{ total_count: number; items: GhPRItem[] }>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr&per_page=30&sort=updated&order=desc`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+-user:${GITHUB_USER}&per_page=50&sort=updated&order=desc`,
+    ),
+    gh<{ total_count: number }>(
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged+-user:${GITHUB_USER}&per_page=1`,
     ),
   ]);
 
@@ -164,12 +176,26 @@ async function build(): Promise<GithubPayload> {
       updated_at: r.updated_at,
     }));
 
-  const prs: GhPrCard[] = prSearch.items.map((item) => ({
+  // The `-user:` qualifier above already excludes the author's own repos and
+  // forks. Keep the client-side check as a guard: the search API does not
+  // guarantee the owner segment casing matches the username.
+  const selfOwner = GITHUB_USER.toLowerCase();
+  const upstreamItems = prSearch.items.filter((item) => {
+    const owner = /\/repos\/([^/]+)\//i.exec(item.repository_url)?.[1] ?? "";
+    return owner.toLowerCase() !== selfOwner;
+  });
+
+  const prs: GhPrCard[] = upstreamItems.map((item) => ({
     id: `${item.repository_url}#${item.number}`,
     repo: item.repository_url.replace(`${API}/repos/`, ""),
     number: item.number,
     title: item.title,
-    state: item.state,
+    state:
+      item.state === "open"
+        ? "open"
+        : item.pull_request?.merged_at
+          ? "merged"
+          : "closed",
     url: item.html_url,
     updatedAt: item.updated_at,
   }));
@@ -196,6 +222,7 @@ async function build(): Promise<GithubPayload> {
     topRepos,
     prs,
     prTotal: prSearch.total_count,
+    prMergedTotal: mergedSearch.total_count,
   };
 }
 
