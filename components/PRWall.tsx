@@ -278,8 +278,8 @@ export function PRWall() {
           >
             <h2 className="section-title">
               Pull requests
-              <br />
-              <span className="outline">shipped upstream</span>
+              <br />{" "}
+              <span className="section-title-outline">shipped upstream</span>
             </h2>
             <div
               style={{

@@ -288,8 +288,8 @@ export function Projects({ visible, projRef }: ProjectsProps) {
             <div className="section-label">Selected work</div>
             <h2 className="section-title">
               Featured
-              <br />
-              <span className="outline">projects</span>
+              <br />{" "}
+              <span className="section-title-outline">projects</span>
             </h2>
           </div>
           <p

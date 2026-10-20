@@ -807,9 +807,43 @@ a,
   color: var(--fg);
   letter-spacing: -0.03em;
 }
-.section-title .outline {
+/* Named `section-title-outline` rather than `outline`: Tailwind v4 ships an
+   `outline` utility (outline-style: solid; outline-width: 1px) that would
+   collide with a bare `.outline` class and draw a box around the text. */
+.section-title .section-title-outline {
   color: var(--muted);
   -webkit-text-stroke: 0;
+}
+
+/* ── Blog body ── */
+.post-body code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  padding: 0.1em 0.35em;
+  color: var(--fg);
+}
+.post-body pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+.post-body em {
+  font-style: italic;
+  color: var(--fg);
+}
+.post-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.post-body strong {
+  color: var(--fg);
+  font-weight: 600;
 }
 .section-line {
   position: absolute;

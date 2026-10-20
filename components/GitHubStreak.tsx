@@ -112,8 +112,8 @@ export function GitHubStreak() {
           >
             <h2 className="section-title">
               GitHub
-              <br />
-              <span className="outline">activity</span>
+              <br />{" "}
+              <span className="section-title-outline">activity</span>
             </h2>
             <a
               href={`https://github.com/${GITHUB_USER}`}
