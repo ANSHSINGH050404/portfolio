@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { PROJECTS, SITE } from "../constants";
+import { POSTS } from "../constants/posts";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useToast } from "./Toast";
 import { useSound } from "../hooks/useSound";
@@ -185,6 +186,28 @@ export function CommandPalette({
           onOpenTerminal();
         },
       },
+      {
+        id: "go-blog",
+        label: "Read the writing",
+        hint: `${POSTS.length} posts`,
+        group: "Navigate",
+        keywords: "blog posts articles writing notes",
+        run: () => {
+          onOpenChange(false);
+          window.location.href = "/blog";
+        },
+      },
+      ...POSTS.map((post) => ({
+        id: `post-${post.slug}`,
+        label: post.title,
+        hint: `${post.readingMinutes} min`,
+        group: "Writing",
+        keywords: `${post.summary} ${post.tags.join(" ")}`,
+        run: () => {
+          onOpenChange(false);
+          window.location.href = `/blog/${post.slug}`;
+        },
+      })),
       ...PROJECTS.map((p) => ({
         id: `proj-${p.id}`,
         label: `Open ${p.title}`,
