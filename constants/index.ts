@@ -12,9 +12,14 @@ export const SITE = {
    * instead of at a URL that does not serve this portfolio.
    */
   url: "https://anshdev-tau.vercel.app",
+  /**
+   * Hostname shown in the terminal prompt and window title. Derived from the
+   * canonical origin so it always names the host actually serving the page.
+   */
+  host: "anshdev-tau.vercel.app",
   email: "anshsinghapa@gmail.com",
   location: "Noida, India",
-  resumePath: "/Resume-feb@11.pdf",
+  resumePath: "/resume.pdf",
   resumeFileName: "Ansh-Kumar-Singh-Resume.pdf",
   socials: {
     github: `https://github.com/ANSHSINGH050404`,
