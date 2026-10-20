@@ -212,16 +212,21 @@ async function build(): Promise<GithubPayload> {
   // is what this wall claims to showcase. Filtering the returned items by
   // owner client-side cannot produce an accurate total, because the search
   // API's total_count counts own-repo PRs too.
+  //
+  // `is:public` is the important one. A request authenticated with a token
+  // belonging to the author can see pull requests from their own private
+  // repositories, which would publish private work on a public page. Every
+  // query below is pinned to public data so that stays impossible.
   const [user, page1, page2, page3, prSearch, mergedSearch] = await Promise.all([
     gh<GhUser>(`${API}/users/${GITHUB_USER}`),
-    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=1&sort=updated`),
-    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=2&sort=updated`),
-    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=3&sort=updated`),
+    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=1&sort=updated&type=public`),
+    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=2&sort=updated&type=public`),
+    gh<GhRepo[]>(`${API}/users/${GITHUB_USER}/repos?per_page=100&page=3&sort=updated&type=public`),
     gh<{ total_count: number; items: GhPRItem[] }>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+-user:${GITHUB_USER}&per_page=50&sort=updated&order=desc`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+-user:${GITHUB_USER}+is:public&per_page=50&sort=updated&order=desc`,
     ),
     gh<{ total_count: number }>(
-      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged+-user:${GITHUB_USER}&per_page=1`,
+      `${API}/search/issues?q=author:${GITHUB_USER}+type:pr+is:merged+-user:${GITHUB_USER}+is:public&per_page=1`,
     ),
   ]);
 
