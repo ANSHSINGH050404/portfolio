@@ -15,6 +15,7 @@ export function Counter({
   useEffect(() => {
     if (!visible) return;
     let current = 0;
+    let raf = 0;
     const step = () => {
       current += Math.ceil(target / 35);
       if (current >= target) {
@@ -22,9 +23,13 @@ export function Counter({
         return;
       }
       setVal(current);
-      requestAnimationFrame(step);
+      raf = requestAnimationFrame(step);
     };
-    requestAnimationFrame(step);
+    raf = requestAnimationFrame(step);
+    // Without this the previous animation keeps running when `target`
+    // changes (fallback -> live stats) and overwrites the newer value with a
+    // stale one — the hero rendered 104 while the API returned 122.
+    return () => cancelAnimationFrame(raf);
   }, [visible, target]);
 
   return (

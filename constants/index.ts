@@ -202,7 +202,7 @@ export const EXPERIENCE = [
     role: "Open Source Contributor",
     org: "GitHub Community",
     period: "2022 — Present",
-    desc: "50+ OSS contributions across TypeScript and Python ecosystems. Building tools others actually use.",
+    desc: "Upstream pull requests across TypeScript and Python ecosystems — 122 authored, 59 merged. Building tools others actually use.",
     tags: ["OSS", "TypeScript", "Python"],
   },
   {
@@ -217,21 +217,36 @@ export const EXPERIENCE = [
 export type Stats = {
   originalRepos: number;
   upstreamPrs: number;
+  mergedPrs: number;
   languages: number;
   years: number;
 };
 
-export const STAT_LABELS: { key: keyof Stats; label: string }[] = [
+export const STAT_LABELS: {
+  key: keyof Stats;
+  label: string;
+  /** Secondary line under the number, e.g. how many of the PRs were merged. */
+  sub?: { key: keyof Stats; label: string };
+}[] = [
   { key: "originalRepos", label: "original repos" },
-  { key: "upstreamPrs", label: "upstream PRs" },
+  {
+    key: "upstreamPrs",
+    label: "upstream PRs",
+    sub: { key: "mergedPrs", label: "merged upstream" },
+  },
   { key: "languages", label: "languages used" },
   { key: "years", label: "years shipping" },
 ];
 
-/** Last verified against the GitHub API on 2026-09-27. */
+/**
+ * Last verified against the GitHub API on 2026-10-20. These are only used
+ * when the API is rate-limited or offline — the live numbers come from
+ * `/api/stats`.
+ */
 export const STATS_FALLBACK: Stats = {
-  originalRepos: 183,
-  upstreamPrs: 104,
+  originalRepos: 185,
+  upstreamPrs: 122,
+  mergedPrs: 59,
   languages: 11,
   years: 4,
 };
