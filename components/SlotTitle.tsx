@@ -22,8 +22,24 @@ function poolFor(ch: string): string[] {
   return out;
 }
 
+/**
+ * The reel has to be tall enough to cover the whole scroll distance.
+ *
+ * `spinCell` scrolls `turns * pool.length` rows plus the offset needed to
+ * land on the target glyph. The original strip held exactly one pool (12
+ * rows) while the animation scrolled up to ~107 rows, so it ran off the end
+ * of its own content and the title rendered blank once the intro finished.
+ *
+ * The strip is periodic (the pool repeated), so the strip can be reset to any
+ * equivalent offset without the rendered content changing.
+ */
+const SPIN_TURNS_MAX = 8;
+const REEL_REPEATS = SPIN_TURNS_MAX + 3;
+
 type Cell = {
   pool: string[];
+  /** The full reel text: the pool repeated, one glyph per line. */
+  reel: string;
   pos: number;
   from: number;
   to: number;
@@ -31,6 +47,12 @@ type Cell = {
   duration: number;
   spinning: boolean;
 };
+
+/** The reel text for a pool: the pool repeated so the scroll never ends. */
+function reelFor(pool: string[]): string {
+  const line = pool.join("\n");
+  return Array.from({ length: REEL_REPEATS }, () => line).join("\n");
+}
 
 const INITIAL_MS = 1250;
 const CLICK_MS = 700;
@@ -78,6 +100,7 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
       const pool = poolFor(ch);
       return {
         pool,
+        reel: reelFor(pool),
         pos: 0,
         from: 0,
         to: 0,
@@ -97,13 +120,15 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
     const h = cellHRef.current || 1;
     for (let i = 0; i < cellsRef.current.length; i++) {
       const cell = cellsRef.current[i];
-      const y = `translateY(${-cell.pos * h}px)`;
+      // The reel repeats the pool, so the visible row is pos % pool length.
+      const row = Math.round(cell.pos) % cell.pool.length;
+      const y = `translateY(${-row * h}px)`;
       const strip = stripRefs.current[i];
       const blurStrip = blurStripRefs.current[i];
-      const sharp = sharpRefs.current[i];
-      const blur = blurRefs.current[i];
       if (strip) strip.style.transform = y;
       if (blurStrip) blurStrip.style.transform = y;
+      const sharp = sharpRefs.current[i];
+      const blur = blurRefs.current[i];
       if (sharp) sharp.style.opacity = "1";
       if (blur) blur.style.opacity = "0";
     }
@@ -115,7 +140,10 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
       if (!cell) return;
       const len = cell.pool.length;
       const now = performance.now() + delayMs;
-      const start = cell.spinning ? Math.round(cell.pos) : Math.round(cell.pos);
+      // The reel repeats the pool, so any offset that is a multiple of the
+      // pool length renders identically. Normalising the start keeps the
+      // scroll inside the reel no matter how many times it is re-spun.
+      const start = Math.round(cell.pos) % len;
       const mod = (((0 - start) % len) + len) % len; // land on pool[0] = target
       cell.from = start;
       cell.to = start + turns * len + mod;
@@ -184,7 +212,11 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
 
         const t = (now - cell.startAt) / cell.duration;
         const h = cellHRef.current || 1;
-        const y = `translateY(${-cell.pos * h}px)`;
+        // The strip repeats the pool, so the visible row is pos % pool length.
+        // Without this the transform scrolls past the end of the strip and
+        // the title renders blank.
+        const row = (p: number) => Math.round(p) % cell.pool.length;
+        const y = `translateY(${-row(cell.pos) * h}px)`;
         const strip = stripRefs.current[i];
         const blurStrip = blurStripRefs.current[i];
         if (strip) strip.style.transform = y;
@@ -194,7 +226,7 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
         if (t >= 1) {
           cell.pos = cell.to;
           cell.spinning = false;
-          const doneY = `translateY(${-cell.pos * h}px)`;
+          const doneY = `translateY(${-row(cell.pos) * h}px)`;
           if (strip) strip.style.transform = doneY;
           if (blurStrip) blurStrip.style.transform = doneY;
           const sharp = sharpRefs.current[i];
@@ -209,7 +241,7 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
         const vel = Math.abs(cell.pos - prevPos) / (dt / 16.67); // glyphs per frame
         const blurAmt = Math.min(1, Math.max(0, (vel - 0.35) / 2.2));
 
-        const movingY = `translateY(${-cell.pos * h}px)`;
+        const movingY = `translateY(${-row(cell.pos) * h}px)`;
         if (strip) strip.style.transform = movingY;
         if (blurStrip) blurStrip.style.transform = movingY;
         const sharp = sharpRefs.current[i];
@@ -269,7 +301,6 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
   return (
     <h1
       className="slot-title"
-      aria-label="Ansh Singh"
       onDoubleClick={onDoubleClick}
       style={{
         margin: 0,
@@ -282,7 +313,15 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
         transition: "opacity 400ms var(--ease)",
       }}
     >
-      <span aria-hidden="true" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
+      {/* The real heading text. The reels below are decorative, so this is the
+          only text a crawler or text extractor sees for the h1 — without it
+          the page's most important heading read as 24 KB of random glyphs. */}
+      <span className="sr-only">Ansh Singh</span>
+
+      <span
+        aria-hidden="true"
+        style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
+      >
         <svg width="0" height="0" aria-hidden="true">
           <defs>
             <filter id="slot-motion-blur" x="-20%" y="-40%" width="140%" height="180%">
@@ -292,123 +331,95 @@ export function SlotTitle({ loaded }: SlotTitleProps) {
         </svg>
       </span>
 
-      {words.map((word, wi) => (
-        <span
-          key={word}
-          style={{
-            display: "block",
-            color: wi === 1 ? "var(--muted)" : "var(--fg)",
-          }}
-        >
-          {word.split("").map((ch) => {
-            idx += 1;
-            const myIdx = idx;
-            const pool = cellsRef.current[myIdx]?.pool ?? [ch];
-            if (ch === " ") {
+      <span aria-hidden="true">
+        {words.map((word, wi) => (
+          <span
+            key={word}
+            style={{
+              display: "block",
+              color: wi === 1 ? "var(--muted)" : "var(--fg)",
+            }}
+          >
+            {word.split("").map((ch) => {
+              idx += 1;
+              const myIdx = idx;
+              const reel = cellsRef.current[myIdx]?.reel ?? ch;
+              if (ch === " ") {
+                return (
+                  <span key={keys[myIdx]} style={{ display: "inline-block", width: "0.3em" }}>
+                    {" "}
+                  </span>
+                );
+              }
               return (
-                <span key={keys[myIdx]} style={{ display: "inline-block", width: "0.3em" }}>
-                  {" "}
+                <span
+                  key={keys[myIdx]}
+                  ref={(el) => {
+                    cellRefs.current[myIdx] = el;
+                  }}
+                  className="slot-cell"
+                  role="presentation"
+                  onClick={() => spinLetter(myIdx)}
+                  style={{
+                    display: "inline-block",
+                    position: "relative",
+                    height: "1.18em",
+                    verticalAlign: "top",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    minWidth: "0.62em",
+                    userSelect: "none",
+                  }}
+                >
+                  {/* sharp layer */}
+                  <span
+                    ref={(el) => {
+                      sharpRefs.current[myIdx] = el;
+                    }}
+                    style={{
+                      display: "block",
+                      opacity: 1,
+                      willChange: "transform, opacity",
+                    }}
+                  >
+                    <span
+                      ref={(el) => {
+                        stripRefs.current[myIdx] = el;
+                      }}
+                      className="slot-strip"
+                      data-reel={reel}
+                    />
+                  </span>
+
+                  {/* motion-blur layer (duplicate, offset-synced via same strip index) */}
+                  <span
+                    ref={(el) => {
+                      blurRefs.current[myIdx] = el;
+                    }}
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "block",
+                      opacity: 0,
+                      filter: "url(#slot-motion-blur)",
+                      pointerEvents: "none",
+                      willChange: "opacity",
+                    }}
+                  >
+                    <span
+                      ref={(el) => {
+                        blurStripRefs.current[myIdx] = el;
+                      }}
+                      className="slot-strip"
+                      data-reel={reel}
+                    />
+                  </span>
                 </span>
               );
-            }
-            return (
-              <span
-                key={keys[myIdx]}
-                ref={(el) => {
-                  cellRefs.current[myIdx] = el;
-                }}
-                className="slot-cell"
-                role="presentation"
-                onClick={() => spinLetter(myIdx)}
-                style={{
-                  display: "inline-block",
-                  position: "relative",
-                  height: "1.18em",
-                  verticalAlign: "top",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  minWidth: "0.62em",
-                  userSelect: "none",
-                }}
-              >
-                {/* sharp layer */}
-                <span
-                  ref={(el) => {
-                    sharpRefs.current[myIdx] = el;
-                  }}
-                  style={{
-                    display: "block",
-                    opacity: 1,
-                    willChange: "transform, opacity",
-                  }}
-                >
-                  <span
-                    ref={(el) => {
-                      stripRefs.current[myIdx] = el;
-                    }}
-                    style={{ display: "block", willChange: "transform" }}
-                  >
-                    {pool.map((g, gi) => (
-                      <span
-                        key={gi}
-                        style={{
-                          display: "block",
-                          height: "1.18em",
-                          lineHeight: "1.18em",
-                          textAlign: "center",
-                        }}
-                      >
-                        {g}
-                      </span>
-                    ))}
-                  </span>
-                </span>
-
-                {/* motion-blur layer (duplicate, offset-synced via same strip index) */}
-                <span
-                  ref={(el) => {
-                    blurRefs.current[myIdx] = el;
-                  }}
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "block",
-                    opacity: 0,
-                    filter: "url(#slot-motion-blur)",
-                    pointerEvents: "none",
-                    willChange: "opacity",
-                  }}
-                >
-                  <span
-                    ref={(el) => {
-                      blurStripRefs.current[myIdx] = el;
-                    }}
-                    style={{ display: "block", willChange: "transform" }}
-                  >
-                    {pool.map((g, gi) => (
-                      <span
-                        key={gi}
-                        style={{
-                          display: "block",
-                          height: "1.18em",
-                          lineHeight: "1.18em",
-                          textAlign: "center",
-                        }}
-                      >
-                        {g}
-                      </span>
-                    ))}
-                  </span>
-                </span>
-              </span>
-            );
-          })}
-        </span>
-      ))}
-
-      <span className="slot-hint" aria-hidden="true" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
-        Click a letter to spin · double-click to replay
+            })}
+          </span>
+        ))}
       </span>
     </h1>
   );

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Databuddy } from "@databuddy/sdk/react";
+import { SITE } from "../constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,13 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://anshdev-tau.vercel.app"),
+  metadataBase: new URL(SITE.url),
   title: {
-    default: "Ansh Singh — Full-Stack & Agentic AI Engineer",
+    default: SITE.title,
     template: "%s · Ansh Singh",
   },
-  description:
-    "Full-stack and agentic AI engineer building production AI products — agentic systems, Next.js, and scalable backends.",
+  description: SITE.description,
   keywords: [
     "Ansh Singh",
     "Full-Stack Developer",
@@ -30,21 +30,21 @@ export const metadata: Metadata = {
     "LangChain",
     "TypeScript",
   ],
-  authors: [{ name: "Ansh Kumar Singh" }],
-  creator: "Ansh Kumar Singh",
+  authors: [{ name: SITE.name }],
+  creator: SITE.name,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Ansh Singh — Full-Stack & Agentic AI Engineer",
-    description:
-      "I build scalable APIs, multi-step LLM workflows, and production-ready AI applications end-to-end.",
+    url: SITE.url,
+    title: SITE.title,
+    description: SITE.description,
     siteName: "Ansh Singh Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ansh Singh — Full-Stack & Agentic AI Engineer",
-    description:
-      "I build scalable APIs, multi-step LLM workflows, and production-ready AI applications end-to-end.",
+    title: SITE.title,
+    description: SITE.description,
   },
   robots: {
     index: true,

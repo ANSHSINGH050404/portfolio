@@ -6,6 +6,12 @@ export const SITE = {
   title: "Ansh Singh — Full-Stack & Agentic AI Engineer",
   description:
     "Full-stack and agentic AI engineer building production AI products — agentic systems, Next.js, and scalable backends.",
+  /**
+   * Canonical origin. The Vercel project is named `ansh.dev`, but that domain
+   * is owned by someone else, so every absolute URL on the site points here
+   * instead of at a URL that does not serve this portfolio.
+   */
+  url: "https://anshdev-tau.vercel.app",
   email: "anshsinghapa@gmail.com",
   location: "Noida, India",
   resumePath: "/Resume-feb@11.pdf",

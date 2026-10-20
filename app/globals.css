@@ -129,6 +129,21 @@ body {
   outline-color: var(--fg);
 }
 
+/* Visible to screen readers and text extractors, invisible on screen.
+   Used for the real heading text behind decorative animations. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 button,
 a,
 [data-hover] {
@@ -1884,6 +1899,20 @@ a,
 .slot-title .slot-cell span {
   /* keep reel glyphs from inheriting hover color mid-spin oddly */
   transition: color 160ms var(--ease);
+}
+
+/* Reel glyphs live in a data attribute rather than a text node, so a
+   text extractor never sees the scrambled pool. Rendered here instead:
+   the attribute holds the pool repeated, one glyph per line. */
+.slot-title .slot-strip {
+  display: block;
+  white-space: pre;
+  line-height: 1.18em;
+  text-align: center;
+  will-change: transform;
+}
+.slot-title .slot-strip::before {
+  content: attr(data-reel);
 }
 
 /* ── Headline smoke ── */
