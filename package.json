@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "screenshots": "bun scripts/capture-screenshots.ts",
     "og": "bun scripts/generate-og.ts",
-    "axe": "bun scripts/axe-check.ts"
+    "axe": "bun scripts/axe-check.ts",
+    "perf": "bun scripts/perf.ts"
   },
   "dependencies": {
     "@databuddy/sdk": "^3.2.1",

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback, useSyncExternalStore } from "react";
+import { useState, useCallback, useSyncExternalStore, lazy, Suspense } from "react";
 import dynamic from "next/dynamic";
 
 import { Navbar } from "../components/Navbar";
@@ -17,12 +17,32 @@ import { Footer } from "../components/Footer";
 import { Loader } from "../components/Loader";
 import { ScrollProgress } from "../components/ScrollProgress";
 import { ToastProvider } from "../components/Toast";
-import {
-  CommandPalette,
-  useCommandPaletteHotkey,
-} from "../components/CommandPalette";
-import { Terminal, useTerminalHotkey } from "../components/Terminal";
+import { useCommandPaletteHotkey } from "../hooks/useCommandPaletteHotkey";
+import { useTerminalHotkey } from "../hooks/useTerminalHotkey";
 import { SoundProvider } from "../hooks/useSound";
+
+/**
+ * The terminal and the command palette are only ever opened on demand, so
+ * their code should not sit in the initial bundle.
+ *
+ * `next/dynamic` does not help here: in a client component it still emits a
+ * preload for the chunk, so the code is fetched during the initial load
+ * anyway. `React.lazy` defers the import until the component first renders,
+ * which for these two is the first time they are opened.
+ *
+ * The hotkey hooks live in separate modules for the same reason — importing
+ * them from the component files would pull those components straight back
+ * into the initial chunk.
+ */
+const CommandPalette = lazy(() =>
+  import("../components/CommandPalette").then((mod) => ({
+    default: mod.CommandPalette,
+  })),
+);
+
+const Terminal = lazy(() =>
+  import("../components/Terminal").then((mod) => ({ default: mod.Terminal })),
+);
 
 const BackgroundEffect = dynamic(
   () =>
@@ -129,12 +149,22 @@ function PortfolioInner() {
         </div>
       </div>
 
-      <CommandPalette
-        open={cmdOpen}
-        onOpenChange={setCmdOpen}
-        onOpenTerminal={() => setTermOpen(true)}
-      />
-      <Terminal open={termOpen} onClose={() => setTermOpen(false)} />
+      {/* Rendered only once opened, so the chunk loads on first use rather
+          than during the initial page load. */}
+      {cmdOpen && (
+        <Suspense fallback={null}>
+          <CommandPalette
+            open={cmdOpen}
+            onOpenChange={setCmdOpen}
+            onOpenTerminal={() => setTermOpen(true)}
+          />
+        </Suspense>
+      )}
+      {termOpen && (
+        <Suspense fallback={null}>
+          <Terminal open={termOpen} onClose={() => setTermOpen(false)} />
+        </Suspense>
+      )}
     </>
   );
 }
