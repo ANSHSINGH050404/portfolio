@@ -79,6 +79,15 @@ export function Hero({ loaded }: HeroProps) {
       <div className="hero-title-wrap" style={{ position: "relative", marginBottom: 20 }}>
         <SlotTitle loaded={loaded} />
         <HeadlineSmoke enabled={loaded} />
+        {/* Interaction hint for the slot reels. Lives outside the h1 so the
+            heading's text content stays exactly the name. */}
+        <span
+          className="slot-hint"
+          aria-hidden="true"
+          style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
+        >
+          Click a letter to spin · double-click to replay
+        </span>
       </div>
 
       <div
