@@ -150,7 +150,7 @@ export function Hero({ loaded }: HeroProps) {
             marginTop: 4,
           }}
         >
-          {STAT_LABELS.map(({ key, label }) => (
+          {STAT_LABELS.map(({ key, label, sub }) => (
             <li key={key}>
               <div
                 style={{
@@ -174,6 +174,20 @@ export function Hero({ loaded }: HeroProps) {
               >
                 {label}
               </div>
+              {sub && (
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "var(--dim)",
+                    letterSpacing: "-0.01em",
+                    marginTop: 3,
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  <span style={{ color: "var(--muted)" }}>{stats[sub.key]}</span>{" "}
+                  {sub.label}
+                </div>
+              )}
             </li>
           ))}
         </ul>
