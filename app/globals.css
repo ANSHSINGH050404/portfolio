@@ -172,16 +172,6 @@ a,
   background: #6e6e73;
 }
 
-/* Hide custom cursor on touch / reduced motion */
-@media (hover: none), (pointer: coarse) {
-  .custom-cursor-root {
-    cursor: auto !important;
-  }
-  .magnetic-cursor {
-    display: none !important;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

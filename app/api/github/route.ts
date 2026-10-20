@@ -11,9 +11,18 @@ import { GITHUB_USER } from "../../../constants";
 export const revalidate = 3600;
 
 const API = "https://api.github.com";
-const GH_HEADERS = {
+
+/**
+ * A token lifts the unauthenticated rate limit from 60 req/hr to 5,000/hr
+ * and removes the cold-start stall of a throttled response. It stays server
+ * side: never prefix this with NEXT_PUBLIC_.
+ */
+const GH_HEADERS: Record<string, string> = {
   Accept: "application/vnd.github+json",
   "User-Agent": `${GITHUB_USER}-portfolio`,
+  ...(process.env.GITHUB_TOKEN
+    ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+    : {}),
 };
 
 const LANG_COLORS: Record<string, string> = {
