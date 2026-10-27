@@ -27,8 +27,8 @@
   --glow-cyan: none;
   --glow-magenta: none;
 
-  --radius: 18px;
-  --radius-sm: 12px;
+  --radius: 8px;
+  --radius-sm: 6px;
   --radius-pill: 980px;
 
   --space-1: 8px;
@@ -793,11 +793,12 @@ a,
   border-top: 1px solid var(--hairline);
 }
 .section-label {
-  font-family: var(--font-body);
+  font-family: var(--font-mono);
   font-size: var(--text-caption);
   font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
   margin-bottom: 12px;
 }
 .section-title {
