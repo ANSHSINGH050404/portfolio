@@ -75,8 +75,8 @@ function PreviewMock({ project }: { project: Project }) {
           </div>
           <div className="case-preview-lines">
             <div style={{ width: "72%", background: `${project.accent}55` }} />
-            <div style={{ width: "48%", background: "#ffffff18" }} />
-            <div style={{ width: "60%", background: "#ffffff10" }} />
+            <div style={{ width: "48%", background: "#fdfcfc18" }} />
+            <div style={{ width: "60%", background: "#fdfcfc10" }} />
           </div>
         </div>
         <div className="case-preview-grid">
@@ -86,7 +86,7 @@ function PreviewMock({ project }: { project: Project }) {
               className="case-preview-card"
               style={{
                 borderColor: `${project.accent}${i === 0 ? "40" : "18"}`,
-                background: i === 0 ? `${project.accent}10` : "#ffffff06",
+                background: i === 0 ? `${project.accent}10` : "#fdfcfc06",
               }}
             />
           ))}

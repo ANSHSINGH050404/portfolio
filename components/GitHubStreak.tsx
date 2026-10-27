@@ -287,10 +287,10 @@ export function GitHubStreak() {
                     <div
                       key={m.label}
                       style={{
-                        border: "1px solid #ffffff08",
+                        border: "1px solid #fdfcfc08",
                         borderRadius: 8,
                         padding: "16px 14px",
-                        background: "#ffffff03",
+                        background: "#fdfcfc03",
                       }}
                     >
                       <div
@@ -423,7 +423,7 @@ export function GitHubStreak() {
                     <div
                       style={{
                         height: 3,
-                        background: "#ffffff08",
+                        background: "#fdfcfc08",
                         borderRadius: 99,
                         overflow: "hidden",
                       }}
@@ -492,7 +492,7 @@ export function GitHubStreak() {
                       display: "block",
                       textDecoration: "none",
                       padding: "10px 0",
-                      borderBottom: "1px solid #ffffff06",
+                      borderBottom: "1px solid #fdfcfc06",
                     }}
                   >
                     <div

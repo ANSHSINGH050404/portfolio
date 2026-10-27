@@ -790,6 +790,7 @@ a,
   padding: var(--space-7) clamp(22px, 5vw, 80px);
   position: relative;
   z-index: 10;
+  border-top: 1px solid var(--hairline);
 }
 .section-label {
   font-family: var(--font-body);
