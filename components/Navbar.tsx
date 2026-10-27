@@ -1,17 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { SITE } from "../constants";
-import { SoundToggle } from "./SoundToggle";
-import { TimeOnEarth } from "./TimeOnEarth";
 
 const LINKS = [
-  { label: "Work", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Path", href: "#experience" },
-  { label: "GitHub", href: "#github" },
-  { label: "PRs", href: "#prs" },
-  { label: "Writing", href: "/blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "[01. work]", href: "#projects" },
+  { label: "[02. skills]", href: "#skills" },
+  { label: "[03. path]", href: "#experience" },
+  { label: "[04. contact]", href: "#contact" },
 ];
 
 interface NavbarProps {
@@ -93,7 +88,7 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
     <>
       <nav ref={navRef} className="site-nav" aria-label="Primary">
         <a href="#about" className="nav-brand">
-          Ansh
+          <span style={{ color: "var(--accent)" }}>&gt;</span> ansh.dev <span style={{ fontSize: 11, color: "var(--dim)" }}>[v2.4]</span>
         </a>
 
         <div className="nav-links hide-mob">
@@ -110,9 +105,6 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
 
         <div className="nav-actions">
           <div className="nav-utilities hide-mob">
-            <TimeOnEarth audible />
-            <span className="nav-divider" aria-hidden="true" />
-            <SoundToggle />
             <button
               type="button"
               onClick={onOpenCommand}
@@ -125,7 +117,7 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
           </div>
 
           <a href={`mailto:${SITE.email}`} className="hide-mob btn-primary nav-cta">
-            Get in touch
+            Contact
           </a>
 
           <button
@@ -168,16 +160,12 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
         </nav>
 
         <div className="mobile-menu-footer">
-          <div className="mobile-menu-utils">
-            <TimeOnEarth />
-            <SoundToggle />
-          </div>
           <a
             href={`mailto:${SITE.email}`}
             onClick={() => setMenuOpen(false)}
             className="btn-primary"
           >
-            Get in touch
+            Contact
           </a>
         </div>
       </div>

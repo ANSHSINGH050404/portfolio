@@ -23,7 +23,6 @@ export const SITE = {
   resumeFileName: "Ansh-Kumar-Singh-Resume.pdf",
   socials: {
     github: `https://github.com/ANSHSINGH050404`,
-    linkedin: "https://www.linkedin.com/in/ansh-kumar-singh-050404",
     email: "mailto:anshsinghapa@gmail.com",
     twitter: "https://x.com/anshsinghapa",
   },

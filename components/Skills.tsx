@@ -1,6 +1,5 @@
 "use client";
 import { SkillBar } from "./SkillBar";
-import { VhsBurst } from "./VhsBurst";
 import { SKILLS, STACK_PILLS, SITE } from "../constants";
 
 interface SkillsProps {
@@ -29,13 +28,12 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
         }}
       />
       <div ref={skillsRef} style={{ position: "relative" }}>
-        <VhsBurst trigger={visible} />
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
-          <div className="section-label">Capabilities</div>
+          <div className="section-label">// 02. CAPABILITIES</div>
           <h2 className="section-title">
             Skills
             <br />{" "}
-            <span className="section-title-outline">and tools</span>
+            <span className="section-title-outline">&amp; tooling</span>
           </h2>
         </div>
 
@@ -70,13 +68,14 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
           >
             <div
               style={{
-                fontSize: 13,
+                fontSize: 12,
                 color: "var(--dim)",
                 letterSpacing: "-0.01em",
-                marginBottom: 18,
+                marginBottom: 16,
+                fontFamily: "var(--font-mono)",
               }}
             >
-              Also work with
+              // EXTENDED_STACK
             </div>
             <ul
               role="list"
@@ -90,7 +89,7 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
             >
               {STACK_PILLS.map((t) => (
                 <li key={t} className="spill" data-hover>
-                  {t}
+                  [{t}]
                 </li>
               ))}
             </ul>
@@ -122,7 +121,7 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
                 {[
                   ["GitHub", "var(--accent)", SITE.socials.github],
                   ["Email", "var(--accent)", SITE.socials.email],
-                  ["LinkedIn", "var(--accent)", SITE.socials.linkedin],
+                  ["X / Twitter", "var(--accent)", SITE.socials.twitter],
                 ].map(([name, c, href]) => (
                   <a
                     key={name}

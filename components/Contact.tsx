@@ -119,13 +119,13 @@ export function Contact({ visible, ctaRef }: ContactProps) {
             GitHub
           </a>
           <a
-            href={SITE.socials.linkedin}
+            href={SITE.socials.twitter}
             target="_blank"
             rel="noreferrer"
             className="btn-ghost"
-            onClick={() => track("contact_initiated", { method: "linkedin" })}
+            onClick={() => track("contact_initiated", { method: "twitter" })}
           >
-            LinkedIn
+            X / Twitter
           </a>
         </div>
       </div>

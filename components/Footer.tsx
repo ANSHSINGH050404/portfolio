@@ -36,14 +36,15 @@ export function Footer() {
       <a
         href="#about"
         style={{
-          fontSize: 14,
-          fontWeight: 600,
-          letterSpacing: "-0.02em",
+          fontSize: 13,
+          fontWeight: 500,
+          letterSpacing: "-0.01em",
           color: "var(--muted)",
           textDecoration: "none",
+          fontFamily: "var(--font-mono)",
         }}
       >
-        Ansh
+        <span style={{ color: "var(--accent)" }}>&gt;</span> ansh.dev <span style={{ color: "var(--dim)", fontSize: 11 }}>[v2.4]</span>
       </a>
 
       <div
@@ -69,7 +70,7 @@ export function Footer() {
       <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
         {[
           ["GitHub", SITE.socials.github],
-          ["LinkedIn", SITE.socials.linkedin],
+          ["X / Twitter", SITE.socials.twitter],
           ["Email", SITE.socials.email],
           ["Now", "/now"],
           ["Uses", "/uses"],

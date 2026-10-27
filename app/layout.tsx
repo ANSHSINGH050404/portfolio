@@ -65,7 +65,7 @@ export const viewport: Viewport = {
 /**
  * Person schema, so search engines and answer engines can resolve who this
  * page is about and link it to the profiles that prove it. `sameAs` is the
- * part that matters — it ties the site to the GitHub, LinkedIn and X
+ * part that matters — it ties the site to the GitHub and X
  * accounts the work is actually published under.
  */
 const personSchema = {
@@ -93,7 +93,6 @@ const personSchema = {
   ],
   sameAs: [
     SITE.socials.github,
-    SITE.socials.linkedin,
     SITE.socials.twitter,
   ],
 };

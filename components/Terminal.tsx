@@ -109,7 +109,6 @@ export function Terminal({ open, onClose }: TerminalProps) {
                   url: SITE.url,
                   links: {
                     github: SITE.socials.github,
-                    linkedin: SITE.socials.linkedin,
                     twitter: SITE.socials.twitter,
                   },
                   stack: STACK_PILLS,
@@ -229,7 +228,7 @@ export function Terminal({ open, onClose }: TerminalProps) {
           push(
             { type: "out", text: `email    ${SITE.email}` },
             { type: "out", text: `github   ${SITE.socials.github}` },
-            { type: "out", text: `linkedin ${SITE.socials.linkedin}` },
+            { type: "out", text: `twitter  ${SITE.socials.twitter}` },
             { type: "out", text: `location ${SITE.location}` },
             { type: "out", text: `site     ${SITE.url}` },
             { type: "out", text: `writing  ${SITE.url}/blog` },
@@ -250,7 +249,6 @@ export function Terminal({ open, onClose }: TerminalProps) {
                   resumeUrl: `${SITE.url}${SITE.resumePath}`,
                   links: {
                     github: SITE.socials.github,
-                    linkedin: SITE.socials.linkedin,
                     twitter: SITE.socials.twitter,
                   },
                   projects: PROJECTS.map((p) => ({

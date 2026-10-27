@@ -31,7 +31,7 @@ agentic workflows, RAG systems, real-time applications, and Next.js platforms.
 - Location: ${SITE.location}
 - Email: ${SITE.email}
 - GitHub: ${SITE.socials.github}
-- LinkedIn: ${SITE.socials.linkedin}
+- Twitter: ${SITE.socials.twitter}
 
 ## Selected work
 

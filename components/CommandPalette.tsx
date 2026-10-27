@@ -146,11 +146,11 @@ export function CommandPalette({
         },
       },
       {
-        id: "open-linkedin",
-        label: "Open LinkedIn",
+        id: "open-twitter",
+        label: "Open X / Twitter",
         group: "Actions",
         run: () => {
-          window.open(SITE.socials.linkedin, "_blank", "noopener,noreferrer");
+          window.open(SITE.socials.twitter, "_blank", "noopener,noreferrer");
           onOpenChange(false);
         },
       },

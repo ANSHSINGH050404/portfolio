@@ -59,4 +59,3 @@ Copy `.env.example` to `.env.local` and fill in what you need.
 
 - Email: anshsinghapa@gmail.com
 - GitHub: [@ANSHSINGH050404](https://github.com/ANSHSINGH050404)
-- LinkedIn: [ansh-kumar-singh-050404](https://www.linkedin.com/in/ansh-kumar-singh-050404)

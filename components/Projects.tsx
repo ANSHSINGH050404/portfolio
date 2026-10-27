@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import { GITHUB_USER, PROJECTS, type Project } from "../constants";
 import { SpotlightCard } from "./SpotlightCard";
-import { VhsBurst } from "./VhsBurst";
 import { FlashlightPhrase } from "./FlashlightPhrase";
 import { ProjectFactsList } from "./ProjectFacts";
 
@@ -143,6 +142,26 @@ function CaseStudyCard({
         }}
       />
 
+      <div
+        style={{
+          padding: "7px 14px",
+          background: "rgba(0,0,0,0.25)",
+          borderBottom: "1px solid var(--hairline)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          fontSize: "11px",
+          color: "var(--muted)",
+          fontFamily: "var(--font-mono)",
+        }}
+      >
+        <span>~/projects/{project.id}</span>
+        <span style={{ color: "var(--status-green)", display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--status-green)", display: "inline-block" }} />
+          ACTIVE
+        </span>
+      </div>
+
       <div className={`case-layout ${featured ? "featured" : ""}`}>
         <div className="case-media">
           <PreviewMock project={project} />
@@ -182,16 +201,16 @@ function CaseStudyCard({
               <span
                 key={s}
                 style={{
-                  fontSize: 12,
+                  fontSize: 11,
                   color: "var(--muted)",
-                  background: "rgba(255,255,255,0.04)",
+                  background: "rgba(255,255,255,0.03)",
                   border: "1px solid var(--hairline)",
-                  padding: "4px 10px",
-                  letterSpacing: "-0.01em",
-                  borderRadius: 999,
+                  padding: "2px 8px",
+                  borderRadius: "var(--radius-sm)",
+                  fontFamily: "var(--font-mono)",
                 }}
               >
-                {s}
+                [{s}]
               </span>
             ))}
           </div>
@@ -289,7 +308,6 @@ export function Projects({ visible, projRef }: ProjectsProps) {
     <section id="projects" className="section-pad">
       <div className="section-line" />
       <div ref={projRef} style={{ position: "relative" }}>
-        <VhsBurst trigger={visible} />
         <div
           className={`fi ${visible ? "in" : ""}`}
           style={{
