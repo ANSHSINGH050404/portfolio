@@ -1,7 +1,23 @@
 "use client";
+import { useEffect, useState } from "react";
 import { SITE } from "../constants";
 
 export function Footer() {
+  const [stars, setStars] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/github", { headers: { Accept: "application/json" } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!cancelled && d?.totals?.stars != null) setStars(d.totals.stars);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <footer
       style={{
@@ -12,8 +28,6 @@ export function Footer() {
         alignItems: "center",
         flexWrap: "wrap",
         gap: 16,
-        // Sits above the fixed .hotkey-hint (z-index 400) so the keyboard
-        // hint doesn't render on top of these links at the page bottom.
         zIndex: 401,
         position: "relative",
         background: "var(--bg)",
@@ -40,19 +54,35 @@ export function Footer() {
           textAlign: "center",
         }}
       >
-        Designed and built by Ansh · {new Date().getFullYear()}
+        Designed and built by Ansh · {new Date().getFullYear()} ·{" "}
+        <a
+          href={SITE.socials.github}
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: "var(--muted)", textDecoration: "none" }}
+        >
+          Source
+          {stars != null ? ` · ${stars}★` : ""}
+        </a>
       </div>
 
-      <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
         {[
           ["GitHub", SITE.socials.github],
           ["LinkedIn", SITE.socials.linkedin],
           ["Email", SITE.socials.email],
+          ["Now", "/now"],
+          ["Uses", "/uses"],
+          ["Changelog", "/changelog"],
         ].map(([label, href]) => (
           <a
             key={label}
             href={href}
-            target={href.startsWith("mailto") ? undefined : "_blank"}
+            target={
+              href.startsWith("mailto") || href.startsWith("/")
+                ? undefined
+                : "_blank"
+            }
             rel="noreferrer"
             style={{
               fontSize: 13,

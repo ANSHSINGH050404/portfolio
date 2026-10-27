@@ -4,8 +4,10 @@ import dynamic from "next/dynamic";
 
 import { Navbar } from "../components/Navbar";
 import { Hero } from "../components/Hero";
+import { StatsBand } from "../components/StatsBand";
 import { Marquee } from "../components/Marquee";
 import { Bento } from "../components/Bento";
+import { Principles } from "../components/Principles";
 import { Projects } from "../components/Projects";
 import { Skills } from "../components/Skills";
 import { Experience } from "../components/Experience";
@@ -13,6 +15,7 @@ import { GitHubStreak } from "../components/GitHubStreak";
 import { PRWall } from "../components/PRWall";
 import { ResumeSection } from "../components/ResumeSection";
 import { Contact } from "../components/Contact";
+import { FAQ } from "../components/FAQ";
 import { Footer } from "../components/Footer";
 import { Loader } from "../components/Loader";
 import { ScrollProgress } from "../components/ScrollProgress";
@@ -130,13 +133,16 @@ function PortfolioInner() {
 
         <main id="main">
           <Hero loaded={reveal} />
+          <StatsBand />
           <Marquee />
           <Bento />
+          <Principles />
           <Projects visible={projVisible} projRef={projRef} />
           <Skills visible={skillsVisible} skillsRef={skillsRef} />
           <Experience />
           <GitHubStreak />
           <PRWall />
+          <FAQ />
           <ResumeSection />
           <Contact visible={ctaVisible} ctaRef={ctaRef} />
         </main>

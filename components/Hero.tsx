@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Counter } from "./Counter";
 import { SlotTitle } from "./SlotTitle";
 import { HeadlineSmoke } from "./HeadlineSmoke";
-import { ROLES, SITE, STAT_LABELS } from "../constants";
-import { useStats } from "../hooks/useStats";
+import { ROLES, SITE } from "../constants";
+import { useToast } from "./Toast";
 
 interface HeroProps {
   loaded: boolean;
@@ -12,7 +11,7 @@ interface HeroProps {
 
 export function Hero({ loaded }: HeroProps) {
   const [display, setDisplay] = useState(ROLES[0]);
-  const stats = useStats();
+  const toast = useToast();
 
   useEffect(() => {
     if (!loaded) return;
@@ -146,60 +145,65 @@ export function Hero({ loaded }: HeroProps) {
               Download CV
             </button>
           </div>
+          <div
+            style={{
+              marginTop: 18,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              fontFamily: "var(--font-mono)",
+              fontSize: 13,
+              color: "var(--muted)",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: 999,
+              padding: "8px 14px",
+            }}
+          >
+            <span style={{ color: "var(--dim)" }}>$</span>
+            <span>email --copy</span>
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(SITE.email);
+                  toast("Email copied");
+                } catch {
+                  toast("Copy failed");
+                }
+              }}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "var(--accent)",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                fontSize: 12,
+                padding: 0,
+              }}
+              aria-label="Copy email address"
+            >
+              copy
+            </button>
+          </div>
         </div>
 
-        <ul
-          role="list"
-          className={`fi ${loaded ? "in" : ""} plain-list`}
-          style={{
-            transitionDelay: "0.4s",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "28px 48px",
-            marginTop: 4,
-          }}
+        <div
+          className={`fi ${loaded ? "in" : ""}`}
+          style={{ transitionDelay: "0.4s", maxWidth: 360 }}
         >
-          {STAT_LABELS.map(({ key, label, sub }) => (
-            <li key={key}>
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: 40,
-                  fontWeight: 600,
-                  lineHeight: 1,
-                  color: "var(--fg)",
-                  letterSpacing: "-0.04em",
-                }}
-              >
-                <Counter target={stats[key]} />
-              </div>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: "var(--dim)",
-                  letterSpacing: "-0.01em",
-                  marginTop: 8,
-                }}
-              >
-                {label}
-              </div>
-              {sub && (
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "var(--dim)",
-                    letterSpacing: "-0.01em",
-                    marginTop: 3,
-                    fontVariantNumeric: "tabular-nums",
-                  }}
-                >
-                  <span style={{ color: "var(--muted)" }}>{stats[sub.key]}</span>{" "}
-                  {sub.label}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+          <p
+            style={{
+              fontSize: 15,
+              lineHeight: 1.5,
+              color: "var(--muted)",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            The numbers that matter — repos, upstream PRs, languages, years —
+            live in the band below, pulled live from GitHub.
+          </p>
+        </div>
       </div>
     </section>
   );

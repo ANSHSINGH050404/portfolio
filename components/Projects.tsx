@@ -14,7 +14,24 @@ interface ProjectsProps {
 }
 
 function PreviewMock({ project }: { project: Project }) {
-  const { image, label, gradient } = project.preview;
+  const { image, label, gradient, video } = project.preview;
+
+  if (video) {
+    return (
+      <div className="case-preview" style={{ background: gradient }}>
+        <video
+          src={video}
+          poster={image}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="case-preview-img"
+          aria-label={`${project.title} — ${project.subtitle}`}
+        />
+      </div>
+    );
+  }
 
   if (image) {
     return (

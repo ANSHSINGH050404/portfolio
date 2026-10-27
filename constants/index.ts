@@ -50,7 +50,7 @@ export type Project = {
   problem: string;
   approach: string;
   result: string;
-  preview: { label: string; gradient: string; image?: string };
+  preview: { label: string; gradient: string; image?: string; video?: string };
   /**
    * The public repository behind the project, when one exists. The metrics
    * shown on the card are derived from it — language, last commit, stars —
@@ -284,5 +284,34 @@ export const BENTO = [
     desc: "WebSockets, live race sync, dashboards.",
     span: "sm",
     accent: "#2997ff",
+  },
+];
+
+export type FaqItem = { q: string; a: string };
+
+export const FAQ: FaqItem[] = [
+  {
+    q: "Are you available for new work?",
+    a: "Yes — I take on a small number of freelance and contract engagements at a time, alongside full-time roles. Best fit is AI product work, agentic systems, or full-stack platforms that need to ship in weeks.",
+  },
+  {
+    q: "What's your engagement model?",
+    a: "Fixed-scope sprints (2–6 weeks) for a defined outcome, or a monthly retainer for ongoing product work. I scope in writing before any code is written, and the scope is what gets built.",
+  },
+  {
+    q: "What stack do you work in?",
+    a: "TypeScript/Next.js on the front, Node or Python on the back, Postgres/Redis, Docker, and the usual AI stack (LangChain/LangGraph, MCP, vector stores). I can slot into an existing codebase or start one.",
+  },
+  {
+    q: "Do you do pure AI/ML research?",
+    a: "No — I build products on top of models. If you need training, fine-tuning research, or eval science, I'm not the right hire. If you need something that calls models and ships to users, I am.",
+  },
+  {
+    q: "How fast do you respond?",
+    a: "Usually within a business day, in IST (UTC+5:30). For active engagements I'm available on Slack/Discord during overlap hours with US/EU timezones.",
+  },
+  {
+    q: "Can I see the source for this site?",
+    a: "Yes — the whole portfolio is open source on GitHub. The link is in the footer. Stats, PR wall and project metrics are all derived live rather than typed by hand.",
   },
 ];
