@@ -1,23 +1,19 @@
 "use client";
-import { useState, lazy, Suspense, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useState, lazy, Suspense } from "react";
+
 
 import { Navbar } from "../components/Navbar";
-import { Hero } from "../components/Hero";
-import { Projects } from "../components/Projects";
-import { Skills } from "../components/Skills";
-import { Experience } from "../components/Experience";
-import { Contact } from "../components/Contact";
-import { Footer } from "../components/Footer";
+
 import { ScrollProgress } from "../components/ScrollProgress";
 import { ToastProvider } from "../components/Toast";
+import { SoundToggle } from "../components/SoundToggle";
+import { GitHubStreak } from "../components/GitHubStreak";
+import { PRWall } from "../components/PRWall";
+import { ResumeDownload } from "../components/ResumeDownload";
 import { useCommandPaletteHotkey } from "../hooks/useCommandPaletteHotkey";
 import { useTerminalHotkey } from "../hooks/useTerminalHotkey";
-import { useReveal } from "../hooks/useReveal";
+import { SITE, PROJECTS } from "../constants";
 
-/**
- * Terminal and Command Palette are loaded lazily on demand.
- */
 const CommandPalette = lazy(() =>
   import("../components/CommandPalette").then((mod) => ({
     default: mod.CommandPalette,
@@ -28,30 +24,12 @@ const Terminal = lazy(() =>
   import("../components/Terminal").then((mod) => ({ default: mod.Terminal })),
 );
 
-const BackgroundEffect = dynamic(
-  () =>
-    import("../components/BackgroundEffect").then(
-      (mod) => mod.BackgroundEffect,
-    ),
-  { ssr: false },
-);
-
 function PortfolioInner() {
-  const [loaded, setLoaded] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [termOpen, setTermOpen] = useState(false);
-  const [skillsRef, skillsVisible] = useReveal<HTMLDivElement>(0.05);
-  const [projRef, projVisible] = useReveal<HTMLDivElement>(0.05);
-  const [ctaRef, ctaVisible] = useReveal<HTMLDivElement>(0.1);
 
   useCommandPaletteHotkey(cmdOpen, setCmdOpen);
   useTerminalHotkey(termOpen, setTermOpen);
-
-  useEffect(() => {
-    // Instant mount with smooth entrance
-    const timer = setTimeout(() => setLoaded(true), 40);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <>
@@ -61,29 +39,122 @@ function PortfolioInner() {
 
       <div>
         <ScrollProgress />
-        <BackgroundEffect />
 
         <header>
           <Navbar onOpenCommand={() => setCmdOpen(true)} />
         </header>
 
         <main id="main">
-          <Hero loaded={loaded} />
-          <Projects visible={projVisible} projRef={projRef} />
-          <Skills visible={skillsVisible} skillsRef={skillsRef} />
-          <Experience />
-          <Contact visible={ctaVisible} ctaRef={ctaRef} />
+          <div className="page-shell">
+            <div className="construction-frame">
+              <div className="construction-rail left" aria-hidden />
+              <div className="construction-rail right" aria-hidden />
+              <div className="construction-break top" aria-hidden />
+
+              <div style={{ paddingTop: 32 }}>
+                <div
+                  className="avatar"
+                  aria-hidden
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    background: "var(--bg-elevated)",
+                    color: "var(--fg)",
+                    fontFamily: "var(--font-display)",
+                    fontSize: 18,
+                  }}
+                >
+                  {SITE.shortName.charAt(0)}
+                </div>
+
+                <h1 className="greeting">Hello, नमस्ते</h1>
+
+                <div className="thoughts">
+                  <p>
+                    I&apos;m{" "}
+                    <button
+                      type="button"
+                      className="identity"
+                      aria-label="Reveal my name"
+                    >
+                      {SITE.shortName.toLowerCase()}
+                    </button>
+                    , a full-stack &amp; agentic AI engineer driven mostly by
+                    curiosity and an unreasonable attention to detail.
+                  </p>
+                  <p>
+                    Currently shipping AI products by day, and a builder outside
+                    work hours.
+                  </p>
+                  <p>
+                    Explore my{" "}
+                    <a className="playground-link" href="/playground">
+                      Playground
+                    </a>
+                  </p>
+                </div>
+              </div>
+
+              <div className="construction-break" aria-hidden />
+
+              <section aria-labelledby="highlights-heading">
+                <h2 id="highlights-heading" className="section-heading">
+                  Selected Work
+                </h2>
+                <ul className="project-list">
+                  {PROJECTS.map((p) => (
+                    <li key={p.id} className="project-row">
+                      <a
+                        href={p.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-hover
+                      >
+                        {p.title}
+                      </a>
+                      <time dateTime={p.year}>{p.year}</time>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              <div className="construction-break" aria-hidden />
+
+              <PRWall />
+
+              <div className="construction-break" aria-hidden />
+
+              <GitHubStreak />
+
+              <div className="construction-break" aria-hidden />
+
+              <ResumeDownload />
+
+              <footer className="site-footer">
+                <span>© 2026 {SITE.shortName}</span>
+                <a href="#main">Top</a>
+              </footer>
+            </div>
+          </div>
+
+          <div className="socials-dock" aria-label="Social links">
+            <a href={SITE.socials.github} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href={SITE.socials.twitter} target="_blank" rel="noreferrer">
+              X
+            </a>
+            <a href={`mailto:${SITE.email}`}>Email</a>
+            <SoundToggle />
+          </div>
+
+          <div className="hold-hint" aria-hidden>
+            Hold to download
+          </div>
         </main>
 
-        <Footer />
-
-        {/* Desktop hint chip */}
-        <div className="hotkey-hint hide-mob" aria-hidden>
-          <kbd>⌘K</kbd> commands · <kbd>`</kbd> terminal
-        </div>
       </div>
 
-      {/* Rendered only once opened */}
       {cmdOpen && (
         <Suspense fallback={null}>
           <CommandPalette

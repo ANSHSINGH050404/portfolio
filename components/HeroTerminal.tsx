@@ -192,7 +192,7 @@ export function HeroTerminal() {
         {activeTab === "agent-workflow" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: "12px" }}>
             <div style={{ color: "var(--accent)", fontWeight: 600 }}>
-              // ARCHITECTURE: AGENTIC AI EXECUTION PIPELINE
+              {"// ARCHITECTURE: AGENTIC AI EXECUTION PIPELINE"}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 4 }}>
               <div>
@@ -226,7 +226,7 @@ export function HeroTerminal() {
         {activeTab === "projects" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ color: "var(--muted)", fontSize: "12px" }}>
-              // FEATURED DEPLOYMENTS ({PROJECTS.length} active)
+              {`// FEATURED DEPLOYMENTS (${PROJECTS.length} active)`}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {PROJECTS.slice(0, 3).map((p, idx) => (
@@ -277,7 +277,7 @@ export function HeroTerminal() {
         {activeTab === "stack" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: "12px" }}>
             <div style={{ color: "var(--status-green)", fontWeight: 600 }}>
-              // TECHNICAL SPECIFICATIONS
+              {"// TECHNICAL SPECIFICATIONS"}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "110px 1fr", gap: "6px 12px", marginTop: 4 }}>
               <span style={{ color: "var(--dim)" }}>Languages:</span>
@@ -299,7 +299,7 @@ export function HeroTerminal() {
         {activeTab === "contact" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: "12px" }}>
             <div style={{ color: "var(--status-amber)", fontWeight: 600 }}>
-              // DIRECT TELEMETRY CHANNELS
+              {"// DIRECT TELEMETRY CHANNELS"}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "90px 1fr", gap: "6px 12px", marginTop: 4 }}>
               <span style={{ color: "var(--dim)" }}>Email:</span>

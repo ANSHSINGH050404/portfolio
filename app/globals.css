@@ -1,62 +1,62 @@
 @import "tailwindcss";
 
 :root {
-  /* Surfaces — warm near-black, opencode.ai aesthetic (#1e1c1c / #201d1d) */
-  --bg: #1c1a1a;
-  --bg-elevated: #242121;
-  --bg-card: #221f1f;
-  --fg: #fdfcfc;
-  --muted: #a39e9e;
-  --dim: #736e6e;
-  --hairline: rgba(255, 255, 255, 0.08);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.18);
+  /* Surfaces — aetosdios.xyz aesthetic: pure black, warm off-white, sage accent */
+  --bg: #000000;
+  --bg-elevated: #0b0a09;
+  --bg-card: #0b0a09;
+  --fg: #ece8e1;
+  --muted: #ece8e1ad;
+  --dim: #ece8e194;
+  --hairline: #1f1d1a;
+  --border: #1f1d1a;
+  --border-hover: #3a3630;
 
-  /* Opencode Signature Accent: Electric Blue */
-  --accent: #007aff;
-  --accent-soft: rgba(0, 122, 255, 0.12);
-  --on-accent: #ffffff;
+  /* Signature accent: sage green */
+  --accent: #b6ce8a;
+  --accent-soft: rgba(182, 206, 138, 0.12);
+  --on-accent: #000000;
 
   /* Telemetry Status Accents */
-  --status-green: #22c55e;
-  --status-amber: #f59e0b;
-  --status-blue: #007aff;
+  --status-green: #b6ce8a;
+  --status-amber: #edba8b;
+  --status-blue: #91c9db;
 
   /* Legacy aliases mapped cleanly */
   --cyan: var(--accent);
-  --magenta: #ff2d78;
+  --magenta: #e7a6bc;
   --violet: var(--accent);
   --amber: var(--status-amber);
   --glow-cyan: none;
   --glow-magenta: none;
 
-  /* Utilitarian 4px radius scale (opencode.ai standard) */
+  /* Utilitarian radius scale */
   --radius: 4px;
   --radius-sm: 4px;
-  --radius-pill: 4px;
+  --radius-pill: 999px;
 
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
-  --space-4: 40px;
-  --space-5: 64px;
-  --space-6: 96px;
-  --space-7: 128px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
 
-  --text-display: clamp(48px, 7vw, 84px);
+  --text-display: 44px;
   --text-title: clamp(28px, 4vw, 42px);
-  --text-body: 15px;
+  --text-body: 14px;
   --text-small: 13px;
-  --text-caption: 11px;
+  --text-caption: 12px;
 
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration: 200ms;
 
-  /* 100% Pure Monospace across the entire interface */
-  --font-display: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "JetBrains Mono", monospace;
-  --font-body: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "JetBrains Mono", monospace;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "JetBrains Mono", monospace;
+  /* Typography — Inter Tight body, Instrument Serif display, Geist Mono mono */
+  --font-display: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @theme inline {
@@ -79,6 +79,153 @@
   padding: 0;
 }
 
+/* ── aetos-style construction frame ── */
+.page-shell {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+  position: relative;
+}
+.construction-frame {
+  position: relative;
+  min-height: 100vh;
+}
+.construction-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
+.construction-rail.left { left: -24px; }
+.construction-rail.right { right: -24px; }
+.construction-break {
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
+.construction-break.top { margin-top: 0; }
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  object-fit: cover;
+}
+.greeting {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 24px 0 32px;
+}
+.thoughts p {
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.thoughts .identity {
+  color: var(--fg);
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.age {
+  font-family: var(--font-mono);
+  color: var(--fg);
+}
+.playground-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin-bottom: 24px;
+}
+.project-list, .oss-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.project-row, .oss-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+.project-row a, .oss-row a {
+  color: var(--fg);
+  text-decoration: none;
+  font-size: var(--text-body);
+}
+.project-row a:hover, .oss-row a:hover { color: var(--accent); }
+.project-row time, .oss-row time {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--dim);
+  flex-shrink: 0;
+}
+.socials-dock {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(11, 10, 9, 0.7);
+  backdrop-filter: blur(24px) saturate(170%);
+  border: 1px solid var(--border);
+}
+.socials-dock a {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: color 0.18s var(--ease);
+}
+.socials-dock a:hover { color: var(--fg); }
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--dim);
+}
+.site-footer a { color: var(--dim); text-decoration: none; }
+.site-footer a:hover { color: var(--fg); }
+.hold-hint {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--dim);
+  pointer-events: none;
+  z-index: 400;
+}
+
 /* Smooth scrolling only for users who haven't asked for reduced motion —
    an unconditional rule would override the media query below by source order. */
 @media (prefers-reduced-motion: no-preference) {
@@ -89,8 +236,7 @@
 
 body {
   background-color: var(--bg);
-  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: none;
   color: var(--fg);
   font-family: var(--font-body);
   font-size: var(--text-body);

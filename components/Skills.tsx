@@ -29,7 +29,7 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
       />
       <div ref={skillsRef} style={{ position: "relative" }}>
         <div className={`fi ${visible ? "in" : ""}`} style={{ marginBottom: 64 }}>
-          <div className="section-label">// 02. CAPABILITIES</div>
+          <div className="section-label">{"// 02. CAPABILITIES"}</div>
           <h2 className="section-title">
             Skills
             <br />{" "}
@@ -75,7 +75,7 @@ export function Skills({ visible, skillsRef }: SkillsProps) {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              // EXTENDED_STACK
+              {"// EXTENDED_STACK"}
             </div>
             <ul
               role="list"
