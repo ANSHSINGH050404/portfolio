@@ -196,7 +196,7 @@ export const EXPERIENCE = [
     role: "Open Source Contributor",
     org: "GitHub Community",
     period: "2022 — Present",
-    desc: "Upstream pull requests across TypeScript and Python ecosystems — 122 opened against other people's repositories, 25 merged. Building tools others actually use.",
+    desc: "Upstream pull requests across TypeScript and Python ecosystems — 113 opened against other people's repositories, 19 merged. Building tools others actually use.",
     tags: ["OSS", "TypeScript", "Python"],
   },
   {
@@ -242,8 +242,8 @@ export const STAT_LABELS: {
  */
 export const STATS_FALLBACK: Stats = {
   originalRepos: 186,
-  upstreamPrs: 125,
-  mergedPrs: 25,
+  upstreamPrs: 113,
+  mergedPrs: 19,
   languages: 11,
   years: 4,
 };

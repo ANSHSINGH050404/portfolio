@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PROJECTS } from "../../constants";
+import { GITHUB_USER, PROJECTS } from "../../constants";
 
 export const metadata = {
   title: "Playground",
@@ -103,7 +103,7 @@ export default function PlaygroundPage() {
               </a>
               {p.repo && (
                 <a
-                  href={`https://github.com/${PROJECTS.length ? "ANSHSINGH050404" : ""}/${p.repo}`}
+                  href={`https://github.com/${GITHUB_USER}/${p.repo}`}
                   target="_blank"
                   rel="noreferrer"
                   style={{

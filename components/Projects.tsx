@@ -6,6 +6,8 @@ import { GITHUB_USER, PROJECTS, type Project } from "../constants";
 import { SpotlightCard } from "./SpotlightCard";
 import { FlashlightPhrase } from "./FlashlightPhrase";
 import { ProjectFactsList } from "./ProjectFacts";
+import { FadeIn } from "./ui/FadeIn";
+import { SlideUp } from "./ui/SlideUp";
 
 interface ProjectsProps {
   visible: boolean;
@@ -101,13 +103,11 @@ function PreviewMock({ project }: { project: Project }) {
 
 function CaseStudyCard({
   project,
-  visible,
-  delay,
+  delay = 0,
   featured,
 }: {
   project: Project;
-  visible: boolean;
-  delay: string;
+  delay?: number;
   featured?: boolean;
 }) {
   const [expanded, setExpanded] = useState(featured ?? false);
@@ -117,19 +117,19 @@ function CaseStudyCard({
     .replace(/^-|-$/g, "")}`;
 
   return (
-    <SpotlightCard
-      accent={project.accent}
-      data-hover
-      className={`fi ${visible ? "in" : ""} case-card ${featured ? "case-featured" : ""}`}
-      style={{
-        transitionDelay: delay,
-        background: "var(--bg-card)",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <SlideUp delay={delay}>
+      <SpotlightCard
+        accent={project.accent}
+        data-hover
+        className={`case-card ${featured ? "case-featured" : ""}`}
+        style={{
+          background: "var(--bg-card)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
       <div
         style={{
           position: "absolute",
@@ -296,7 +296,8 @@ function CaseStudyCard({
       </div>
 
       <div className="pcard-num case-num">{project.id}</div>
-    </SpotlightCard>
+      </SpotlightCard>
+    </SlideUp>
   );
 }
 
@@ -308,52 +309,52 @@ export function Projects({ visible, projRef }: ProjectsProps) {
     <section id="projects" className="section-pad">
       <div className="section-line" />
       <div ref={projRef} style={{ position: "relative" }}>
-        <div
-          className={`fi ${visible ? "in" : ""}`}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            marginBottom: 56,
-            flexWrap: "wrap",
-            gap: 24,
-          }}
-        >
-          <div>
-            <div className="section-label">Selected work</div>
-            <h2 className="section-title">
-              Featured
-              <br />{" "}
-              <span className="section-title-outline">projects</span>
-            </h2>
-          </div>
-          <p
+        <FadeIn>
+          <div
             style={{
-              maxWidth: 320,
-              color: "var(--muted)",
-              fontSize: 17,
-              lineHeight: 1.47,
-              fontWeight: 400,
-              letterSpacing: "-0.02em",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              marginBottom: 56,
+              flexWrap: "wrap",
+              gap: 24,
             }}
           >
-            Case studies from zero to production. Problem, approach, result
-            <FlashlightPhrase
-              title="How these case studies read"
-              note="Every project below follows the same arc: the problem worth solving, the approach taken, and the measured result — always with a live link so you can try the real thing."
+            <div>
+              <div className="section-label">Selected work</div>
+              <h2 className="section-title">
+                Featured
+                <br />{" "}
+                <span className="section-title-outline">projects</span>
+              </h2>
+            </div>
+            <p
+              style={{
+                maxWidth: 320,
+                color: "var(--muted)",
+                fontSize: 17,
+                lineHeight: 1.47,
+                fontWeight: 400,
+                letterSpacing: "-0.02em",
+              }}
             >
-              {" — "}
-            </FlashlightPhrase>{" "}
-            and a live link.
-          </p>
-        </div>
+              Case studies from zero to production. Problem, approach, result
+              <FlashlightPhrase
+                title="How these case studies read"
+                note="Every project below follows the same arc: the problem worth solving, the approach taken, and the measured result — always with a live link so you can try the real thing."
+              >
+                {" — "}
+              </FlashlightPhrase>{" "}
+              and a live link.
+            </p>
+          </div>
+        </FadeIn>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <CaseStudyCard
           project={featured}
-          visible={visible}
-          delay="0.12s"
+          delay={0.1}
           featured
         />
         <div
@@ -368,8 +369,7 @@ export function Projects({ visible, projRef }: ProjectsProps) {
             <CaseStudyCard
               key={p.id}
               project={p}
-              visible={visible}
-              delay={`${0.2 + i * 0.1}s`}
+              delay={0.2 + i * 0.1}
             />
           ))}
         </div>

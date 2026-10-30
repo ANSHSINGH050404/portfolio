@@ -44,7 +44,7 @@ export function Footer() {
           fontFamily: "var(--font-mono)",
         }}
       >
-        <span style={{ color: "var(--accent)" }}>&gt;</span> ansh.dev <span style={{ color: "var(--dim)", fontSize: 11 }}>[v2.4]</span>
+        <span style={{ color: "var(--accent)" }}>&gt;</span> {SITE.host} <span style={{ color: "var(--dim)", fontSize: 11 }}>[v2.4]</span>
       </a>
 
       <div

@@ -33,6 +33,12 @@ function PortfolioInner() {
 
   return (
     <>
+      <noscript>
+        <style>{`
+          .fi { opacity: 1 !important; transform: none !important; }
+        `}</style>
+      </noscript>
+
       <a href="#main" className="skip-link">
         Skip to content
       </a>

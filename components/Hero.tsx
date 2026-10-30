@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { ROLES, SITE } from "../constants";
 import { useToast } from "./Toast";
 import { HeroTerminal } from "./HeroTerminal";
+import { SlideUp } from "./ui/SlideUp";
+import { FadeIn } from "./ui/FadeIn";
 
 interface HeroProps {
   loaded: boolean;
@@ -32,172 +34,87 @@ export function Hero({ loaded }: HeroProps) {
   return (
     <section
       id="about"
-      style={{
-        minHeight: "92vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        padding: "100px clamp(18px, 4vw, 56px) 64px",
-        position: "relative",
-        zIndex: 10,
-        fontFamily: "var(--font-mono)",
-      }}
+      className="flex flex-col justify-center min-h-[92vh] px-[clamp(18px,4vw,56px)] pt-[100px] pb-16 relative z-10 font-mono"
     >
       <div
-        className={`fi ${loaded ? "in" : ""}`}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 460px), 1fr))",
-          gap: "48px 40px",
-          alignItems: "center",
-        }}
+        className={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center`}
       >
         {/* Left Column: Developer Information */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          {/* Status Badge */}
-          <div>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                fontSize: "12px",
-                color: "var(--muted)",
-                letterSpacing: "-0.01em",
-                background: "var(--bg-elevated)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-sm)",
-                padding: "5px 12px",
-              }}
-            >
+        <div className="flex flex-col gap-6">
+          <FadeIn>
+            <span className="inline-flex items-center gap-2 text-xs text-[var(--muted)] tracking-tighter bg-[var(--bg-elevated)] border border-[var(--border)] rounded-sm px-3 py-1">
               <span
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  background: "var(--status-green)",
-                  display: "inline-block",
-                  animation: "pdot 2s infinite",
-                }}
+                className="w-1.5 h-1.5 rounded-full bg-[var(--status-green)] animate-pulse"
               />
               OPEN TO WORK · {SITE.location.toUpperCase()}
             </span>
-          </div>
+          </FadeIn>
 
-          {/* Heading */}
-          <div>
-            <h1
-              style={{
-                fontSize: "clamp(40px, 6vw, 68px)",
-                fontWeight: 700,
-                lineHeight: 1.05,
-                letterSpacing: "-0.03em",
-                color: "#ffffff",
-                marginBottom: "8px",
-              }}
-            >
+          <SlideUp delay={0.1}>
+            <h1 className="text-[clamp(40px,6vw,68px)] font-bold leading-[1.05] tracking-tighter text-white">
               ANSH SINGH
             </h1>
             <div
-              style={{
-                fontSize: "clamp(16px, 2.2vw, 22px)",
-                color: "var(--accent)",
-                fontWeight: 500,
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
+              className="text-[clamp(16px,2.2vw,22px)] text-[var(--accent)] font-medium flex items-center gap-2 mt-2"
             >
               <span>&gt;</span>
               <span>{ROLES[roleIdx]}</span>
             </div>
-          </div>
+          </SlideUp>
 
-          {/* Description */}
-          <p
-            style={{
-              fontSize: "15px",
-              lineHeight: 1.6,
-              color: "var(--muted)",
-              maxWidth: "520px",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            Specializing in{" "}
-            <span style={{ color: "#ffffff", fontWeight: 500 }}>
-              Agentic AI systems
-            </span>{" "}
-            and full-stack infrastructure. I build multi-step reasoning workflows,
-            production APIs, and autonomous agents that deliver reliable results.
-          </p>
+          <SlideUp delay={0.2}>
+            <p className="text-[var(--muted)] text-base max-w-md leading-relaxed mb-6">
+              Specializing in{" "}
+              <span className="text-white font-medium">Agentic AI systems</span>{" "}
+              and full-stack infrastructure. I build multi-step reasoning workflows,
+              production APIs, and autonomous agents that deliver reliable results.
+            </p>
 
-          {/* CTAs */}
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
-            <a href="#projects" className="btn-primary">
-              [ See Work ↗ ]
-            </a>
-            <button onClick={handleDownload} className="btn-ghost" type="button">
-              [ Download CV ↓ ]
-            </button>
-            <button
-              type="button"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(SITE.email);
-                  toast("Email copied to clipboard");
-                } catch {
-                  toast("Copy failed");
-                }
-              }}
-              style={{
-                background: "transparent",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-sm)",
-                color: "var(--muted)",
-                padding: "8px 14px",
-                fontFamily: "inherit",
-                fontSize: "13px",
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              <span style={{ color: "var(--dim)" }}>$</span>
-              <span>email --copy</span>
-            </button>
-          </div>
-
-          {/* Quick Metrics TUI Row */}
-          <div
-            style={{
-              display: "flex",
-              gap: "16px",
-              flexWrap: "wrap",
-              marginTop: "8px",
-              paddingTop: "18px",
-              borderTop: "1px solid var(--hairline)",
-              fontSize: "12px",
-              color: "var(--dim)",
-            }}
-          >
-            <div>
-              <span style={{ color: "#ffffff", fontWeight: 600 }}>3+</span> PROJECTS SHIPPED
+            <div className="flex items-center gap-3 flex-wrap">
+              <a href="#projects" className="px-5 py-2 text-sm bg-[var(--accent)] text-black rounded hover:opacity-90 transition-opacity">
+                [ See Work ↗ ]
+              </a>
+              <button onClick={handleDownload} className="px-5 py-2 text-sm border border-[var(--border)] text-[var(--muted)] rounded hover:border-[var(--accent)] transition-colors" type="button">
+                [ Download CV ↓ ]
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(SITE.email);
+                    toast("Email copied to clipboard");
+                  } catch {
+                    toast("Copy failed");
+                  }
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 border border-[var(--border)] rounded text-[var(--muted)] text-[13px] hover:border-[var(--accent)] transition-colors"
+              >
+                <span className="text-[var(--dim)]">$</span>
+                <span>email --copy</span>
+              </button>
             </div>
-            <div>·</div>
-            <div>
-              <span style={{ color: "#ffffff", fontWeight: 600 }}>50+</span> OSS CONTRIBS
+            
+            <div className="flex items-center gap-4 mt-8 pt-4 border-t border-[var(--hairline)] text-xs text-[var(--dim)]">
+              <div>
+                <span className="text-white font-semibold">3+</span> PROJECTS SHIPPED
+              </div>
+              <div>·</div>
+              <div>
+                <span className="text-white font-semibold">50+</span> OSS CONTRIBS
+              </div>
+              <div>·</div>
+              <div>
+                <span className="text-white font-semibold">5K+</span> DAILY USERS
+              </div>
             </div>
-            <div>·</div>
-            <div>
-              <span style={{ color: "#ffffff", fontWeight: 600 }}>5K+</span> DAILY USERS
-            </div>
-          </div>
+          </SlideUp>
         </div>
 
-        {/* Right Column: Hero Terminal TUI */}
-        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <HeroTerminal />
+        {/* Right Column: Terminal */}
+        <div className="w-full flex justify-center">
+          <FadeIn delay={0.4}>
+            <HeroTerminal />
+          </FadeIn>
         </div>
       </div>
     </section>

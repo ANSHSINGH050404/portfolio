@@ -13,7 +13,7 @@ const generated = execSync("bun scripts/gen-pr-fallback.ts", {
 	maxBuffer: 1024 * 1024,
 });
 
-const start = source.indexOf("/** Real PRs by the author");
+const start = source.indexOf("const FALLBACK_PRS: PRCard[] = [");
 if (start === -1) {
 	console.error("Could not find the FALLBACK_PRS block.");
 	process.exit(1);

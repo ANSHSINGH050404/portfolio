@@ -88,7 +88,7 @@ export function Navbar({ onOpenCommand }: NavbarProps) {
     <>
       <nav ref={navRef} className="site-nav" aria-label="Primary">
         <a href="#about" className="nav-brand">
-          <span style={{ color: "var(--accent)" }}>&gt;</span> ansh.dev <span style={{ fontSize: 11, color: "var(--dim)" }}>[v2.4]</span>
+          <span style={{ color: "var(--accent)" }}>&gt;</span> {SITE.host} <span style={{ fontSize: 11, color: "var(--dim)" }}>[v2.4]</span>
         </a>
 
         <div className="nav-links hide-mob">

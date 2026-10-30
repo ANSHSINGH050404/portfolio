@@ -16,6 +16,7 @@
   "dependencies": {
     "@databuddy/sdk": "^3.2.1",
     "cuelume": "^0.2.2",
+    "framer-motion": "^14.9.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"

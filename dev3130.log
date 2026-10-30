@@ -1,0 +1,20 @@
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3130
+- Network:       http://192.168.29.142:3130
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 8.5s
+ GET / 200 in 3.3s (compile: 2.7s, proxy.ts: 110ms, render: 497ms)
+ GET /api/github 200 in 2.4s (compile: 646ms, proxy.ts: 13ms, render: 1742ms)
+ GET /api/stats 200 in 1232ms (compile: 236ms, proxy.ts: 9ms, render: 988ms)
+ GET /blog 200 in 2.5s (compile: 2.2s, proxy.ts: 12ms, render: 290ms)
+ GET /blog/one-authoritative-state-per-room 200 in 1841ms (compile: 1555ms, proxy.ts: 14ms, generate-params: 552ms, render: 272ms)
+ GET /blog/a-browser-agent-needs-observer-nodes 200 in 214ms (compile: 44ms, proxy.ts: 9ms, generate-params: 27ms, render: 162ms)
+ GET /blog/structured-data-beats-prose-for-agents 200 in 181ms (compile: 16ms, proxy.ts: 9ms, generate-params: 124µs, render: 156ms)
+ GET /llms.txt 200 in 509ms (compile: 486ms, proxy.ts: 10ms, render: 13ms)
+ GET /api/stats 200 in 52ms (compile: 9ms, proxy.ts: 8ms, render: 35ms)
+ GET / 200 in 215ms (compile: 12ms, proxy.ts: 12ms, render: 192ms)
+✓ Compiled in 130ms
+✓ Compiled in 147ms
+[?25h
